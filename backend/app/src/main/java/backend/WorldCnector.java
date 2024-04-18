@@ -1,15 +1,16 @@
 package backend;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.io.*;
+import java.net.*;
 
 import backend.protocol.WorldAmazon.*;
 import backend.utils.Triplet;
 
 public class WorldCnector {
     private ACommands.Builder cmdsBuilder;
+    private static final String SERVER_IP = "localhost";
+    private static final int SERVER_PORT = 23456; // your server port
 
     public WorldCnector() {
         cmdsBuilder = ACommands.newBuilder();
@@ -17,6 +18,37 @@ public class WorldCnector {
 
     public ACommands getCommands() {
         return cmdsBuilder.build();
+    }
+    
+    // Send the commands to the server
+    public void sendCommands() {
+        try {
+            Socket socket = new Socket(SERVER_IP, SERVER_PORT);
+            byte[] data = getCommands().toByteArray();
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write(data);
+            outputStream.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Receive the responses from the server
+    public AResponses receiveResponses() {
+        try {
+            Socket socket = new Socket(SERVER_IP, SERVER_PORT);
+            InputStream inputStream = socket.getInputStream();
+            byte[] data = new byte[1024];
+            int count = inputStream.read(data);
+            AResponses responses = AResponses.parseFrom(Arrays.copyOf(data, count));
+            inputStream.close();
+            socket.close();
+            return responses;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // A Commands builder methods
