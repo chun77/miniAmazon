@@ -1,104 +1,34 @@
 package backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.*;
-import java.io.*;
-import java.net.*;
 import org.junit.jupiter.api.Test;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.Triplet;
 
-public class WorldCnectorTest {
-    WorldCnector worldConnector = new WorldCnector();
+public class WorldMsgerTest {
+    WorldMsger worldConnector = new WorldMsger();
 
     @Test
-    public void testSendCommands() {
-        Thread serverThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(23456);
-                    Socket socket = serverSocket.accept();
-                    InputStream inputStream = socket.getInputStream();
-                    byte[] data = new byte[1024];
-                    int length = inputStream.read(data);
+    public void testConnect() {
+        long worldId = 123456L;
+        Map<Integer, Location> warehouses = new HashMap<>();
+        warehouses.put(1, new Location(10, 20));
+        warehouses.put(2, new Location(30, 40));
+        warehouses.put(3, new Location(50, 60));
 
-                    ACommands receivedCommands = ACommands.parseFrom(new ByteArrayInputStream(data, 0, length));
+        AConnect aConnect = worldConnector.connect(worldId, warehouses);
 
-                    inputStream.close();
-                    socket.close();
-                    serverSocket.close();
-
-                    assertNotNull(receivedCommands);
-                    // print received commands
-                    System.out.println(receivedCommands);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        serverThread.start();
-
-        WorldCnector worldConnector = new WorldCnector();
-        worldConnector.purchaseMore(1, Map.of(new Product(1, "Product1"), 10), 123);
-        worldConnector.sendCommands();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            serverThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testReceiveResponses() {
-        AResponses.Builder responsesBuilder = AResponses.newBuilder();
-        responsesBuilder.addArrived(APurchaseMore.newBuilder().setWhnum(1).setSeqnum(123).build());
-        responsesBuilder.addArrived(APurchaseMore.newBuilder().setWhnum(2).setSeqnum(234).build());
-        AResponses responsesToSend = responsesBuilder.build();
-
-        Thread serverThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(23456);
-                    Socket socket = serverSocket.accept();
-                    OutputStream outputStream = socket.getOutputStream();
-                    byte[] responseData = responsesToSend.toByteArray();
-                    outputStream.write(responseData);
-                    outputStream.close();
-                    socket.close();
-                    serverSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        serverThread.start();
-
-        WorldCnector receiver = new WorldCnector();
-        AResponses receivedResponses = receiver.receiveResponses();
-
-        try {
-            serverThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assertNotNull(receivedResponses);
-        assertEquals(responsesToSend.getArrivedList().size(), receivedResponses.getArrivedList().size());
-        for (int i = 0; i < responsesToSend.getArrivedList().size(); i++) {
-            assertEquals(responsesToSend.getArrivedList().get(i).getWhnum(), receivedResponses.getArrivedList().get(i).getWhnum());
+        assertEquals(worldId, aConnect.getWorldid());
+        assertEquals(true, aConnect.getIsAmazon());
+        assertEquals(warehouses.size(), aConnect.getInitwhCount());
+        for (int i = 0; i < warehouses.size(); i++) {
+            AInitWarehouse initWarehouse = aConnect.getInitwh(i);
+            Location location = warehouses.get(initWarehouse.getId());
+            assertEquals(location.getXLocation(), initWarehouse.getX());
+            assertEquals(location.getYLocation(), initWarehouse.getY());
         }
     }
 
