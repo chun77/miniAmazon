@@ -17,14 +17,14 @@ public class WorldMsger {
     }
 
     // A Connect builder method
-    public AConnect connect(long worldid, Map<Integer, Location> whs){
+    public AConnect connect(long worldid, List<WareHouse> whs){
         AConnect.Builder connect = AConnect.newBuilder();
         connect.setWorldid(worldid);
-        for (Map.Entry<Integer, Location> entry : whs.entrySet()) {
+        for (WareHouse wh : whs) {
             connect.addInitwh(AInitWarehouse.newBuilder()
-                            .setId(entry.getKey())
-                            .setX(entry.getValue().getXLocation())
-                            .setY(entry.getValue().getYLocation()));
+                            .setId(wh.getId())
+                            .setX(wh.getX())
+                            .setY(wh.getY()));
         }
         connect.setIsAmazon(true);
         return connect.build();

@@ -14,10 +14,9 @@ public class WorldMsgerTest {
     @Test
     public void testConnect() {
         long worldId = 123456L;
-        Map<Integer, Location> warehouses = new HashMap<>();
-        warehouses.put(1, new Location(10, 20));
-        warehouses.put(2, new Location(30, 40));
-        warehouses.put(3, new Location(50, 60));
+        List<WareHouse> warehouses = new ArrayList<>();
+        warehouses.add(new WareHouse(1, new Location(1, 2)));
+        warehouses.add(new WareHouse(2, new Location(3, 4)));
 
         AConnect aConnect = worldConnector.connect(worldId, warehouses);
 
@@ -26,7 +25,7 @@ public class WorldMsgerTest {
         assertEquals(warehouses.size(), aConnect.getInitwhCount());
         for (int i = 0; i < warehouses.size(); i++) {
             AInitWarehouse initWarehouse = aConnect.getInitwh(i);
-            Location location = warehouses.get(initWarehouse.getId());
+            Location location = warehouses.get(i).getLocation();
             assertEquals(location.getXLocation(), initWarehouse.getX());
             assertEquals(location.getYLocation(), initWarehouse.getY());
         }

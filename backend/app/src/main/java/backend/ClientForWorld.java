@@ -7,7 +7,7 @@ import java.util.*;
 import backend.protocol.WorldAmazon.*;
 
 public class ClientForWorld {
-    public boolean connectToWorld(long worldid, Map<Integer, Location> whs) throws UnknownHostException, IOException {
+    public boolean connectToWorld(long worldid, List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connect(worldid, whs);
         // set up the TCP connection to the world
         Socket socket = new Socket("localhost", 23456);

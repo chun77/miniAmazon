@@ -25,6 +25,10 @@ dependencies {
 
     // Use Google protobuf
     implementation 'com.google.protobuf:protobuf-java:3.18.1'
+
+    // Use mockito
+    testImplementation 'org.mockito:mockito-core:3.12.4' 
+
 }
 
 application {

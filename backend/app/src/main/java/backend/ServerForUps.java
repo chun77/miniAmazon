@@ -6,6 +6,21 @@ import java.net.*;
 public class ServerForUps {
     private static final int PORT = 9999; 
 
+    // need to improve
+    public long recvWorldID() {
+        try (ServerSocket serverSocket = new ServerSocket(PORT);) {
+            Socket clientSocket = serverSocket.accept(); 
+            if(clientSocket == null) {
+                return recvWorldID();
+            }
+            UAConnect msg = UAConnect.parseFrom(clientSocket.getInputStream());
+            long worldID = msg.getWorldid();
+            return worldID;
+        } catch (IOException e) {
+            return recvWorldID();
+        }
+    }
+
     public void setupServer() {
         try (ServerSocket serverSocket = new ServerSocket(PORT);) {
             //System.out.println("Server started. Listening on port " + PORT);

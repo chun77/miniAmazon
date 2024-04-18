@@ -1,7 +1,45 @@
 package backend;
 
-public class Amazon {
+import java.util.*;
 
+public class Amazon {
+    
+    ServerForFrontend frontendServer;
+    ServerForUps upsServer;
+    ClientForWorld worldClient;
+    ClientForUps upsClient;
+
+    private long seqnum;
+    private final List<WareHouse> whs;
+
+    public Amazon() {
+        seqnum = 0;
+        frontendServer = new ServerForFrontend();
+        upsServer = new ServerForUps();
+        worldClient = new ClientForWorld();
+        upsClient = new ClientForUps();
+        whs = new ArrayList<>();
+    }
+
+    public long getSeqnum() {
+        long tmp = seqnum;
+        seqnum++;
+        return tmp;
+    }
+
+    public void initialize() {
+        // TODO: initialize the warehouse
+        long worldIDFromUps = upsServer.recvWorldID();
+        while(true) {
+            try{
+                if(worldClient.connectToWorld(worldIDFromUps, whs)) {
+                    break;
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+    }
 
     // 1. setup server, waiting for frontend
     // 2. receive order from frontend
