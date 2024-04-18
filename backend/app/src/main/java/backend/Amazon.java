@@ -1,6 +1,8 @@
 package backend;
 
 public class Amazon {
+
+
     // 1. setup server, waiting for frontend
     // 2. receive order from frontend
     // 3. according to the products, determine which warehouse should be used  

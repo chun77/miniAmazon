@@ -3,7 +3,7 @@ package backend;
 import java.io.*;
 import java.net.*;
 
-public class ServerForClient {
+public class ServerForFrontend {
     private static final int PORT = 8888; 
 
     public void setupServer() {
