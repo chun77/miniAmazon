@@ -1,0 +1,63 @@
+syntax = "proto2";
+message Order{
+  required int32 x = 1;
+  required int32 y = 2;
+  required int64 trackingid = 3;
+  required int32 amzaccount = 4;
+  optional int32 upsaccount = 5;
+}
+
+message UAInitConnect{
+  required int64 worldid = 1;
+} 
+
+message AUConfirmConnect{
+  required int64 worldid = 1;
+  required bool connected = 2;
+}
+
+message AUNeedATruck{
+  required int32 x = 1;
+  required int32 y = 2;
+  repeated Order orders = 3;
+  required int64 seqnum = 4;
+}
+
+message AUTruckCanGo{
+  required int32 truckid = 1;
+  repeated Order orders = 2;
+  required int64 seqnum = 3;
+}
+
+message UATruckArrived{
+  required int32 truckid = 1;
+  repeated Order orders = 2;
+  required int64 seqnum = 3;
+}
+
+message UADelivered{
+  required int32 truckid = 1;
+  required Order orders = 2;
+  required int64 seqnum = 3;
+}
+
+message Err{
+  required string msg = 1;
+  required int64 originseqnum = 2;
+  required int64 seqnum = 3;
+}
+
+message AUCommands {
+  repeated AUNeedATruck need = 1;
+  repeated AUTruckCanGo go = 2;
+  repeated Err errors = 3;
+  repeated int64 acks = 4;
+}
+
+message UACommands {
+  repeated UATruckArrived arrived = 1;
+  repeated UADelivered delivered = 2;
+  repeated Err errors = 3;
+  repeated int64 acks = 4;
+}
+

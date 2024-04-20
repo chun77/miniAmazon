@@ -7,35 +7,21 @@ public class ServerForUps {
     private static final int PORT = 9999; 
 
     // need to improve
-    public long recvWorldID() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT);) {
-            Socket clientSocket = serverSocket.accept(); 
-            if(clientSocket == null) {
-                return recvWorldID();
-            }
-            UAConnect msg = UAConnect.parseFrom(clientSocket.getInputStream());
-            long worldID = msg.getWorldid();
-            return worldID;
-        } catch (IOException e) {
-            return recvWorldID();
-        }
-    }
+    // public long recvWorldID() {
+    //     try (ServerSocket serverSocket = new ServerSocket(PORT);) {
+    //         Socket clientSocket = serverSocket.accept(); 
+    //         if(clientSocket == null) {
+    //             return recvWorldID();
+    //         }
+    //         UAConnect msg = UAConnect.parseFrom(clientSocket.getInputStream());
+    //         long worldID = msg.getWorldid();
+    //         return worldID;
+    //     } catch (IOException e) {
+    //         return recvWorldID();
+    //     }
+    // }
 
-    public void setupServer() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT);) {
-            //System.out.println("Server started. Listening on port " + PORT);
-            while (true) {
-                Socket clientSocket = serverSocket.accept(); 
-                //System.out.println("Client connected: " + clientSocket);
-
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                Thread clientThread = new Thread(clientHandler);
-                clientThread.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // TODO: ups server message handler
 
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;

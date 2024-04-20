@@ -3,13 +3,52 @@
  */
 package backend;
 
+import java.io.*;
+import java.net.UnknownHostException;
+import java.util.*;
+
+import backend.protocol.WorldAmazon.ACommands;
+import backend.protocol.WorldAmazon.AResponses;
+import backend.utils.Recver;
+import backend.utils.Sender;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        ServerForFrontend server = new ServerForFrontend();
-        server.setupServer();
+        Amazon amazon = new Amazon();
+        amazon.initialize();
+        InputStream worldRecver = amazon.getWorldRecver();
+        OutputStream worldSender = amazon.getWorldSender();
+
+        // set simspeed
+        WorldMsger worldMsger = new WorldMsger();
+        worldMsger.setSimSpeed(500); // only for testing
+        System.out.println("set simspeed to 500");
+        Sender.sendMsgTo(worldMsger.getCommands(), worldSender);
+        System.out.println("set simspeed to 500 success");
+
+        // start 3 threads, for world receiver, ups server and frontend server respectively
+        amazon.startWorldRecver();
+        amazon.startUpsServer();
+        amazon.startFrontendServer();
+
+        // send a topack message to the world
+        Product product1 = new Product(1, "product1");
+        Map<Product, Integer> products = new HashMap<>();
+        products.put(product1, 10);
+        worldMsger = new WorldMsger();
+        worldMsger.purchaseMore(1, products, 1);
+        worldMsger.setSimSpeed(10000); // only for testing
+        ACommands cmds = worldMsger.getCommands();
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(1L);
+        try {
+            WorldCtrler.sendOneCmds(cmds, seqnums, worldRecver, worldSender);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 }

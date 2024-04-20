@@ -16,6 +16,19 @@ public class WorldMsger {
         return cmdsBuilder.build();
     }
 
+    // A Connect builder method withoud worldid
+    public AConnect connectWithoutID(List<WareHouse> whs){
+        AConnect.Builder connect = AConnect.newBuilder();
+        for (WareHouse wh : whs) {
+            connect.addInitwh(AInitWarehouse.newBuilder()
+                            .setId(wh.getId())
+                            .setX(wh.getX())
+                            .setY(wh.getY()));
+        }
+        connect.setIsAmazon(true);
+        return connect.build();
+    }
+
     // A Connect builder method
     public AConnect connect(long worldid, List<WareHouse> whs){
         AConnect.Builder connect = AConnect.newBuilder();
