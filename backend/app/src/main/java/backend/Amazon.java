@@ -1,22 +1,26 @@
 package backend;
 
 import java.util.*;
+import java.util.concurrent.*;
+import java.io.*;
+import java.net.*;
 
+import org.checkerframework.checker.units.qual.A;
+
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper;
 import com.google.protobuf.ByteString.Output;
 
 import backend.protocol.WorldAmazon.AResponses;
 import backend.utils.Recver;
 
-import java.io.*;
-import java.net.*;
+
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
     private static final int UPS_SERVER_PORT = 9999; 
-    private ServerForFrontend frontendServer;
-    private ServerForUps upsServer;
-    private WorldCtrler worldCtrler;
-    private ClientForUps upsClient;
+    private static final int THREAD_POOL_SIZE = 10;
+
+    private ExecutorService threadPool;
 
     private long seqnum;
     private final List<WareHouse> whs;
@@ -25,11 +29,8 @@ public class Amazon {
     private OutputStream worldSender;
 
     public Amazon() {
+        threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         seqnum = 0;
-        frontendServer = new ServerForFrontend();
-        upsServer = new ServerForUps();
-        worldCtrler = new WorldCtrler();
-        upsClient = new ClientForUps();
         whs = new ArrayList<>();
     }
 
@@ -40,6 +41,8 @@ public class Amazon {
             public void run() {
                 while(true) {
                     AResponses res = WorldCtrler.RecvOneRspsFromWorld(worldRecver, worldSender);
+                    // TODO: handle the response from world
+                    WorldCtrler.processWorldMsgs(res);
                     System.out.println("Received from world: " + res);
                 }
             }
@@ -55,11 +58,10 @@ public class Amazon {
                 try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
                     while (true) {
                         Socket clientSocket = serverSocket.accept(); 
-                        // TODO: receive message from ups
-                        System.out.println("Client connected: " + clientSocket);
-                        //ClientHandler clientHandler = new ClientHandler(clientSocket);
-                        //Thread clientThread = new Thread(clientHandler);
-                        //clientThread.start();
+                        // use threadpool to handle the message from ups
+                        threadPool.execute(() -> {
+                            ServerForUps.processUpsMsgs(clientSocket);
+                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -77,11 +79,10 @@ public class Amazon {
                 try (ServerSocket serverSocket = new ServerSocket(FRONTEND_SERVER_PORT);) {
                     while (true) {
                         Socket clientSocket = serverSocket.accept(); 
-                        // TODO: receive message from frontend
-                        System.out.println("Client connected: " + clientSocket);
-                        // ClientHandler clientHandler = new ClientHandler(clientSocket);
-                        // Thread clientThread = new Thread(clientHandler);
-                        // clientThread.start();
+                        // use threadpool to handle the message from frontend
+                        threadPool.execute(() -> {
+                            ServerForFrontend.processFrontendMsgs(clientSocket);
+                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -98,7 +99,7 @@ public class Amazon {
             try{
                 // only for test
                 System.out.println("try to connect to world");
-                Socket worldSocket = worldCtrler.connectToworldWithoudID(whs);
+                Socket worldSocket = WorldCtrler.connectToworldWithoudID(whs);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();

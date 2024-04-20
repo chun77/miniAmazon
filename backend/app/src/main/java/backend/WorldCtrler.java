@@ -10,7 +10,7 @@ import backend.utils.Sender;
 
 public class WorldCtrler {
 
-    public Socket connectToworldWithoudID(List<WareHouse> whs) throws UnknownHostException, IOException {
+    public static Socket connectToworldWithoudID(List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connectWithoutID(whs);
         // set up the TCP connection to the world
         Socket socket = new Socket("vcm-37900.vm.duke.edu", 23456);
@@ -31,7 +31,7 @@ public class WorldCtrler {
         }
     }
 
-    public Socket connectToWorld(long worldid, List<WareHouse> whs) throws UnknownHostException, IOException {
+    public static Socket connectToWorld(long worldid, List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connect(worldid, whs);
         // set up the TCP connection to the world
         Socket socket = new Socket("localhost", 23456);
@@ -126,6 +126,24 @@ public class WorldCtrler {
             }
             System.out.println("send ack back(to World): " + commands.toString());
             Sender.sendMsgTo(commands.build(), out);
+        }
+    }
+
+    public static void processWorldMsgs(AResponses reps) {
+        for (APurchaseMore a : reps.getArrivedList()) {
+            System.out.println("Arrived: " + a.toString());
+        }
+        for (APacked a : reps.getReadyList()) {
+            System.out.println("Ready: " + a.toString());
+        }
+        for (ALoaded a : reps.getLoadedList()) {
+            System.out.println("Loaded: " + a.toString());
+        }
+        for (AErr a : reps.getErrorList()) {
+            System.out.println("Error: " + a.toString());
+        }
+        for (APackage a : reps.getPackagestatusList()) {
+            System.out.println("Package: " + a.toString());
         }
     }
 
