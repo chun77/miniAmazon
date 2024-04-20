@@ -1,25 +1,26 @@
 package backend;
 
+import java.util.List;
+import java.util.Map;
+
 public class Order {
     private String AMZaccount;
     private String UPSaccount;
     private String trackingID;
     private String packageID;
-    private String productID;
-    private int amt;
+    private List<Map<String, Integer>> products;
     private Location shipAddr;
     
-    public Order(String AMZaccount, String trackingID, String packageID, String productID, int amt, Location shipAddr) {
-        this(AMZaccount, null, trackingID, packageID, productID, amt, shipAddr);
+    public Order(String AMZaccount, String trackingID, String packageID, List<Map<String, Integer>> products, Location shipAddr) {
+        this(AMZaccount, null, trackingID, packageID, products, shipAddr);
     }
 
-    public Order(String AMZaccount, String UPSaccount, String trackingID, String packageID, String productID, int amt, Location shipAddr) {
+    public Order(String AMZaccount, String UPSaccount, String trackingID, String packageID, List<Map<String, Integer>> products, Location shipAddr) {
         this.AMZaccount = AMZaccount;
         this.UPSaccount = UPSaccount;
         this.trackingID = trackingID;
         this.packageID = packageID;
-        this.productID = productID;
-        this.amt = amt;
+        this.products = products;
         this.shipAddr = shipAddr;
     }
 
@@ -39,12 +40,8 @@ public class Order {
         return packageID;
     }
 
-    public String getProductID() {
-        return productID;
-    }
-
-    public int getAmt() {
-        return amt;
+    public List<Map<String, Integer>> getProducts() {
+        return products;
     }
 
     public Location getShipAddr() {
@@ -67,12 +64,8 @@ public class Order {
         this.packageID = packageID;
     }
 
-    public void setProductID(String productID) {
-        this.productID = productID;
-    }
-
-    public void setAmt(int amt) {
-        this.amt = amt;
+    public void setProducts(List<Map<String, Integer>> products) {
+        this.products = products;
     }
 
     public void setShipAddr(Location shipAddr) {

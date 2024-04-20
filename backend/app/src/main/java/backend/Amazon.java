@@ -5,6 +5,7 @@ import java.util.concurrent.*;
 import java.io.*;
 import java.net.*;
 
+import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.WorldAmazon.AResponses;
 
 
@@ -15,15 +16,20 @@ public class Amazon {
     private static final int THREAD_POOL_SIZE = 10;
 
     private ExecutorService threadPool;
+    private WorldCtrler worldCtrler;
+    private ServerForUps upsServer;
 
     private long seqnum;
     private final List<WareHouse> whs;
+    private static List<Package> unfinishedPackages;
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
 
     public Amazon() {
         threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        worldCtrler = new WorldCtrler();
+        upsServer = new ServerForUps();
         seqnum = 0;
         whs = new ArrayList<>();
     }
@@ -35,9 +41,10 @@ public class Amazon {
             public void run() {
                 while(true) {
                     AResponses res = WorldCtrler.RecvOneRspsFromWorld(worldRecver, worldSender);
-                    // TODO: handle the response from world
-                    WorldCtrler.processWorldMsgs(res);
-                    System.out.println("Received from world: " + res);
+                    // use threadpool to handle the message from world
+                    threadPool.execute(() -> {
+                        worldCtrler.processWorldMsgs(res);
+                    });
                 }
             }
         });
@@ -54,7 +61,8 @@ public class Amazon {
                         Socket clientSocket = serverSocket.accept(); 
                         // use threadpool to handle the message from ups
                         threadPool.execute(() -> {
-                            ServerForUps.processUpsMsgs(clientSocket);
+                            UACommands cmds = ServerForUps.recvOneCmdsFromUps(clientSocket);
+                            upsServer.processUpsMsgs(cmds);
                         });
                     }
                 } catch (IOException e) {
@@ -115,6 +123,10 @@ public class Amazon {
         long tmp = seqnum;
         seqnum++;
         return tmp;
+    }
+
+    public static List<Package> getPackages() {
+        return unfinishedPackages;
     }
 
     public InputStream getWorldRecver() {

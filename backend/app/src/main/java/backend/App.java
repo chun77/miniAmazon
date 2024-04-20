@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.*;
 
 import backend.protocol.WorldAmazon.ACommands;
+import backend.utils.DBCtrler;
 import backend.utils.Sender;
 
 public class App {
@@ -17,6 +18,11 @@ public class App {
         amazon.initialize();
         InputStream worldRecver = amazon.getWorldRecver();
         OutputStream worldSender = amazon.getWorldSender();
+
+        // set database (only for testing)
+        // DBCtrler.dropTables();
+        // DBCtrler.createTables();
+        // DBCtrler.initializeTables();
 
         // set simspeed
         WorldMsger worldMsger = new WorldMsger();

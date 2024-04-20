@@ -103,7 +103,7 @@ public class WorldCtrler {
 
     private static void sendAcksToWorld(AResponses responses, OutputStream out) throws IOException {
         // get ack numbers
-        List<Long> acks = responses.getAcksList();
+        List<Long> acks = new ArrayList<>();
         for (APurchaseMore a : responses.getArrivedList()) {
             acks.add(a.getSeqnum());
         }
@@ -129,22 +129,89 @@ public class WorldCtrler {
         }
     }
 
-    public static void processWorldMsgs(AResponses reps) {
-        for (APurchaseMore a : reps.getArrivedList()) {
-            System.out.println("Arrived: " + a.toString());
+    public void processWorldMsgs(AResponses reps) {
+        // send acks back to the world
+        // try {
+        //     sendAcksToWorld(reps, out);
+        // } catch (IOException e) {
+        //     processWorldMsgs(reps, out); // better way?
+        // }
+        // process the responses
+        for (APurchaseMore arrived : reps.getArrivedList()) {
+            processArrived(arrived);
         }
-        for (APacked a : reps.getReadyList()) {
-            System.out.println("Ready: " + a.toString());
+        for (APacked ready : reps.getReadyList()) {
+            processReady(ready);
         }
-        for (ALoaded a : reps.getLoadedList()) {
-            System.out.println("Loaded: " + a.toString());
+        for (ALoaded loaded : reps.getLoadedList()) {
+            processLoaded(loaded);
         }
-        for (AErr a : reps.getErrorList()) {
-            System.out.println("Error: " + a.toString());
+        for (AErr err : reps.getErrorList()) {
+            processErr(err);
         }
-        for (APackage a : reps.getPackagestatusList()) {
-            System.out.println("Package: " + a.toString());
+        for (APackage packageStatus : reps.getPackagestatusList()) {
+            processPackageStatus(packageStatus);
         }
+    }
+
+    private void processArrived(APurchaseMore arrived) {
+        List<Package> packages = Amazon.getPackages();
+        synchronized (packages) {
+            List<Long> arrivedProductIDs = new ArrayList<>();
+            for (AProduct p : arrived.getThingsList()) {
+                arrivedProductIDs.add(p.getId());
+            }
+            for(Package p: packages){
+                if(p.getWh().getId() == arrived.getWhnum() && p.getProductIDs().equals(arrivedProductIDs)){
+                    System.out.println("Arrived: " + arrived.toString());
+                    packages.remove(p);
+                    break;
+                }
+            }
+            // tell UPS to send a truck
+            // TODO: tell UPS to send a truck
+            // tell world to pack
+        }
+    }
+
+    private void processReady(APacked ready) {
+        // if the truck has arrived, send load to world
+        
+        // 1. get the package
+        List<Package> packages = Amazon.getPackages();
+        synchronized (packages) {
+            Package target = null;
+            for(Package p: packages){
+                if(p.getPackageID().equals(ready.getShipid())){
+                    target = p;
+                    break;
+                }
+            }
+            // 2. TODO: send load to world
+        }
+    }
+
+    private void processLoaded(ALoaded loaded) {
+        // 1. get the package
+        List<Package> packages = Amazon.getPackages();
+        synchronized (packages) {
+            Package target = null;
+            for(Package p: packages){
+                if(p.getPackageID().equals(loaded.getShipid())){
+                    target = p;
+                    break;
+                }
+            }
+            // 2. TODO: send toDeliver to UPS
+        }
+    }
+
+    private void processErr(AErr err) {
+        System.out.println("Error: " + err.toString());
+    }
+
+    private void processPackageStatus(APackage packageStatus) {
+        System.out.println("Package status: " + packageStatus.toString());
     }
 
 }
