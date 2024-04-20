@@ -1,0 +1,61 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <form id="main-form" method="POST" action="{% url 'place_order' product.id %}">
+        {% csrf_token %}
+        <input type="hidden" id="hidden-address-x" name="address_x">
+        <input type="hidden" id="hidden-address-y" name="address_y">
+        <input type="hidden" id="hidden-quantity" name="quantity">
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Shipping Information:
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" id="address_x" placeholder="Address_x...">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" id="address_y" placeholder="Address_y...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Order Information:
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            <label for="product_name">Product Name:</label>
+                            <input class="form-control" type="text" id="product_name" value="{{ product.name }}" readonly>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="quantity">Quantity:</label>
+                            <input class="form-control" type="number" id="quantity" value="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-block">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('main-form').addEventListener('submit', function(event) {
+    document.getElementById('hidden-address-x').value = document.getElementById('address_x').value;
+    document.getElementById('hidden-address-y').value = document.getElementById('address_y').value;
+    document.getElementById('hidden-quantity').value = document.getElementById('quantity').value;
+});
+</script>
+
+{% endblock content %}

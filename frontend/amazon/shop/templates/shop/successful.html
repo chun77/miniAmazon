@@ -1,0 +1,16 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+        Order placed successfully!
+    </div>
+    Order ID: {{ order.id }}
+    Product Name: {{ order.product.name }}
+    Quantity: {{ order.quantity }}
+    Tracking ID: {{ tracking_id }}
+    <!-- Total Price: {{ order.total_price }} -->
+                
+</div>
+{% endblock content %}
