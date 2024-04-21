@@ -112,23 +112,23 @@ public class DBCtrler {
     public Package getPackageByID(long packageID) {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              Statement stmt = conn.createStatement()) {
-            String sql = "SELECT * FROM orders WHERE id = " + packageID + ";";
+            String sql = "SELECT * FROM order WHERE package_id = " + packageID + ";";
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 // get x_coordinate and y_coordinate and tracking id
-                int dest_x = rs.getInt("x_coordinate");
-                int dest_y = rs.getInt("y_coordinate");
+                int dest_x = rs.getInt("dest_x");
+                int dest_y = rs.getInt("dest_y");
                 long trackingID = rs.getLong("tracking_id");
                 // loop through warehouses to find the closest one
-                sql = "SELECT * FROM warehouses;";
+                sql = "SELECT * FROM warehouse;";
                 ResultSet rs2 = stmt.executeQuery(sql);
                 int wh_x, WH_x = Integer.MAX_VALUE;
                 int wh_y, WH_y = Integer.MAX_VALUE; 
                 int minDistance = Integer.MAX_VALUE;
                 int warehouseID = -1;
                 while (rs2.next()) {
-                    wh_x = rs2.getInt("x_coordinate");
-                    wh_y = rs2.getInt("y_coordinate");
+                    wh_x = rs2.getInt("wh_x");
+                    wh_y = rs2.getInt("wh_y");
                     int distance = (dest_x - wh_x) * (dest_x - wh_x) + (dest_y - wh_y) * (dest_y - wh_y);
                     if (distance < minDistance) {
                         minDistance = distance;
@@ -139,20 +139,20 @@ public class DBCtrler {
                 }
                 // get products in the package
                 List<AProduct> products = new ArrayList<>();
-                sql = "SELECT * FROM order_items WHERE package_id = " + packageID + ";";
+                sql = "SELECT * FROM packageProduct WHERE package_id = " + packageID + ";";
                 ResultSet rs3 = stmt.executeQuery(sql);
                 while (rs3.next()) {
                     int productID = rs3.getInt("product_id");
-                    int amt = rs3.getInt("amt");
+                    int amt = rs3.getInt("quantity");
                     // get product name
-                    sql = "SELECT * FROM products WHERE id = " + productID + ";";
+                    sql = "SELECT * FROM product WHERE id = " + productID + ";";
                     ResultSet rs4 = stmt.executeQuery(sql);
                     String description = rs4.getString("description");
                     AProduct product = AProduct.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
                     products.add(product);
                 }
                 // store package into database
-                sql = "INSERT INTO packages (package_id, status, whnum) VALUES (" + packageID + ", 'PURCHASING', " + warehouseID + ");";
+                sql = "INSERT INTO packageStatus (package_id, status, wh_id) VALUES (" + packageID + ", 'PURCHASING', " + warehouseID + ");";
                 stmt.execute(sql);
                 // generate a new package
                 Package newPackage = new Package(packageID, trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
@@ -163,5 +163,16 @@ public class DBCtrler {
         }
         return null;
     }
+
+    public void updatePackageStatus(long packageID, String status) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
+            String sql = "UPDATE packageStatus SET status = '" + status + "' WHERE package_id = " + packageID + ";";
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

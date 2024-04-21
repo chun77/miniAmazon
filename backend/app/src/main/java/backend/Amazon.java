@@ -199,6 +199,7 @@ public class Amazon {
             for(Package p: unfinishedPackages){
                 if(p.getWh().getId() == arrived.getWhnum() && p.getProducts() == arrived.getThingsList()){
                     p.setStatus("PACKING");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "PACKING");
                     sendToPack(p);
                     sendNeedATruck(p);
                     break;
@@ -215,9 +216,11 @@ public class Amazon {
                 if(p.getPackageID() == ready.getShipid()){
                     // set status to PACKED
                     p.setStatus("PACKED");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "PACKED");
                     // if the truck has arrived, send load to world
                     if(p.getTruckID() != -1){
                         p.setStatus("LOADING");
+                        dbCtrler.updatePackageStatus(p.getPackageID(), "LOADING");
                         sendToLoad(p);
                     }
                     break;
@@ -232,8 +235,10 @@ public class Amazon {
             for(Package p: unfinishedPackages){
                 if(p.getPackageID() == loaded.getShipid()){
                     p.setStatus("LOADED");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "LOADED");
                     sendTruckCanGo(p);
                     p.setStatus("DELIVERING");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "DELIVERING");
                     break;
                 }
             }
@@ -345,6 +350,13 @@ public class Amazon {
         }
         for(Err err : cmds.getErrorsList()) {
             processErrors(err);
+        }
+        for(Long ack : cmds.getAcksList()) {
+            Timer timer = unackedMsgsTimer.get(ack);
+            if (timer != null) {
+                timer.cancel();
+                unackedMsgsTimer.remove(ack);
+            }
         }
     }
 
