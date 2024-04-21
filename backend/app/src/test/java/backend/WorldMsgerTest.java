@@ -34,10 +34,9 @@ public class WorldMsgerTest {
     @Test
     public void testPurchaseMore() {
         int warehouseNumber = 1;
-        Map<Product, Integer> products = Map.of(
-            new Product(1, "Product1"), 10,
-            new Product(2, "Product2"), 20
-        );
+        List<AProduct> products = new ArrayList<>();
+        products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
+        products.add(AProduct.newBuilder().setId(2).setDescription("Product2").setCount(20).build());
         long sequenceNumber = 123;
         worldConnector.purchaseMore(warehouseNumber, products, sequenceNumber);
         ACommands commands = worldConnector.getCommands();
@@ -50,10 +49,9 @@ public class WorldMsgerTest {
     @Test
     public void testPack() {
         int warehouseNumber = 1;
-        Map<Product, Integer> products = Map.of(
-            new Product(1, "Product1"), 10,
-            new Product(2, "Product2"), 20
-        );
+        List<AProduct> products = new ArrayList<>();
+        products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
+        products.add(AProduct.newBuilder().setId(2).setDescription("Product2").setCount(20).build());
         long shipId = 456;
         long sequenceNumber = 123;
 
@@ -125,10 +123,9 @@ public class WorldMsgerTest {
     @Test
     public void testAllFunctions() {
         int warehouseNumber = 1;
-        Map<Product, Integer> products = Map.of(
-            new Product(1, "Product1"), 10,
-            new Product(2, "Product2"), 20
-        );
+        List<AProduct> products = new ArrayList<>();
+        products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
+        products.add(AProduct.newBuilder().setId(2).setDescription("Product2").setCount(20).build());
         long shipId = 456;
         long sequenceNumber = 789;
         long packageId = 123;

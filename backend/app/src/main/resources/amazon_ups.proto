@@ -1,10 +1,18 @@
 syntax = "proto2";
-message Order{
-  required int32 x = 1;
-  required int32 y = 2;
-  required int64 trackingid = 3;
-  required int32 amzaccount = 4;
-  optional int32 upsaccount = 5;
+
+message AProduct{
+  required int64 id = 1;
+  required string description = 2;
+  required int32 count = 3;
+}
+
+message APack{
+  required int32 whnum = 1;
+  repeated AProduct things = 2;
+  required int64 packageid = 3;
+  required int64 seqnum = 4;
+  required int64 trackingid = 5;
+  optional int32 upsaccount = 6;
 }
 
 message UAInitConnect{
@@ -17,28 +25,29 @@ message AUConfirmConnect{
 }
 
 message AUNeedATruck{
-  required int32 x = 1;
-  required int32 y = 2;
-  repeated Order orders = 3;
-  required int64 seqnum = 4;
+  required int32 wh_x = 1;
+  required int32 wh_y = 2;
+  required APack pack = 3;
+  required int32 dest_x = 4;
+  required int32 dest_y = 5;
+  required int64 seqnum = 6;
 }
 
 message AUTruckCanGo{
   required int32 truckid = 1;
-  repeated Order orders = 2;
-  required int64 seqnum = 3;
+  required int64 seqnum = 2;
 }
 
 message UATruckArrived{
   required int32 truckid = 1;
-  repeated Order orders = 2;
-  required int64 seqnum = 3;
+  required int32 packageid = 2;
+  required int32 whnum = 3;
+  required int64 seqnum = 4;
 }
 
 message UADelivered{
-  required int32 truckid = 1;
-  required Order orders = 2;
-  required int64 seqnum = 3;
+  required int32 packageid = 1;
+  required int64 seqnum = 2;
 }
 
 message Err{

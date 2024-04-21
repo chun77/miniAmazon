@@ -1,27 +1,32 @@
 package backend;
 
 import java.util.List;
+import java.util.Map;
+
+import backend.protocol.WorldAmazon.AProduct;
 
 public class Package {
-    private String packageID;
-    private String truckID;
+    private long packageID;
+    private int truckID;
     private Location dest;
-    private List<Long> productIDs;
+    private List<AProduct> products;
     private WareHouse wh;
+    private String status;
 
-    public Package(String packageID, String truckID, Location dest, List<Long> productIDs, WareHouse wh) {
+    public Package(long packageID, int truckID, Location dest, List<AProduct> products, WareHouse wh, String status) {
         this.packageID = packageID;
         this.truckID = truckID;
         this.dest = dest;
-        this.productIDs = productIDs;
+        this.products = products;
         this.wh = wh;
+        this.status = status;
     }
 
-    public String getPackageID() {
+    public long getPackageID() {
         return packageID;
     }
 
-    public String getTruckID() {
+    public int getTruckID() {
         return truckID;
     }
 
@@ -29,11 +34,23 @@ public class Package {
         return dest;
     }
 
-    public List<Long> getProductIDs() {
-        return productIDs;
+    public List<AProduct> getProducts() {
+        return products;
     }
 
     public WareHouse getWh() {
         return wh;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setTruckID(int truckID) {
+        this.truckID = truckID;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

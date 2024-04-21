@@ -44,27 +44,21 @@ public class WorldMsger {
     }
 
     // A Commands builder methods
-    public void purchaseMore(int whnum, Map<Product, Integer> products, long seqnum){
+    public void purchaseMore(int whnum, List<AProduct> products, long seqnum){
         APurchaseMore.Builder purchaseMore = APurchaseMore.newBuilder();
         purchaseMore.setWhnum(whnum);
-        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            purchaseMore.addThings(AProduct.newBuilder()
-                                    .setId(entry.getKey().getId())
-                                    .setDescription(entry.getKey().getDescription())
-                                    .setCount(entry.getValue()));
+        for (AProduct product : products) {
+            purchaseMore.addThings(product);
         }
         purchaseMore.setSeqnum(seqnum);
         cmdsBuilder.addBuy(purchaseMore);
     }
 
-    public void pack(int whnum, Map<Product, Integer> products, long shipid, long seqnum){
+    public void pack(int whnum, List<AProduct> products, long shipid, long seqnum){
         APack.Builder toPack = APack.newBuilder();
         toPack.setWhnum(whnum);
-        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            toPack.addThings(AProduct.newBuilder()
-                                    .setId(entry.getKey().getId())
-                                    .setDescription(entry.getKey().getDescription())
-                                    .setCount(entry.getValue()));
+        for (AProduct product : products) {
+            toPack.addThings(product);
         }
         toPack.setShipid(shipid);
         toPack.setSeqnum(seqnum);

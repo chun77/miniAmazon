@@ -28,6 +28,7 @@ message APack{
   required int64 shipid = 3;
   required int64 seqnum = 4;
 }
+
 message APacked {
   required int64 shipid = 1;
   required int64 seqnum = 2;

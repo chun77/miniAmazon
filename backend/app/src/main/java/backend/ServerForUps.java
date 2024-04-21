@@ -11,29 +11,26 @@ import backend.protocol.AmazonUps.AUCommands;
 import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
+import backend.protocol.AmazonUps.UAInitConnect;
 import backend.protocol.AmazonUps.UATruckArrived;
 import backend.utils.Recver;
 import backend.utils.Sender;
 
 public class ServerForUps {
-    // need to improve
-    // public long recvWorldID() {
-    //     try (ServerSocket serverSocket = new ServerSocket(PORT);) {
-    //         Socket clientSocket = serverSocket.accept(); 
-    //         if(clientSocket == null) {
-    //             return recvWorldID();
-    //         }
-    //         UAConnect msg = UAConnect.parseFrom(clientSocket.getInputStream());
-    //         long worldID = msg.getWorldid();
-    //         return worldID;
-    //     } catch (IOException e) {
-    //         return recvWorldID();
-    //     }
-    // }
+    public long recvWorldID() {
+        try (ServerSocket serverSocket = new ServerSocket(9999);) {
+            Socket clientSocket = serverSocket.accept(); 
+            InputStream in = clientSocket.getInputStream();
+            UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
+            Recver.recvMsgFrom(msgB, in);
+            long worldID = msgB.getWorldid();
+            return worldID;
+        } catch (IOException e) {
+            return recvWorldID();
+        }
+    }
 
-    // TODO: ups server message handler
-
-    public static UACommands recvOneCmdsFromUps(Socket clientSocket){
+    public UACommands recvOneCmdsFromUps(Socket clientSocket){
         try {
             InputStream in = clientSocket.getInputStream();
             OutputStream out = clientSocket.getOutputStream();
@@ -48,7 +45,7 @@ public class ServerForUps {
         }
     }
 
-    private static void sendAcksToUps(UACommands cmds, OutputStream out) throws IOException {
+    private void sendAcksToUps(UACommands cmds, OutputStream out) throws IOException {
         // get ack numbers
         List<Long> acks = new ArrayList<>();
         for(UATruckArrived cmd : cmds.getArrivedList()) {
@@ -67,26 +64,6 @@ public class ServerForUps {
         }
     }
 
-    public void processUpsMsgs(UACommands cmds) {
-        for(UATruckArrived cmd : cmds.getArrivedList()) {
-            processArrived(cmd);
-        }
-        for(UADelivered cmd : cmds.getDeliveredList()) {
-            processDelivered(cmd);
-        }
-        for(Err err : cmds.getErrorsList()) {
-            processErrors(err);
-        }
-    }
-
-    private void processArrived(UATruckArrived arrived) {
-        
-    }
-
-    private void processDelivered(UADelivered delivered) {
-    }
-
-    private void processErrors(Err err) {
-    }
+    
     
 }

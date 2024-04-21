@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.UnknownHostException;
 import java.util.*;
 
+import backend.protocol.WorldAmazon.AProduct;
 import backend.protocol.WorldAmazon.ACommands;
 import backend.utils.DBCtrler;
 import backend.utils.Sender;
@@ -15,6 +16,7 @@ public class App {
 
     public static void main(String[] args) {
         Amazon amazon = new Amazon();
+        WorldCtrler worldCtrler = new WorldCtrler();
         amazon.initialize();
         InputStream worldRecver = amazon.getWorldRecver();
         OutputStream worldSender = amazon.getWorldSender();
@@ -37,9 +39,8 @@ public class App {
         amazon.startFrontendServer();
 
         // send a topack message to the world
-        Product product1 = new Product(1, "product1");
-        Map<Product, Integer> products = new HashMap<>();
-        products.put(product1, 10);
+        List<AProduct> products = new ArrayList<>();
+        products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
         worldMsger = new WorldMsger();
         worldMsger.purchaseMore(1, products, 1);
         worldMsger.setSimSpeed(10000); // only for testing
@@ -47,7 +48,7 @@ public class App {
         List<Long> seqnums = new ArrayList<>();
         seqnums.add(1L);
         try {
-            WorldCtrler.sendOneCmds(cmds, seqnums, worldRecver, worldSender);
+            worldCtrler.sendOneCmds(cmds, seqnums, worldRecver, worldSender);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

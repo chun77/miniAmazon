@@ -5,10 +5,11 @@ import java.util.concurrent.*;
 import java.io.*;
 import java.net.*;
 
+import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
-import backend.protocol.WorldAmazon.AResponses;
-
-
+import backend.protocol.AmazonUps.UADelivered;
+import backend.protocol.AmazonUps.UATruckArrived;
+import backend.protocol.WorldAmazon.*;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
@@ -19,9 +20,9 @@ public class Amazon {
     private WorldCtrler worldCtrler;
     private ServerForUps upsServer;
 
-    private long seqnum;
+    private static long seqnum;
     private final List<WareHouse> whs;
-    private static List<Package> unfinishedPackages;
+    private List<Package> unfinishedPackages;
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
@@ -32,6 +33,7 @@ public class Amazon {
         upsServer = new ServerForUps();
         seqnum = 0;
         whs = new ArrayList<>();
+        unfinishedPackages = new ArrayList<>();
     }
 
     public void startWorldRecver() {
@@ -40,10 +42,10 @@ public class Amazon {
             @Override
             public void run() {
                 while(true) {
-                    AResponses res = WorldCtrler.RecvOneRspsFromWorld(worldRecver, worldSender);
+                    AResponses res = worldCtrler.RecvOneRspsFromWorld(worldRecver, worldSender);
                     // use threadpool to handle the message from world
                     threadPool.execute(() -> {
-                        worldCtrler.processWorldMsgs(res);
+                        processWorldMsgs(res);
                     });
                 }
             }
@@ -61,8 +63,8 @@ public class Amazon {
                         Socket clientSocket = serverSocket.accept(); 
                         // use threadpool to handle the message from ups
                         threadPool.execute(() -> {
-                            UACommands cmds = ServerForUps.recvOneCmdsFromUps(clientSocket);
-                            upsServer.processUpsMsgs(cmds);
+                            UACommands cmds = upsServer.recvOneCmdsFromUps(clientSocket);
+                            processUpsMsgs(cmds);
                         });
                     }
                 } catch (IOException e) {
@@ -101,7 +103,7 @@ public class Amazon {
             try{
                 // only for test
                 System.out.println("try to connect to world");
-                Socket worldSocket = WorldCtrler.connectToworldWithoudID(whs);
+                Socket worldSocket = worldCtrler.connectToworldWithoudID(whs);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();
@@ -117,16 +119,10 @@ public class Amazon {
         }
     }
 
-    
-
-    public long getSeqnum() {
+    public static long getSeqnum() {
         long tmp = seqnum;
         seqnum++;
         return tmp;
-    }
-
-    public static List<Package> getPackages() {
-        return unfinishedPackages;
     }
 
     public InputStream getWorldRecver() {
@@ -149,13 +145,170 @@ public class Amazon {
         whs.add(wh4);
     }
 
-    // 1. setup server, waiting for frontend
-    // 2. receive order from frontend
-    // 3. according to the products, determine which warehouse should be used  
-    // 4. send topack to world, and send need a truck to UPS
-    // 5. waiting until receive packed and truck arrived
-    // 6. send load to world
-    // 7. waiting until receive loaded
-    // 8. send truck can go to UPS
-    // 9. waiting until receive delivered, then change the status of order to delivered
+    // Below are the methods to process the responses from the world
+    // The responses include: APurchaseMore, APacked, ALoaded, AErr, APackage
+    // processWorldMsgs is the main method to process the responses
+    // processArrived, processReady, processLoaded, processErr, processPackageStatus 
+    // are the helper methods to process the responses
+
+    public void processWorldMsgs(AResponses reps) {
+        for (APurchaseMore arrived : reps.getArrivedList()) {
+            processArrived(arrived);
+        }
+        for (APacked ready : reps.getReadyList()) {
+            processReady(ready);
+        }
+        for (ALoaded loaded : reps.getLoadedList()) {
+            processLoaded(loaded);
+        }
+        for (AErr err : reps.getErrorList()) {
+            processErr(err);
+        }
+        for (APackage packageStatus : reps.getPackagestatusList()) {
+            processPackageStatus(packageStatus);
+        }
+    }
+
+    private void processArrived(APurchaseMore arrived) {
+        synchronized (unfinishedPackages) {
+            for(Package p: unfinishedPackages){
+                if(p.getWh().getId() == arrived.getWhnum() && p.getProducts() == arrived.getThingsList()){
+                    System.out.println("Arrived: " + arrived.toString());
+                    sendToPack(p);
+                    // tell UPS to send a truck
+                    // TODO: tell UPS to send a truck
+                    break;
+                }
+            }
+        }
+    }
+
+    private void processReady(APacked ready) {
+        // if the truck has arrived, send load to world
+        // 1. get the package
+        synchronized (unfinishedPackages) {
+            for(Package p: unfinishedPackages){
+                if(p.getPackageID() == ready.getShipid()){
+                    sendToLoad(p);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void processLoaded(ALoaded loaded) {
+        // 1. get the package
+        synchronized (unfinishedPackages) {
+            Package target = null;
+            for(Package p: unfinishedPackages){
+                if(p.getPackageID() == loaded.getShipid()){
+                    target = p;
+                    break;
+                }
+            }
+            // 2. TODO: send toDeliver to UPS
+        }
+    }
+
+    private void processErr(AErr err) {
+        System.out.println("Error: " + err.toString());
+    }
+
+    private void processPackageStatus(APackage packageStatus) {
+        System.out.println("Package status: " + packageStatus.toString());
+    }
+
+    // Methods processing the responses from the world over
+
+    // Below are the methods to send commands to the world
+
+    public void sendToPack(Package pkg){
+        int whnum = pkg.getWh().getId();
+        List<AProduct> things = pkg.getProducts();
+        long shipid = pkg.getPackageID();
+        long seqnum = Amazon.getSeqnum();
+        WorldMsger msger = new WorldMsger();
+        msger.pack(whnum, things, shipid, seqnum);
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(seqnum);
+        try {
+            worldCtrler.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendToLoad(Package pkg){
+        int whnum = pkg.getWh().getId();
+        int truckid = pkg.getTruckID();
+        long shipid = pkg.getPackageID();
+        long seqnum = Amazon.getSeqnum();
+        WorldMsger msger = new WorldMsger();
+        msger.load(whnum, truckid, shipid, seqnum);
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(seqnum);
+        try {
+            worldCtrler.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+        } catch (UnknownHostException e) {
+            // TODO: how to solve this exception?
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO: how to solve this exception?
+            e.printStackTrace();
+        }
+    }
+
+    // Methods sending commands to the world over
+
+    // Below are the methods to process the commands from UPS
+
+    public void processUpsMsgs(UACommands cmds) {
+        for(UATruckArrived cmd : cmds.getArrivedList()) {
+            processArrived(cmd);
+        }
+        for(UADelivered cmd : cmds.getDeliveredList()) {
+            processDelivered(cmd);
+        }
+        for(Err err : cmds.getErrorsList()) {
+            processErrors(err);
+        }
+    }
+
+    private void processArrived(UATruckArrived arrived) {
+        int truckID = arrived.getTruckid();
+        synchronized(unfinishedPackages) {
+            for(Package p : unfinishedPackages) {
+                if(p.getPackageID() == arrived.getPackageid()){
+                    p.setTruckID(truckID);
+                    // if this package is packed, tell world to load
+                    if(p.getStatus() == "PACKED"){
+                        sendToLoad(p);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private void processDelivered(UADelivered delivered) {
+        synchronized(unfinishedPackages) {
+            for(Package p : unfinishedPackages) {
+                if(p.getPackageID() == delivered.getPackageid()){
+                    p.setStatus("DELIVERED");
+                    unfinishedPackages.remove(p);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void processErrors(Err err) {
+        System.out.println("UPS error: " + err.getMsg());
+    }
+
+    // Methods processing the commands from UPS over
+
+
 }
