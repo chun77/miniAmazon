@@ -15,6 +15,7 @@ import backend.protocol.AmazonUps.UATruckArrived;
 import backend.protocol.AmazonUps.Pack;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.DBCtrler;
+import backend.utils.Sender;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
@@ -30,6 +31,7 @@ public class Amazon {
     private static long seqnum;
     private final List<WareHouse> whs;
     private List<Package> unfinishedPackages;
+    private Map<Long, Timer> unackedMsgsTimer;
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
@@ -43,6 +45,7 @@ public class Amazon {
         seqnum = 0;
         whs = new ArrayList<>();
         unfinishedPackages = new ArrayList<>();
+        unackedMsgsTimer = new HashMap<>();
     }
 
     public void startWorldRecver() {
@@ -179,6 +182,13 @@ public class Amazon {
         for (AErr err : reps.getErrorList()) {
             processErr(err);
         }
+        for (Long ack : reps.getAcksList()) {
+            Timer timer = unackedMsgsTimer.get(ack);
+            if (timer != null) {
+                timer.cancel();
+                unackedMsgsTimer.remove(ack);
+            }
+        }
         for (APackage packageStatus : reps.getPackagestatusList()) {
             processPackageStatus(packageStatus);
         }
@@ -242,16 +252,45 @@ public class Amazon {
 
     // Below are the methods to send commands to the world
 
+    public void sendOneCmdsToWorld(ACommands cmds, Long seqnum, OutputStream out) throws UnknownHostException, IOException {
+        // send commands to the world
+        // use Timer, if no acks received in 5 seconds, resend the commands
+        Timer timer = new Timer();
+        unackedMsgsTimer.put(seqnum, timer);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (out) {
+                    Sender.sendMsgTo(cmds, out);
+                }
+            }
+        }, 5000);
+        // // receive the response from the world
+        // AResponses.Builder responsesB = AResponses.newBuilder();
+        // synchronized (in) {
+        //     Recver.recvMsgFrom(responsesB, in);
+        // }
+        // AResponses responses = responsesB.build();
+        // // check if the received acks match the seqnums
+        // if (checkAcks(responses, seqnums)) {
+        //     System.out.println("Received acks match the seqnums.");
+        // } else {
+        //     System.out.println("Received acks do not match the seqnums. Resending commands...");
+        //     // resend the commands
+        //     synchronized (out) {
+        //         Sender.sendMsgTo(cmds, out);
+        //     }
+        // }
+    }
+
     public void sendToPurchase(Package pkg){
         int whnum = pkg.getWh().getId();
         List<AProduct> things = pkg.getProducts();
         long seqnum = getSeqnum();
         WorldMsger msger = new WorldMsger();
         msger.purchaseMore(whnum, things, seqnum);
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(seqnum);
         try {
-            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+            sendOneCmdsToWorld(msger.getCommands(), seqnum, worldSender);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -266,10 +305,8 @@ public class Amazon {
         long seqnum = getSeqnum();
         WorldMsger msger = new WorldMsger();
         msger.pack(whnum, things, shipid, seqnum);
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(seqnum);
         try {
-            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+            sendOneCmdsToWorld(msger.getCommands(), seqnum, worldSender);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -284,10 +321,8 @@ public class Amazon {
         long seqnum = Amazon.getSeqnum();
         WorldMsger msger = new WorldMsger();
         msger.load(whnum, truckid, shipid, seqnum);
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(seqnum);
         try {
-            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+            sendOneCmdsToWorld(msger.getCommands(), seqnum, worldSender);
         } catch (UnknownHostException e) {
             // TODO: how to solve this exception?
             e.printStackTrace();
@@ -350,6 +385,25 @@ public class Amazon {
 
     // Below are the methods to send commands to UPS
 
+    public void sendOneCmdsToUps(AUCommands cmds, Long seqnums) {
+        // send commands to UPS
+        // use Timer, if no acks received in 5 seconds, resend the commands
+        Timer timer = new Timer();
+        unackedMsgsTimer.put(seqnums, timer);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try (Socket socket = new Socket("ups_ip", 9998)) {
+                    OutputStream out = socket.getOutputStream();
+                    Sender.sendMsgTo(cmds, out);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 5000);
+        
+    }
+
     public void sendNeedATruck(Package pkg){
         int wh_x = pkg.getWh().getLocation().getXLocation();
         int wh_y = pkg.getWh().getLocation().getYLocation();
@@ -365,9 +419,7 @@ public class Amazon {
         Pack pack = Pack.newBuilder().setWhnum(whnum).addAllThings(products).setPackageid(package_id).setTrackingid(tracking_id).build();
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setWhX(wh_x).setWhY(wh_y).setDestX(dest_x).setDestY(dest_y).setPack(pack).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(seqnum);
-        upsComm.sendOneCmds(cmds.build(), seqnums);
+        sendOneCmdsToUps(cmds.build(), seqnum);
     }
 
     public void sendTruckCanGo(Package pkg) {
@@ -376,10 +428,10 @@ public class Amazon {
         // generate ATruckCanGo
         AUTruckCanGo truckCanGo = AUTruckCanGo.newBuilder().setTruckid(truck_id).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addGo(truckCanGo);
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(seqnum);
-        upsComm.sendOneCmds(cmds.build(), seqnums);
+        sendOneCmdsToUps(cmds.build(), seqnum);
     }
+
+    // Methods sending commands to UPS over
 
 
 }

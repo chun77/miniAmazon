@@ -5,10 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.protobuf.ByteString.Output;
-
 import backend.protocol.AmazonUps.AUCommands;
-import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
 import backend.protocol.AmazonUps.UAInitConnect;
@@ -64,30 +61,5 @@ public class UPSComm {
         }
     }
 
-    public void sendOneCmds(AUCommands cmds, List<Long> seqnums) {
-        try {
-            Socket socket = new Socket("ups_ip", 9998);
-            OutputStream out = socket.getOutputStream();
-            InputStream in = socket.getInputStream();
-            Sender.sendMsgTo(cmds, out);
-            // wait for acks
-            UACommands.Builder acksB = UACommands.newBuilder();
-            Recver.recvMsgFrom(acksB, in);
-            if(checkAcks(acksB.build(), seqnums)) {
-                System.out.println("Received acks from UPS");
-                socket.close();
-            } else {
-                sendOneCmds(cmds, seqnums);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            sendOneCmds(cmds, seqnums);
-        }
-    }
-
-    private boolean checkAcks(UACommands acks, List<Long> seqnums) {
-        List<Long> receivedAcks = acks.getAcksList();
-        return receivedAcks.equals(seqnums);
-    }
     
 }

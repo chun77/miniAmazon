@@ -45,10 +45,8 @@ public class App {
         worldMsger.purchaseMore(1, products, 1);
         worldMsger.setSimSpeed(10000); // only for testing
         ACommands cmds = worldMsger.getCommands();
-        List<Long> seqnums = new ArrayList<>();
-        seqnums.add(1L);
         try {
-            worldCtrler.sendOneCmds(cmds, seqnums, worldRecver, worldSender);
+            amazon.sendOneCmdsToWorld(cmds, 1L, worldSender);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

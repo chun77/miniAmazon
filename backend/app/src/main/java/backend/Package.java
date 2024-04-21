@@ -1,7 +1,6 @@
 package backend;
 
 import java.util.List;
-import java.util.Map;
 
 import backend.protocol.WorldAmazon.AProduct;
 

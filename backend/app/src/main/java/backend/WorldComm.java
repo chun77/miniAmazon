@@ -53,34 +53,6 @@ public class WorldComm {
         }
     }
 
-    public void sendOneCmds(ACommands cmds, List<Long> seqnums, InputStream in, OutputStream out) throws UnknownHostException, IOException {
-        // send commands to the world
-        synchronized (out) {
-            Sender.sendMsgTo(cmds, out);
-        }
-        // receive the response from the world
-        AResponses.Builder responsesB = AResponses.newBuilder();
-        synchronized (in) {
-            Recver.recvMsgFrom(responsesB, in);
-        }
-        AResponses responses = responsesB.build();
-        // check if the received acks match the seqnums
-        if (checkAcks(responses, seqnums)) {
-            System.out.println("Received acks match the seqnums.");
-        } else {
-            System.out.println("Received acks do not match the seqnums. Resending commands...");
-            // resend the commands
-            synchronized (out) {
-                Sender.sendMsgTo(cmds, out);
-            }
-        }
-    }
-
-    private boolean checkAcks(AResponses responses, List<Long> seqnums) {
-        List<Long> receivedAcks = responses.getAcksList();
-        return receivedAcks.equals(seqnums);
-    }
-
     public AResponses RecvOneRspsFromWorld(InputStream in, OutputStream out){
         // receive the response from the world
         try {
