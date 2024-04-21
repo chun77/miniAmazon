@@ -16,7 +16,7 @@ public class App {
 
     public static void main(String[] args) {
         Amazon amazon = new Amazon();
-        WorldCtrler worldCtrler = new WorldCtrler();
+        WorldComm worldCtrler = new WorldComm();
         amazon.initialize();
         InputStream worldRecver = amazon.getWorldRecver();
         OutputStream worldSender = amazon.getWorldSender();

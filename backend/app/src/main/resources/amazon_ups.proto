@@ -1,18 +1,13 @@
 syntax = "proto2";
 
-message AProduct{
-  required int64 id = 1;
-  required string description = 2;
-  required int32 count = 3;
-}
+import "world_amazon.proto";
 
-message APack{
+message Pack{
   required int32 whnum = 1;
   repeated AProduct things = 2;
   required int64 packageid = 3;
-  required int64 seqnum = 4;
-  required int64 trackingid = 5;
-  optional int32 upsaccount = 6;
+  required int64 trackingid = 4;
+  optional int32 upsaccount = 5;
 }
 
 message UAInitConnect{
@@ -27,7 +22,7 @@ message AUConfirmConnect{
 message AUNeedATruck{
   required int32 wh_x = 1;
   required int32 wh_y = 2;
-  required APack pack = 3;
+  required Pack pack = 3;
   required int32 dest_x = 4;
   required int32 dest_y = 5;
   required int64 seqnum = 6;

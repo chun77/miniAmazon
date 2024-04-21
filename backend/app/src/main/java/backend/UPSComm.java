@@ -16,7 +16,7 @@ import backend.protocol.AmazonUps.UATruckArrived;
 import backend.utils.Recver;
 import backend.utils.Sender;
 
-public class ServerForUps {
+public class UPSComm {
     public long recvWorldID() {
         try (ServerSocket serverSocket = new ServerSocket(9999);) {
             Socket clientSocket = serverSocket.accept(); 
@@ -64,6 +64,30 @@ public class ServerForUps {
         }
     }
 
-    
+    public void sendOneCmds(AUCommands cmds, List<Long> seqnums) {
+        try {
+            Socket socket = new Socket("ups_ip", 9998);
+            OutputStream out = socket.getOutputStream();
+            InputStream in = socket.getInputStream();
+            Sender.sendMsgTo(cmds, out);
+            // wait for acks
+            UACommands.Builder acksB = UACommands.newBuilder();
+            Recver.recvMsgFrom(acksB, in);
+            if(checkAcks(acksB.build(), seqnums)) {
+                System.out.println("Received acks from UPS");
+                socket.close();
+            } else {
+                sendOneCmds(cmds, seqnums);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            sendOneCmds(cmds, seqnums);
+        }
+    }
+
+    private boolean checkAcks(UACommands acks, List<Long> seqnums) {
+        List<Long> receivedAcks = acks.getAcksList();
+        return receivedAcks.equals(seqnums);
+    }
     
 }

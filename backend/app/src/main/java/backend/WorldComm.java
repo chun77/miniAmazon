@@ -8,7 +8,7 @@ import backend.protocol.WorldAmazon.*;
 import backend.utils.Recver;
 import backend.utils.Sender;
 
-public class WorldCtrler {
+public class WorldComm {
 
     public Socket connectToworldWithoudID(List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connectWithoutID(whs);

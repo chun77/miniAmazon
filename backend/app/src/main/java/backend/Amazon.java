@@ -5,11 +5,15 @@ import java.util.concurrent.*;
 import java.io.*;
 import java.net.*;
 
+import backend.protocol.AmazonUps.AUCommands;
+import backend.protocol.AmazonUps.AUNeedATruck;
 import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
 import backend.protocol.AmazonUps.UATruckArrived;
+import backend.protocol.AmazonUps.Pack;
 import backend.protocol.WorldAmazon.*;
+import backend.utils.DBCtrler;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
@@ -17,8 +21,10 @@ public class Amazon {
     private static final int THREAD_POOL_SIZE = 10;
 
     private ExecutorService threadPool;
-    private WorldCtrler worldCtrler;
-    private ServerForUps upsServer;
+    private WorldComm worldComm;
+    private UPSComm upsComm;
+    private FrontendComm frontendComm;
+    private DBCtrler dbCtrler;
 
     private static long seqnum;
     private final List<WareHouse> whs;
@@ -29,8 +35,10 @@ public class Amazon {
 
     public Amazon() {
         threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        worldCtrler = new WorldCtrler();
-        upsServer = new ServerForUps();
+        worldComm = new WorldComm();
+        upsComm = new UPSComm();
+        frontendComm = new FrontendComm();
+        dbCtrler = new DBCtrler();
         seqnum = 0;
         whs = new ArrayList<>();
         unfinishedPackages = new ArrayList<>();
@@ -42,7 +50,7 @@ public class Amazon {
             @Override
             public void run() {
                 while(true) {
-                    AResponses res = worldCtrler.RecvOneRspsFromWorld(worldRecver, worldSender);
+                    AResponses res = worldComm.RecvOneRspsFromWorld(worldRecver, worldSender);
                     // use threadpool to handle the message from world
                     threadPool.execute(() -> {
                         processWorldMsgs(res);
@@ -63,7 +71,7 @@ public class Amazon {
                         Socket clientSocket = serverSocket.accept(); 
                         // use threadpool to handle the message from ups
                         threadPool.execute(() -> {
-                            UACommands cmds = upsServer.recvOneCmdsFromUps(clientSocket);
+                            UACommands cmds = upsComm.recvOneCmdsFromUps(clientSocket);
                             processUpsMsgs(cmds);
                         });
                     }
@@ -85,7 +93,13 @@ public class Amazon {
                         Socket clientSocket = serverSocket.accept(); 
                         // use threadpool to handle the message from frontend
                         threadPool.execute(() -> {
-                            ServerForFrontend.processFrontendMsgs(clientSocket);
+                            long package_id = frontendComm.recvOneOrderFromFrontend(clientSocket);
+                            Package pkg = dbCtrler.getPackageByID(package_id);
+                            synchronized (unfinishedPackages) {
+                                unfinishedPackages.add(pkg);
+                            }
+                            // send to world to purchase more
+                            sendToPurchase(pkg);
                         });
                     }
                 } catch (IOException e) {
@@ -98,12 +112,12 @@ public class Amazon {
 
     public void initialize() {
         initializeWHs();
-        //long worldIDFromUps = upsServer.recvWorldID();
+        //long worldIDFromUps = upsComm.recvWorldID();
         while(true) {
             try{
                 // only for test
                 System.out.println("try to connect to world");
-                Socket worldSocket = worldCtrler.connectToworldWithoudID(whs);
+                Socket worldSocket = worldComm.connectToworldWithoudID(whs);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();
@@ -222,17 +236,34 @@ public class Amazon {
 
     // Below are the methods to send commands to the world
 
+    public void sendToPurchase(Package pkg){
+        int whnum = pkg.getWh().getId();
+        List<AProduct> things = pkg.getProducts();
+        long seqnum = getSeqnum();
+        WorldMsger msger = new WorldMsger();
+        msger.purchaseMore(whnum, things, seqnum);
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(seqnum);
+        try {
+            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendToPack(Package pkg){
         int whnum = pkg.getWh().getId();
         List<AProduct> things = pkg.getProducts();
         long shipid = pkg.getPackageID();
-        long seqnum = Amazon.getSeqnum();
+        long seqnum = getSeqnum();
         WorldMsger msger = new WorldMsger();
         msger.pack(whnum, things, shipid, seqnum);
         List<Long> seqnums = new ArrayList<>();
         seqnums.add(seqnum);
         try {
-            worldCtrler.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -250,7 +281,7 @@ public class Amazon {
         List<Long> seqnums = new ArrayList<>();
         seqnums.add(seqnum);
         try {
-            worldCtrler.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
+            worldComm.sendOneCmds(msger.getCommands(), seqnums, worldRecver, worldSender);
         } catch (UnknownHostException e) {
             // TODO: how to solve this exception?
             e.printStackTrace();
@@ -309,6 +340,28 @@ public class Amazon {
     }
 
     // Methods processing the commands from UPS over
+
+    // Below are the methods to send commands to UPS
+
+    public void sendNeedATruck(Package pkg){
+        int wh_x = pkg.getWh().getLocation().getXLocation();
+        int wh_y = pkg.getWh().getLocation().getYLocation();
+        int dest_x = pkg.getDest().getXLocation();
+        int dest_y = pkg.getDest().getYLocation();
+        long seqnum = getSeqnum();
+        // generate List<AProduct> products
+        List<AProduct> products = pkg.getProducts();
+        // generate APack
+        int whnum = pkg.getWh().getId();
+        long package_id = pkg.getPackageID();
+        long tracking_id = pkg.getTrackingID();
+        Pack pack = Pack.newBuilder().setWhnum(whnum).addAllThings(products).setPackageid(package_id).setTrackingid(tracking_id).build();
+        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setWhX(wh_x).setWhY(wh_y).setDestX(dest_x).setDestY(dest_y).setPack(pack).build();
+        AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(seqnum);
+        upsComm.sendOneCmds(cmds.build(), seqnums);
+    }
 
 
 }

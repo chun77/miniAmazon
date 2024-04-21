@@ -7,15 +7,15 @@ public class Order {
     private String AMZaccount;
     private String UPSaccount;
     private String trackingID;
-    private String packageID;
+    private long packageID;
     private List<Map<String, Integer>> products;
     private Location shipAddr;
     
-    public Order(String AMZaccount, String trackingID, String packageID, List<Map<String, Integer>> products, Location shipAddr) {
+    public Order(String AMZaccount, String trackingID, long packageID, List<Map<String, Integer>> products, Location shipAddr) {
         this(AMZaccount, null, trackingID, packageID, products, shipAddr);
     }
 
-    public Order(String AMZaccount, String UPSaccount, String trackingID, String packageID, List<Map<String, Integer>> products, Location shipAddr) {
+    public Order(String AMZaccount, String UPSaccount, String trackingID, long packageID, List<Map<String, Integer>> products, Location shipAddr) {
         this.AMZaccount = AMZaccount;
         this.UPSaccount = UPSaccount;
         this.trackingID = trackingID;
@@ -36,7 +36,7 @@ public class Order {
         return trackingID;
     }
 
-    public String getPackageID() {
+    public long getPackageID() {
         return packageID;
     }
 
@@ -60,7 +60,7 @@ public class Order {
         this.trackingID = trackingID;
     }
 
-    public void setPackageID(String packageID) {
+    public void setPackageID(long packageID) {
         this.packageID = packageID;
     }
 
