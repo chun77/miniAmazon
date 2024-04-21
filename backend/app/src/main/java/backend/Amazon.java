@@ -7,6 +7,7 @@ import java.net.*;
 
 import backend.protocol.AmazonUps.AUCommands;
 import backend.protocol.AmazonUps.AUNeedATruck;
+import backend.protocol.AmazonUps.AUTruckCanGo;
 import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
@@ -187,10 +188,9 @@ public class Amazon {
         synchronized (unfinishedPackages) {
             for(Package p: unfinishedPackages){
                 if(p.getWh().getId() == arrived.getWhnum() && p.getProducts() == arrived.getThingsList()){
-                    System.out.println("Arrived: " + arrived.toString());
+                    p.setStatus("PACKING");
                     sendToPack(p);
-                    // tell UPS to send a truck
-                    // TODO: tell UPS to send a truck
+                    sendNeedATruck(p);
                     break;
                 }
             }
@@ -203,7 +203,13 @@ public class Amazon {
         synchronized (unfinishedPackages) {
             for(Package p: unfinishedPackages){
                 if(p.getPackageID() == ready.getShipid()){
-                    sendToLoad(p);
+                    // set status to PACKED
+                    p.setStatus("PACKED");
+                    // if the truck has arrived, send load to world
+                    if(p.getTruckID() != -1){
+                        p.setStatus("LOADING");
+                        sendToLoad(p);
+                    }
                     break;
                 }
             }
@@ -213,14 +219,14 @@ public class Amazon {
     private void processLoaded(ALoaded loaded) {
         // 1. get the package
         synchronized (unfinishedPackages) {
-            Package target = null;
             for(Package p: unfinishedPackages){
                 if(p.getPackageID() == loaded.getShipid()){
-                    target = p;
+                    p.setStatus("LOADED");
+                    sendTruckCanGo(p);
+                    p.setStatus("DELIVERING");
                     break;
                 }
             }
-            // 2. TODO: send toDeliver to UPS
         }
     }
 
@@ -315,6 +321,7 @@ public class Amazon {
                     p.setTruckID(truckID);
                     // if this package is packed, tell world to load
                     if(p.getStatus() == "PACKED"){
+                        p.setStatus("LOADING");
                         sendToLoad(p);
                     }
                     break;
@@ -358,6 +365,17 @@ public class Amazon {
         Pack pack = Pack.newBuilder().setWhnum(whnum).addAllThings(products).setPackageid(package_id).setTrackingid(tracking_id).build();
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setWhX(wh_x).setWhY(wh_y).setDestX(dest_x).setDestY(dest_y).setPack(pack).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
+        List<Long> seqnums = new ArrayList<>();
+        seqnums.add(seqnum);
+        upsComm.sendOneCmds(cmds.build(), seqnums);
+    }
+
+    public void sendTruckCanGo(Package pkg) {
+        int truck_id = pkg.getTruckID();
+        long seqnum = getSeqnum();
+        // generate ATruckCanGo
+        AUTruckCanGo truckCanGo = AUTruckCanGo.newBuilder().setTruckid(truck_id).setSeqnum(seqnum).build();
+        AUCommands.Builder cmds = AUCommands.newBuilder().addGo(truckCanGo);
         List<Long> seqnums = new ArrayList<>();
         seqnums.add(seqnum);
         upsComm.sendOneCmds(cmds.build(), seqnums);

@@ -28,4 +28,31 @@ public class Sender {
             return false;
         }
     }
+
+    // public static <T extends GeneratedMessageV3> boolean sendMessage(T message, OutputStream outputStream) {
+    //     try {
+    //         byte[] data = message.toByteArray();
+    //         CodedOutputStream codedOutputStream = CodedOutputStream.newInstance(outputStream);
+    //         writeMessageLength(codedOutputStream, data.length);
+    //         writeMessageData(codedOutputStream, data);
+    //         codedOutputStream.flush();
+    //         return true;
+    //     } catch (IOException e) {
+    //         logError("Failed to send message", e);
+    //         return false;
+    //     }
+    // }
+    
+    // private static void writeMessageLength(CodedOutputStream outputStream, int length) throws IOException {
+    //     outputStream.writeUInt32NoTag(length);
+    // }
+    
+    // private static void writeMessageData(CodedOutputStream outputStream, byte[] data) throws IOException {
+    //     outputStream.writeRawBytes(data);
+    // }
+    
+    // private static void logError(String message, IOException exception) {
+    //     System.err.println(message + ": " + exception.toString());
+    // }
+    
 }
