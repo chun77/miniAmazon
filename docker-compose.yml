@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  daemon:
+    build: ./backend
+    command: bash -c "./gradlew run"
+    ports:
+      - "9999:9999" # port for UPS
+      - "8888:8888" # port for web
+volumes:
+   data-volume: 

@@ -118,13 +118,13 @@ public class Amazon {
 
     public void initialize() {
         initializeWHs();
-        //long worldIDFromUps = upsComm.recvWorldID();
+        long worldIDFromUps = upsComm.recvWorldID();
         while(true) {
             try{
                 // only for test
-                System.out.println("try to connect to world");
-                Socket worldSocket = worldComm.connectToworldWithoudID(whs);
-                //Socket worldSocket = worldComm.connectToWorld(worldIDFromUps, worldIDFromUps);
+                System.out.println("try to connect to world" + worldIDFromUps);
+                //Socket worldSocket = worldComm.connectToworldWithoudID(whs);
+                Socket worldSocket = worldComm.connectToWorld(worldIDFromUps, whs);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();
