@@ -11,8 +11,9 @@ message Pack{
   repeated Product things = 2;
   required string trackingid = 4;
   optional int32 upsaccount = 5;
-  required int32 dest_x = 6;
-  required int32 dest_y = 7;
+  required int32 amazonaccount = 6;
+  required int32 dest_x = 7;
+  required int32 dest_y = 8;
 }
 
 message UAInitConnect{

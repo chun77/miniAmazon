@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import backend.protocol.AmazonUps.AUCommands;
+import backend.protocol.AmazonUps.AUConfirmConnect;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
 import backend.protocol.AmazonUps.UAInitConnect;
@@ -21,10 +22,18 @@ public class UPSComm {
             UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
             Recver.recvMsgFrom(msgB, in);
             long worldID = msgB.getWorldid();
+            sendBackConnected(worldID, clientSocket.getOutputStream());
             return worldID;
         } catch (IOException e) {
             return recvWorldID();
         }
+    }
+
+    public void sendBackConnected(long worldID, OutputStream out) {
+        AUConfirmConnect.Builder msg = AUConfirmConnect.newBuilder();
+        msg.setWorldid(worldID);
+        msg.setConnected(true);
+        Sender.sendMsgTo(msg.build(), out);
     }
 
     public UACommands recvOneCmdsFromUps(Socket clientSocket){

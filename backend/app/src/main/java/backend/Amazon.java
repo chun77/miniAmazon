@@ -124,6 +124,7 @@ public class Amazon {
                 // only for test
                 System.out.println("try to connect to world");
                 Socket worldSocket = worldComm.connectToworldWithoudID(whs);
+                //Socket worldSocket = worldComm.connectToWorld(worldIDFromUps, worldIDFromUps);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();
