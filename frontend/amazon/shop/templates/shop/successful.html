@@ -6,11 +6,10 @@
     <div class="alert alert-success" role="alert">
         Order placed successfully!
     </div>
-    Order ID: {{ order.id }}
-    Product Name: {{ order.product.name }}
-    Quantity: {{ order.quantity }}
-    Tracking ID: {{ tracking_id }}
-    <!-- Total Price: {{ order.total_price }} -->
+    Order ID: {{ order.package_id }}
+    <!-- Product Name: {{ order.product.name }}
+    Quantity: {{ order.quantity }} -->
+    Tracking ID: {{ order.tracking_id }}
                 
 </div>
 {% endblock content %}

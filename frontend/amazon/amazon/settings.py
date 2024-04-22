@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=&k!^8lxxqqqbyx#7*ny2a85cxyezps^qkb_#5jbr%q@a8(0t0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vcm-38363.vm.duke.edu','localhost']
+ALLOWED_HOSTS = ['vcm-38363.vm.duke.edu','localhost','0.0.0.0']
 
 
 # Application definition
@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'amazon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'AmazonDB',
-        'USER': 'zw297',
-        'PASSWORD': 'password',
+        'NAME': 'amazondb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

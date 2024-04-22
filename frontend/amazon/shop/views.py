@@ -1,26 +1,77 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Order
+from .models import *
 import json, socket
+from hashids import Hashids
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+
+# def register(request):
+# 	if request.user.is_authenticated:
+# 		return redirect('catalog')
+# 	else:
+# 		form = CreateUserForm()
+# 		if request.method == 'POST':
+# 			form = CreateUserForm(request.POST)
+# 			if form.is_valid():
+# 				form.save()
+# 				user = form.cleaned_data.get('username')
+# 				messages.success(request, 'Account was created for ' + user)
+
+# 				return redirect('login_view')
+			
+
+# 		context = {'form':form}
+# 		return render(request, 'shop/register.html', context)
+
+
+# def login_view(request):
+# 	if request.user.is_authenticated:
+# 		return redirect('catalog')
+# 	else:
+# 		if request.method == 'POST':
+# 			username = request.POST.get('username')
+# 			password =request.POST.get('password')
+
+# 			user = authenticate(request, username=username, password=password)
+
+# 			if user is not None:
+# 				login(request, user)
+# 				return redirect('catalog')
+# 			else:
+# 				messages.info(request, 'Username OR password is incorrect')
+
+# 		context = {}
+# 		return render(request, 'shop/login.html', context)
+
+# def logout_view(request):
+# 	logout(request)
+# 	return redirect('login_view')
+
 
 # Create your views here.
+# @login_required(login_url='login')
 def main(request):
     context = {}
     return render(request, 'shop/main.html', context)
 
+# @login_required(login_url='login')
 def catalog(request):
     products = Product.objects.all()
     context = {'products': products}
     return render(request, 'shop/catalog.html', context)
 
 # catalog.html onclick passes the product_id to this view
+# @login_required(login_url='login')
 def checkout(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, product_id=product_id)
     context = {'product': product}
     return render(request, 'shop/checkout.html', context)
 
 # checkout.html form submission passes the product_id to this view
+# @login_required(login_url='login')
 def place_order(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, product_id=product_id)
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         address_x = request.POST.get('address_x')
@@ -31,51 +82,51 @@ def place_order(request, product_id):
             context = {'product': product, 'error': 'Please fill all fields correctly.'}
             return render(request, 'shop/checkout.html', context)
 
-        # total_price = product.price * int(quantity)  # Calculate the total price
         order = Order(
-            product=product,
-            quantity=int(quantity),
-            # total_price=total_price,
-            x=int(address_x),
-            y=int(address_y)
+            # tbd: amazonAccount
+            dest_x=int(address_x),
+            dest_y=int(address_y),
         )
         order.save()
 
-        # transfer data to json
-        order_json = {
-            'amazon_account': 'wzc',
-            'product': product.name,
-            'quantity': quantity,
-            'tracking_id': '1234567890',
-            'package_id': order.id,
-            'x': address_x,
-            'y': address_y
-        }
+        # produce tracking_number according to package_id
+        hashids = Hashids(salt = "zw297hg161", min_length = 8);
+        tracking_number = hashids.encode(order.package_id)
+        order.tracking_id = tracking_number
+        order.save()
 
-        order_data_json = json.dumps(order_json)
+        package_product = PackageProduct(
+            product = product,
+            package = order,
+            quantity = quantity
+        )
+        package_product.save()
+
+        # only send package_id
+        package_id_str = str(order.package_id)
 
         # Send the order data to the Amazon server
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # connect to the server
-            s.connect(('localhost', 1234))
+            s.connect(('vcm-37900.vm.duke.edu', 8888))
 
             # send the order data
-            s.sendall(order_data_json.encode('utf-8'))
+            s.sendall(package_id_str.encode('utf-8'))
 
             # receive the response from the server with new tracking id
             response = s.recv(1024).decode('utf-8')
-            response_data = json.loads(response)
-            new_tracking_id = response_data.get('tracking_id')
+            print(response)
 
         # Redirect to the success page
-        return redirect('success', order_id=order.id, tracking_id=new_tracking_id)
+        return redirect('success', order_id=order.package_id)
     else:
         # Return to the checkout page if not a POST request
         return render(request, 'shop/checkout.html', {'product': product})
 
-def success(request, order_id, tracking_id):
-    order = get_object_or_404(Order, id=order_id)
-    context = {'order': order, 'tracking_id': tracking_id}
+# @login_required(login_url='login')
+def success(request, order_id):
+    order = get_object_or_404(Order, package_id=order_id)
+    context = {'order': order}
     return render(request, 'shop/successful.html', context)
 
 

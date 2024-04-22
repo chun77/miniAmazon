@@ -13,7 +13,7 @@
                 <h6><strong>{{product.name}}</strong></h6>
                 <p>{{product.description}}</p>
                 <!-- <h4><strong>{{product.price}}</strong></h4> -->
-                <button class="btn btn-primary add-btn" onclick="location.href='{% url 'checkout' product.id %}'">Buy</button>
+                <button class="btn btn-primary add-btn" onclick="location.href='{% url 'checkout' product.product_id %}'">Buy</button>
             </div>
         </div>
     </div>

@@ -4,7 +4,8 @@
         "pk": 1,
         "fields": {
             "name": "Type C Charger Fast Charging",
-            "description": "2 pack USB C android phone wall charger block & 6ft charge cable cord."
+            "description": "2 pack USB C android phone wall charger block & 6ft charge cable cord.",
+            "price": "0"
         }
     },
     {
@@ -12,7 +13,8 @@
         "pk": 2,
         "fields": {
             "name": "Stanley Water Bottle",
-            "description": "Stanley Quencher H2.0 FlowState Stainless Steel Vacuum Insulated Tumbler with Lid and Straw for Water, Iced Tea or Coffee."
+            "description": "Stanley Quencher H2.0 FlowState Stainless Steel Vacuum Insulated Tumbler with Lid and Straw for Water, Iced Tea or Coffee.",
+            "price": "0"
         }
     },
     {
@@ -20,7 +22,8 @@
         "pk": 3,
         "fields": {
             "name": "Shoes",
-            "description": "Nike Sports Shoes in Black and White for men."
+            "description": "Nike Sports Shoes in Black and White for men.",
+            "price": "0"
         }
     },
     {
@@ -28,7 +31,8 @@
         "pk": 4,
         "fields": {
             "name": "Mini Skirt",
-            "description": "flowery mini skirt in pink color."
+            "description": "flowery mini skirt in pink color.",
+            "price": "0"
         }
     },
     {
@@ -36,87 +40,88 @@
         "pk": 5,
         "fields": {
             "name": "Webcam",
-            "description": "1080P HD Webcam with Microphone, Streaming Computer Web Camera with 110-Degree Wide View Angle, USB PC Webcam for Video Calling Recording Conferencing."
+            "description": "1080P HD Webcam with Microphone, Streaming Computer Web Camera with 110-Degree Wide View Angle, USB PC Webcam for Video Calling Recording Conferencing.",
+            "price": "0"
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 1,
         "fields": {
-            "x": 0,
-            "y": 0
+            "wh_x": 0,
+            "wh_y": 0
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 2,
         "fields": {
-            "x": 0,
-            "y": 10
+            "wh_x": 0,
+            "wh_y": 10
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 3,
         "fields": {
-            "x": 10,
-            "y": 0
+            "wh_x": 10,
+            "wh_y": 0
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 4,
         "fields": {
-            "x": 10,
-            "y": 10
+            "wh_x": 10,
+            "wh_y": 10
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 5,
         "fields": {
-            "x": 20,
-            "y": 10
+            "wh_x": 20,
+            "wh_y": 10
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 6,
         "fields": {
-            "x": 10,
-            "y": 20
+            "wh_x": 10,
+            "wh_y": 20
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 7,
         "fields": {
-            "x": 20,
-            "y": 20
+            "wh_x": 20,
+            "wh_y": 20
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 8,
         "fields": {
-            "x": 30,
-            "y": 20
+            "wh_x": 30,
+            "wh_y": 20
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 9,
         "fields": {
-            "x": 20,
-            "y": 30
+            "wh_x": 20,
+            "wh_y": 30
         }
     },
     {
         "model": "shop.Warehouse",
         "pk": 10,
         "fields": {
-            "x": 30,
-            "y": 30
+            "wh_x": 30,
+            "wh_y": 30
         }
     }
 ]
