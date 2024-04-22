@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <form id="main-form" method="POST" action="{% url 'place_order' product.id %}">
+    <form id="main-form" method="POST" action="{% url 'place_order' product.product_id %}">
         {% csrf_token %}
         <input type="hidden" id="hidden-address-x" name="address_x">
         <input type="hidden" id="hidden-address-y" name="address_y">
