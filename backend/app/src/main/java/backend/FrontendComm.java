@@ -12,8 +12,9 @@ public class FrontendComm {
             byte[] buffer = new byte[1024];
             int len = in.read(buffer);
             String recved = new String(buffer, 0, len).trim();
-            out.write("Order received".getBytes());
             long packageID = Long.parseLong(recved);
+            // send packageID back to frontend
+            out.write(recved.getBytes());
             return packageID;
         } catch (IOException e) {
             e.printStackTrace();

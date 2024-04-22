@@ -21,10 +21,10 @@ public class App {
         InputStream worldRecver = amazon.getWorldRecver();
         OutputStream worldSender = amazon.getWorldSender();
 
-        // set database (only for testing)
-        // DBCtrler.dropTables();
-        // DBCtrler.createTables();
-        // DBCtrler.initializeTables();
+        //set database (only for testing)
+        //DBCtrler.dropTables();
+        //DBCtrler.createTables();
+        //DBCtrler.initializeTables();
 
         // set simspeed
         WorldMsger worldMsger = new WorldMsger();

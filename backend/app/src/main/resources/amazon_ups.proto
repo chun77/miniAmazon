@@ -6,7 +6,7 @@ message Pack{
   required int32 whnum = 1;
   repeated AProduct things = 2;
   required int64 packageid = 3;
-  required int64 trackingid = 4;
+  required string trackingid = 4;
   optional int32 upsaccount = 5;
 }
 
