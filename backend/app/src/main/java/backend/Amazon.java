@@ -427,7 +427,7 @@ public class Amazon {
         // generate APack
         int whnum = pkg.getWh().getId();
         long package_id = pkg.getPackageID();
-        long tracking_id = pkg.getTrackingID();
+        String tracking_id = pkg.getTrackingID();
         Pack pack = Pack.newBuilder().setWhnum(whnum).addAllThings(products).setPackageid(package_id).setTrackingid(tracking_id).build();
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setWhX(wh_x).setWhY(wh_y).setDestX(dest_x).setDestY(dest_y).setPack(pack).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);

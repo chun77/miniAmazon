@@ -6,14 +6,14 @@ import backend.protocol.WorldAmazon.AProduct;
 
 public class Package {
     private long packageID;
-    private long trackingID;
+    private String trackingID;
     private int truckID;
     private Location dest;
     private List<AProduct> products;
     private WareHouse wh;
     private String status;
 
-    public Package(long packageID, long trackingID, int truckID, Location dest, List<AProduct> products, WareHouse wh, String status) {
+    public Package(long packageID, String trackingID, int truckID, Location dest, List<AProduct> products, WareHouse wh, String status) {
         this.packageID = packageID;
         this.trackingID = trackingID;
         this.truckID = truckID;
@@ -27,7 +27,7 @@ public class Package {
         return packageID;
     }
 
-    public long getTrackingID() {
+    public String getTrackingID() {
         return trackingID;
     }
 

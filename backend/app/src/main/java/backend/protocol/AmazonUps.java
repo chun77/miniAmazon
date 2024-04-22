@@ -65,15 +65,21 @@ public final class AmazonUps {
     long getPackageid();
 
     /**
-     * <code>required int64 trackingid = 4;</code>
+     * <code>required string trackingid = 4;</code>
      * @return Whether the trackingid field is set.
      */
     boolean hasTrackingid();
     /**
-     * <code>required int64 trackingid = 4;</code>
+     * <code>required string trackingid = 4;</code>
      * @return The trackingid.
      */
-    long getTrackingid();
+    java.lang.String getTrackingid();
+    /**
+     * <code>required string trackingid = 4;</code>
+     * @return The bytes for trackingid.
+     */
+    com.google.protobuf.ByteString
+        getTrackingidBytes();
 
     /**
      * <code>optional int32 upsaccount = 5;</code>
@@ -100,6 +106,7 @@ public final class AmazonUps {
     }
     private Pack() {
       things_ = java.util.Collections.emptyList();
+      trackingid_ = "";
     }
 
     @java.lang.Override
@@ -152,9 +159,10 @@ public final class AmazonUps {
               packageid_ = input.readInt64();
               break;
             }
-            case 32: {
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              trackingid_ = input.readInt64();
+              trackingid_ = bs;
               break;
             }
             case 40: {
@@ -277,9 +285,9 @@ public final class AmazonUps {
     }
 
     public static final int TRACKINGID_FIELD_NUMBER = 4;
-    private long trackingid_;
+    private volatile java.lang.Object trackingid_;
     /**
-     * <code>required int64 trackingid = 4;</code>
+     * <code>required string trackingid = 4;</code>
      * @return Whether the trackingid field is set.
      */
     @java.lang.Override
@@ -287,12 +295,41 @@ public final class AmazonUps {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>required int64 trackingid = 4;</code>
+     * <code>required string trackingid = 4;</code>
      * @return The trackingid.
      */
     @java.lang.Override
-    public long getTrackingid() {
-      return trackingid_;
+    public java.lang.String getTrackingid() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          trackingid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string trackingid = 4;</code>
+     * @return The bytes for trackingid.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTrackingidBytes() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        trackingid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int UPSACCOUNT_FIELD_NUMBER = 5;
@@ -356,7 +393,7 @@ public final class AmazonUps {
         output.writeInt64(3, packageid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        output.writeInt64(4, trackingid_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, trackingid_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeInt32(5, upsaccount_);
@@ -383,8 +420,7 @@ public final class AmazonUps {
           .computeInt64Size(3, packageid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, trackingid_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, trackingid_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
@@ -419,8 +455,8 @@ public final class AmazonUps {
       }
       if (hasTrackingid() != other.hasTrackingid()) return false;
       if (hasTrackingid()) {
-        if (getTrackingid()
-            != other.getTrackingid()) return false;
+        if (!getTrackingid()
+            .equals(other.getTrackingid())) return false;
       }
       if (hasUpsaccount() != other.hasUpsaccount()) return false;
       if (hasUpsaccount()) {
@@ -453,8 +489,7 @@ public final class AmazonUps {
       }
       if (hasTrackingid()) {
         hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getTrackingid());
+        hash = (53 * hash) + getTrackingid().hashCode();
       }
       if (hasUpsaccount()) {
         hash = (37 * hash) + UPSACCOUNT_FIELD_NUMBER;
@@ -604,7 +639,7 @@ public final class AmazonUps {
         }
         packageid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        trackingid_ = 0L;
+        trackingid_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         upsaccount_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -654,9 +689,9 @@ public final class AmazonUps {
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.trackingid_ = trackingid_;
           to_bitField0_ |= 0x00000004;
         }
+        result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
           result.upsaccount_ = upsaccount_;
           to_bitField0_ |= 0x00000008;
@@ -743,7 +778,9 @@ public final class AmazonUps {
           setPackageid(other.getPackageid());
         }
         if (other.hasTrackingid()) {
-          setTrackingid(other.getTrackingid());
+          bitField0_ |= 0x00000008;
+          trackingid_ = other.trackingid_;
+          onChanged();
         }
         if (other.hasUpsaccount()) {
           setUpsaccount(other.getUpsaccount());
@@ -1110,41 +1147,86 @@ public final class AmazonUps {
         return this;
       }
 
-      private long trackingid_ ;
+      private java.lang.Object trackingid_ = "";
       /**
-       * <code>required int64 trackingid = 4;</code>
+       * <code>required string trackingid = 4;</code>
        * @return Whether the trackingid field is set.
        */
-      @java.lang.Override
       public boolean hasTrackingid() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>required int64 trackingid = 4;</code>
+       * <code>required string trackingid = 4;</code>
        * @return The trackingid.
        */
-      @java.lang.Override
-      public long getTrackingid() {
-        return trackingid_;
+      public java.lang.String getTrackingid() {
+        java.lang.Object ref = trackingid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            trackingid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>required int64 trackingid = 4;</code>
+       * <code>required string trackingid = 4;</code>
+       * @return The bytes for trackingid.
+       */
+      public com.google.protobuf.ByteString
+          getTrackingidBytes() {
+        java.lang.Object ref = trackingid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          trackingid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string trackingid = 4;</code>
        * @param value The trackingid to set.
        * @return This builder for chaining.
        */
-      public Builder setTrackingid(long value) {
-        bitField0_ |= 0x00000008;
+      public Builder setTrackingid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
         trackingid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 trackingid = 4;</code>
+       * <code>required string trackingid = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearTrackingid() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        trackingid_ = 0L;
+        trackingid_ = getDefaultInstance().getTrackingid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackingid = 4;</code>
+       * @param value The bytes for trackingid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackingidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        trackingid_ = value;
         onChanged();
         return this;
       }
@@ -10104,7 +10186,7 @@ public final class AmazonUps {
       "\n\020amazon_ups.proto\032\022world_amazon.proto\"k" +
       "\n\004Pack\022\r\n\005whnum\030\001 \002(\005\022\031\n\006things\030\002 \003(\0132\t." +
       "AProduct\022\021\n\tpackageid\030\003 \002(\003\022\022\n\ntrackingi" +
-      "d\030\004 \002(\003\022\022\n\nupsaccount\030\005 \001(\005\" \n\rUAInitCon" +
+      "d\030\004 \002(\t\022\022\n\nupsaccount\030\005 \001(\005\" \n\rUAInitCon" +
       "nect\022\017\n\007worldid\030\001 \002(\003\"6\n\020AUConfirmConnec" +
       "t\022\017\n\007worldid\030\001 \002(\003\022\021\n\tconnected\030\002 \002(\010\"o\n" +
       "\014AUNeedATruck\022\014\n\004wh_x\030\001 \002(\005\022\014\n\004wh_y\030\002 \002(" +
