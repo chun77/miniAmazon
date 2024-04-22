@@ -8,6 +8,7 @@ import java.util.Map;
 
 import backend.*;
 import backend.Package;
+import backend.protocol.AmazonUps.Product;
 import backend.protocol.WorldAmazon.AProduct;
 
 public class DBCtrler {
@@ -159,7 +160,7 @@ public class DBCtrler {
                     }
                 }
                 // get products in the package
-                List<AProduct> products = new ArrayList<>();
+                List<Product> products = new ArrayList<>();
                 Map<Integer, Integer> productMap = new HashMap<>();
                 sql = "SELECT * FROM shop_packageproduct WHERE package_id = " + packageID + ";";
                 ResultSet rs3 = stmt.executeQuery(sql);
@@ -176,7 +177,7 @@ public class DBCtrler {
                     ResultSet rs4 = stmt.executeQuery(sql);
                     rs4.next();
                     String description = rs4.getString("description");
-                    AProduct product = AProduct.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
+                    Product product = Product.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
                     products.add(product);
                 }
                 // store package into database

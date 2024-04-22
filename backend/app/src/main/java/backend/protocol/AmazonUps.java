@@ -14,55 +14,870 @@ public final class AmazonUps {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface ProductOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Product)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int64 id = 1;</code>
+     * @return Whether the id field is set.
+     */
+    boolean hasId();
+    /**
+     * <code>required int64 id = 1;</code>
+     * @return The id.
+     */
+    long getId();
+
+    /**
+     * <code>required string description = 2;</code>
+     * @return Whether the description field is set.
+     */
+    boolean hasDescription();
+    /**
+     * <code>required string description = 2;</code>
+     * @return The description.
+     */
+    java.lang.String getDescription();
+    /**
+     * <code>required string description = 2;</code>
+     * @return The bytes for description.
+     */
+    com.google.protobuf.ByteString
+        getDescriptionBytes();
+
+    /**
+     * <code>required int32 count = 3;</code>
+     * @return Whether the count field is set.
+     */
+    boolean hasCount();
+    /**
+     * <code>required int32 count = 3;</code>
+     * @return The count.
+     */
+    int getCount();
+  }
+  /**
+   * Protobuf type {@code Product}
+   */
+  public static final class Product extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Product)
+      ProductOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Product.newBuilder() to construct.
+    private Product(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Product() {
+      description_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Product();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Product(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              id_ = input.readInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              description_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              count_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return AmazonUps.internal_static_Product_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return AmazonUps.internal_static_Product_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              AmazonUps.Product.class, AmazonUps.Product.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private long id_;
+    /**
+     * <code>required int64 id = 1;</code>
+     * @return Whether the id field is set.
+     */
+    @java.lang.Override
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required int64 id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public long getId() {
+      return id_;
+    }
+
+    public static final int DESCRIPTION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object description_;
+    /**
+     * <code>required string description = 2;</code>
+     * @return Whether the description field is set.
+     */
+    @java.lang.Override
+    public boolean hasDescription() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required string description = 2;</code>
+     * @return The description.
+     */
+    @java.lang.Override
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          description_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string description = 2;</code>
+     * @return The bytes for description.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COUNT_FIELD_NUMBER = 3;
+    private int count_;
+    /**
+     * <code>required int32 count = 3;</code>
+     * @return Whether the count field is set.
+     */
+    @java.lang.Override
+    public boolean hasCount() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required int32 count = 3;</code>
+     * @return The count.
+     */
+    @java.lang.Override
+    public int getCount() {
+      return count_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDescription()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCount()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt64(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt32(3, count_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, count_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof AmazonUps.Product)) {
+        return super.equals(obj);
+      }
+      AmazonUps.Product other = (AmazonUps.Product) obj;
+
+      if (hasId() != other.hasId()) return false;
+      if (hasId()) {
+        if (getId()
+            != other.getId()) return false;
+      }
+      if (hasDescription() != other.hasDescription()) return false;
+      if (hasDescription()) {
+        if (!getDescription()
+            .equals(other.getDescription())) return false;
+      }
+      if (hasCount() != other.hasCount()) return false;
+      if (hasCount()) {
+        if (getCount()
+            != other.getCount()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasId()) {
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getId());
+      }
+      if (hasDescription()) {
+        hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+        hash = (53 * hash) + getDescription().hashCode();
+      }
+      if (hasCount()) {
+        hash = (37 * hash) + COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getCount();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static AmazonUps.Product parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.Product parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.Product parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.Product parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.Product parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.Product parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.Product parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.Product parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.Product parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static AmazonUps.Product parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.Product parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.Product parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(AmazonUps.Product prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Product}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Product)
+        AmazonUps.ProductOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return AmazonUps.internal_static_Product_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return AmazonUps.internal_static_Product_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                AmazonUps.Product.class, AmazonUps.Product.Builder.class);
+      }
+
+      // Construct using AmazonUps.Product.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        description_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        count_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return AmazonUps.internal_static_Product_descriptor;
+      }
+
+      @java.lang.Override
+      public AmazonUps.Product getDefaultInstanceForType() {
+        return AmazonUps.Product.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public AmazonUps.Product build() {
+        AmazonUps.Product result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public AmazonUps.Product buildPartial() {
+        AmazonUps.Product result = new AmazonUps.Product(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.id_ = id_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.description_ = description_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.count_ = count_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof AmazonUps.Product) {
+          return mergeFrom((AmazonUps.Product)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(AmazonUps.Product other) {
+        if (other == AmazonUps.Product.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (other.hasDescription()) {
+          bitField0_ |= 0x00000002;
+          description_ = other.description_;
+          onChanged();
+        }
+        if (other.hasCount()) {
+          setCount(other.getCount());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          return false;
+        }
+        if (!hasDescription()) {
+          return false;
+        }
+        if (!hasCount()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        AmazonUps.Product parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (AmazonUps.Product) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long id_ ;
+      /**
+       * <code>required int64 id = 1;</code>
+       * @return Whether the id field is set.
+       */
+      @java.lang.Override
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required int64 id = 1;</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <code>required int64 id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(long value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object description_ = "";
+      /**
+       * <code>required string description = 2;</code>
+       * @return Whether the description field is set.
+       */
+      public boolean hasDescription() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required string description = 2;</code>
+       * @return The description.
+       */
+      public java.lang.String getDescription() {
+        java.lang.Object ref = description_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            description_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string description = 2;</code>
+       * @return The bytes for description.
+       */
+      public com.google.protobuf.ByteString
+          getDescriptionBytes() {
+        java.lang.Object ref = description_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          description_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string description = 2;</code>
+       * @param value The description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescription(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        description_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string description = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDescription() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        description_ = getDefaultInstance().getDescription();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string description = 2;</code>
+       * @param value The bytes for description to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDescriptionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        description_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int count_ ;
+      /**
+       * <code>required int32 count = 3;</code>
+       * @return Whether the count field is set.
+       */
+      @java.lang.Override
+      public boolean hasCount() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>required int32 count = 3;</code>
+       * @return The count.
+       */
+      @java.lang.Override
+      public int getCount() {
+        return count_;
+      }
+      /**
+       * <code>required int32 count = 3;</code>
+       * @param value The count to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCount(int value) {
+        bitField0_ |= 0x00000004;
+        count_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 count = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCount() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        count_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Product)
+    }
+
+    // @@protoc_insertion_point(class_scope:Product)
+    private static final AmazonUps.Product DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new AmazonUps.Product();
+    }
+
+    public static AmazonUps.Product getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Product>
+        PARSER = new com.google.protobuf.AbstractParser<Product>() {
+      @java.lang.Override
+      public Product parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Product(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Product> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Product> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public AmazonUps.Product getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface PackOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Pack)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 whnum = 1;</code>
-     * @return Whether the whnum field is set.
+     * <code>required int32 wh_id = 1;</code>
+     * @return Whether the whId field is set.
      */
-    boolean hasWhnum();
+    boolean hasWhId();
     /**
-     * <code>required int32 whnum = 1;</code>
-     * @return The whnum.
+     * <code>required int32 wh_id = 1;</code>
+     * @return The whId.
      */
-    int getWhnum();
+    int getWhId();
 
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
-    java.util.List<WorldAmazon.AProduct> 
+    java.util.List<AmazonUps.Product> 
         getThingsList();
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
-    WorldAmazon.AProduct getThings(int index);
+    AmazonUps.Product getThings(int index);
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     int getThingsCount();
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
-    java.util.List<? extends WorldAmazon.AProductOrBuilder> 
+    java.util.List<? extends AmazonUps.ProductOrBuilder> 
         getThingsOrBuilderList();
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
-    WorldAmazon.AProductOrBuilder getThingsOrBuilder(
+    AmazonUps.ProductOrBuilder getThingsOrBuilder(
         int index);
-
-    /**
-     * <code>required int64 packageid = 3;</code>
-     * @return Whether the packageid field is set.
-     */
-    boolean hasPackageid();
-    /**
-     * <code>required int64 packageid = 3;</code>
-     * @return The packageid.
-     */
-    long getPackageid();
 
     /**
      * <code>required string trackingid = 4;</code>
@@ -91,6 +906,28 @@ public final class AmazonUps {
      * @return The upsaccount.
      */
     int getUpsaccount();
+
+    /**
+     * <code>required int32 dest_x = 6;</code>
+     * @return Whether the destX field is set.
+     */
+    boolean hasDestX();
+    /**
+     * <code>required int32 dest_x = 6;</code>
+     * @return The destX.
+     */
+    int getDestX();
+
+    /**
+     * <code>required int32 dest_y = 7;</code>
+     * @return Whether the destY field is set.
+     */
+    boolean hasDestY();
+    /**
+     * <code>required int32 dest_y = 7;</code>
+     * @return The destY.
+     */
+    int getDestY();
   }
   /**
    * Protobuf type {@code Pack}
@@ -142,32 +979,37 @@ public final class AmazonUps {
               break;
             case 8: {
               bitField0_ |= 0x00000001;
-              whnum_ = input.readInt32();
+              whId_ = input.readInt32();
               break;
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                things_ = new java.util.ArrayList<WorldAmazon.AProduct>();
+                things_ = new java.util.ArrayList<AmazonUps.Product>();
                 mutable_bitField0_ |= 0x00000002;
               }
               things_.add(
-                  input.readMessage(WorldAmazon.AProduct.PARSER, extensionRegistry));
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000002;
-              packageid_ = input.readInt64();
+                  input.readMessage(AmazonUps.Product.PARSER, extensionRegistry));
               break;
             }
             case 34: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000002;
               trackingid_ = bs;
               break;
             }
             case 40: {
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000004;
               upsaccount_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000008;
+              destX_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000010;
+              destY_ = input.readInt32();
               break;
             }
             default: {
@@ -206,82 +1048,63 @@ public final class AmazonUps {
     }
 
     private int bitField0_;
-    public static final int WHNUM_FIELD_NUMBER = 1;
-    private int whnum_;
+    public static final int WH_ID_FIELD_NUMBER = 1;
+    private int whId_;
     /**
-     * <code>required int32 whnum = 1;</code>
-     * @return Whether the whnum field is set.
+     * <code>required int32 wh_id = 1;</code>
+     * @return Whether the whId field is set.
      */
     @java.lang.Override
-    public boolean hasWhnum() {
+    public boolean hasWhId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>required int32 whnum = 1;</code>
-     * @return The whnum.
+     * <code>required int32 wh_id = 1;</code>
+     * @return The whId.
      */
     @java.lang.Override
-    public int getWhnum() {
-      return whnum_;
+    public int getWhId() {
+      return whId_;
     }
 
     public static final int THINGS_FIELD_NUMBER = 2;
-    private java.util.List<WorldAmazon.AProduct> things_;
+    private java.util.List<AmazonUps.Product> things_;
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     @java.lang.Override
-    public java.util.List<WorldAmazon.AProduct> getThingsList() {
+    public java.util.List<AmazonUps.Product> getThingsList() {
       return things_;
     }
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends WorldAmazon.AProductOrBuilder> 
+    public java.util.List<? extends AmazonUps.ProductOrBuilder> 
         getThingsOrBuilderList() {
       return things_;
     }
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     @java.lang.Override
     public int getThingsCount() {
       return things_.size();
     }
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     @java.lang.Override
-    public WorldAmazon.AProduct getThings(int index) {
+    public AmazonUps.Product getThings(int index) {
       return things_.get(index);
     }
     /**
-     * <code>repeated .AProduct things = 2;</code>
+     * <code>repeated .Product things = 2;</code>
      */
     @java.lang.Override
-    public WorldAmazon.AProductOrBuilder getThingsOrBuilder(
+    public AmazonUps.ProductOrBuilder getThingsOrBuilder(
         int index) {
       return things_.get(index);
-    }
-
-    public static final int PACKAGEID_FIELD_NUMBER = 3;
-    private long packageid_;
-    /**
-     * <code>required int64 packageid = 3;</code>
-     * @return Whether the packageid field is set.
-     */
-    @java.lang.Override
-    public boolean hasPackageid() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required int64 packageid = 3;</code>
-     * @return The packageid.
-     */
-    @java.lang.Override
-    public long getPackageid() {
-      return packageid_;
     }
 
     public static final int TRACKINGID_FIELD_NUMBER = 4;
@@ -292,7 +1115,7 @@ public final class AmazonUps {
      */
     @java.lang.Override
     public boolean hasTrackingid() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>required string trackingid = 4;</code>
@@ -340,7 +1163,7 @@ public final class AmazonUps {
      */
     @java.lang.Override
     public boolean hasUpsaccount() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>optional int32 upsaccount = 5;</code>
@@ -351,6 +1174,44 @@ public final class AmazonUps {
       return upsaccount_;
     }
 
+    public static final int DEST_X_FIELD_NUMBER = 6;
+    private int destX_;
+    /**
+     * <code>required int32 dest_x = 6;</code>
+     * @return Whether the destX field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestX() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>required int32 dest_x = 6;</code>
+     * @return The destX.
+     */
+    @java.lang.Override
+    public int getDestX() {
+      return destX_;
+    }
+
+    public static final int DEST_Y_FIELD_NUMBER = 7;
+    private int destY_;
+    /**
+     * <code>required int32 dest_y = 7;</code>
+     * @return Whether the destY field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestY() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <code>required int32 dest_y = 7;</code>
+     * @return The destY.
+     */
+    @java.lang.Override
+    public int getDestY() {
+      return destY_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -358,15 +1219,19 @@ public final class AmazonUps {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasWhnum()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPackageid()) {
+      if (!hasWhId()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasTrackingid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDestX()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDestY()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -384,19 +1249,22 @@ public final class AmazonUps {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeInt32(1, whnum_);
+        output.writeInt32(1, whId_);
       }
       for (int i = 0; i < things_.size(); i++) {
         output.writeMessage(2, things_.get(i));
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        output.writeInt64(3, packageid_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, trackingid_);
       }
-      if (((bitField0_ & 0x00000008) != 0)) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         output.writeInt32(5, upsaccount_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt32(6, destX_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeInt32(7, destY_);
       }
       unknownFields.writeTo(output);
     }
@@ -409,22 +1277,26 @@ public final class AmazonUps {
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, whnum_);
+          .computeInt32Size(1, whId_);
       }
       for (int i = 0; i < things_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, things_.get(i));
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, packageid_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, trackingid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, trackingid_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, upsaccount_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, upsaccount_);
+          .computeInt32Size(6, destX_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, destY_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -441,18 +1313,13 @@ public final class AmazonUps {
       }
       AmazonUps.Pack other = (AmazonUps.Pack) obj;
 
-      if (hasWhnum() != other.hasWhnum()) return false;
-      if (hasWhnum()) {
-        if (getWhnum()
-            != other.getWhnum()) return false;
+      if (hasWhId() != other.hasWhId()) return false;
+      if (hasWhId()) {
+        if (getWhId()
+            != other.getWhId()) return false;
       }
       if (!getThingsList()
           .equals(other.getThingsList())) return false;
-      if (hasPackageid() != other.hasPackageid()) return false;
-      if (hasPackageid()) {
-        if (getPackageid()
-            != other.getPackageid()) return false;
-      }
       if (hasTrackingid() != other.hasTrackingid()) return false;
       if (hasTrackingid()) {
         if (!getTrackingid()
@@ -462,6 +1329,16 @@ public final class AmazonUps {
       if (hasUpsaccount()) {
         if (getUpsaccount()
             != other.getUpsaccount()) return false;
+      }
+      if (hasDestX() != other.hasDestX()) return false;
+      if (hasDestX()) {
+        if (getDestX()
+            != other.getDestX()) return false;
+      }
+      if (hasDestY() != other.hasDestY()) return false;
+      if (hasDestY()) {
+        if (getDestY()
+            != other.getDestY()) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -474,18 +1351,13 @@ public final class AmazonUps {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasWhnum()) {
-        hash = (37 * hash) + WHNUM_FIELD_NUMBER;
-        hash = (53 * hash) + getWhnum();
+      if (hasWhId()) {
+        hash = (37 * hash) + WH_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getWhId();
       }
       if (getThingsCount() > 0) {
         hash = (37 * hash) + THINGS_FIELD_NUMBER;
         hash = (53 * hash) + getThingsList().hashCode();
-      }
-      if (hasPackageid()) {
-        hash = (37 * hash) + PACKAGEID_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getPackageid());
       }
       if (hasTrackingid()) {
         hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
@@ -494,6 +1366,14 @@ public final class AmazonUps {
       if (hasUpsaccount()) {
         hash = (37 * hash) + UPSACCOUNT_FIELD_NUMBER;
         hash = (53 * hash) + getUpsaccount();
+      }
+      if (hasDestX()) {
+        hash = (37 * hash) + DEST_X_FIELD_NUMBER;
+        hash = (53 * hash) + getDestX();
+      }
+      if (hasDestY()) {
+        hash = (37 * hash) + DEST_Y_FIELD_NUMBER;
+        hash = (53 * hash) + getDestY();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -629,7 +1509,7 @@ public final class AmazonUps {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        whnum_ = 0;
+        whId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (thingsBuilder_ == null) {
           things_ = java.util.Collections.emptyList();
@@ -637,12 +1517,14 @@ public final class AmazonUps {
         } else {
           thingsBuilder_.clear();
         }
-        packageid_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         trackingid_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         upsaccount_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        destX_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        destY_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -672,7 +1554,7 @@ public final class AmazonUps {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.whnum_ = whnum_;
+          result.whId_ = whId_;
           to_bitField0_ |= 0x00000001;
         }
         if (thingsBuilder_ == null) {
@@ -685,16 +1567,20 @@ public final class AmazonUps {
           result.things_ = thingsBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.packageid_ = packageid_;
           to_bitField0_ |= 0x00000002;
         }
+        result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.upsaccount_ = upsaccount_;
           to_bitField0_ |= 0x00000004;
         }
-        result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
-          result.upsaccount_ = upsaccount_;
+          result.destX_ = destX_;
           to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.destY_ = destY_;
+          to_bitField0_ |= 0x00000010;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -745,8 +1631,8 @@ public final class AmazonUps {
 
       public Builder mergeFrom(AmazonUps.Pack other) {
         if (other == AmazonUps.Pack.getDefaultInstance()) return this;
-        if (other.hasWhnum()) {
-          setWhnum(other.getWhnum());
+        if (other.hasWhId()) {
+          setWhId(other.getWhId());
         }
         if (thingsBuilder_ == null) {
           if (!other.things_.isEmpty()) {
@@ -774,16 +1660,19 @@ public final class AmazonUps {
             }
           }
         }
-        if (other.hasPackageid()) {
-          setPackageid(other.getPackageid());
-        }
         if (other.hasTrackingid()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
           trackingid_ = other.trackingid_;
           onChanged();
         }
         if (other.hasUpsaccount()) {
           setUpsaccount(other.getUpsaccount());
+        }
+        if (other.hasDestX()) {
+          setDestX(other.getDestX());
+        }
+        if (other.hasDestY()) {
+          setDestY(other.getDestY());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -792,13 +1681,16 @@ public final class AmazonUps {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasWhnum()) {
-          return false;
-        }
-        if (!hasPackageid()) {
+        if (!hasWhId()) {
           return false;
         }
         if (!hasTrackingid()) {
+          return false;
+        }
+        if (!hasDestX()) {
+          return false;
+        }
+        if (!hasDestY()) {
           return false;
         }
         for (int i = 0; i < getThingsCount(); i++) {
@@ -829,61 +1721,61 @@ public final class AmazonUps {
       }
       private int bitField0_;
 
-      private int whnum_ ;
+      private int whId_ ;
       /**
-       * <code>required int32 whnum = 1;</code>
-       * @return Whether the whnum field is set.
+       * <code>required int32 wh_id = 1;</code>
+       * @return Whether the whId field is set.
        */
       @java.lang.Override
-      public boolean hasWhnum() {
+      public boolean hasWhId() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required int32 whnum = 1;</code>
-       * @return The whnum.
+       * <code>required int32 wh_id = 1;</code>
+       * @return The whId.
        */
       @java.lang.Override
-      public int getWhnum() {
-        return whnum_;
+      public int getWhId() {
+        return whId_;
       }
       /**
-       * <code>required int32 whnum = 1;</code>
-       * @param value The whnum to set.
+       * <code>required int32 wh_id = 1;</code>
+       * @param value The whId to set.
        * @return This builder for chaining.
        */
-      public Builder setWhnum(int value) {
+      public Builder setWhId(int value) {
         bitField0_ |= 0x00000001;
-        whnum_ = value;
+        whId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 whnum = 1;</code>
+       * <code>required int32 wh_id = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearWhnum() {
+      public Builder clearWhId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        whnum_ = 0;
+        whId_ = 0;
         onChanged();
         return this;
       }
 
-      private java.util.List<WorldAmazon.AProduct> things_ =
+      private java.util.List<AmazonUps.Product> things_ =
         java.util.Collections.emptyList();
       private void ensureThingsIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          things_ = new java.util.ArrayList<WorldAmazon.AProduct>(things_);
+          things_ = new java.util.ArrayList<AmazonUps.Product>(things_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          WorldAmazon.AProduct, WorldAmazon.AProduct.Builder, WorldAmazon.AProductOrBuilder> thingsBuilder_;
+          AmazonUps.Product, AmazonUps.Product.Builder, AmazonUps.ProductOrBuilder> thingsBuilder_;
 
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public java.util.List<WorldAmazon.AProduct> getThingsList() {
+      public java.util.List<AmazonUps.Product> getThingsList() {
         if (thingsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(things_);
         } else {
@@ -891,7 +1783,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public int getThingsCount() {
         if (thingsBuilder_ == null) {
@@ -901,9 +1793,9 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public WorldAmazon.AProduct getThings(int index) {
+      public AmazonUps.Product getThings(int index) {
         if (thingsBuilder_ == null) {
           return things_.get(index);
         } else {
@@ -911,10 +1803,10 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder setThings(
-          int index, WorldAmazon.AProduct value) {
+          int index, AmazonUps.Product value) {
         if (thingsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -928,10 +1820,10 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder setThings(
-          int index, WorldAmazon.AProduct.Builder builderForValue) {
+          int index, AmazonUps.Product.Builder builderForValue) {
         if (thingsBuilder_ == null) {
           ensureThingsIsMutable();
           things_.set(index, builderForValue.build());
@@ -942,9 +1834,9 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public Builder addThings(WorldAmazon.AProduct value) {
+      public Builder addThings(AmazonUps.Product value) {
         if (thingsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -958,10 +1850,10 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder addThings(
-          int index, WorldAmazon.AProduct value) {
+          int index, AmazonUps.Product value) {
         if (thingsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -975,10 +1867,10 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder addThings(
-          WorldAmazon.AProduct.Builder builderForValue) {
+          AmazonUps.Product.Builder builderForValue) {
         if (thingsBuilder_ == null) {
           ensureThingsIsMutable();
           things_.add(builderForValue.build());
@@ -989,10 +1881,10 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder addThings(
-          int index, WorldAmazon.AProduct.Builder builderForValue) {
+          int index, AmazonUps.Product.Builder builderForValue) {
         if (thingsBuilder_ == null) {
           ensureThingsIsMutable();
           things_.add(index, builderForValue.build());
@@ -1003,10 +1895,10 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder addAllThings(
-          java.lang.Iterable<? extends WorldAmazon.AProduct> values) {
+          java.lang.Iterable<? extends AmazonUps.Product> values) {
         if (thingsBuilder_ == null) {
           ensureThingsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1018,7 +1910,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder clearThings() {
         if (thingsBuilder_ == null) {
@@ -1031,7 +1923,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
       public Builder removeThings(int index) {
         if (thingsBuilder_ == null) {
@@ -1044,16 +1936,16 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public WorldAmazon.AProduct.Builder getThingsBuilder(
+      public AmazonUps.Product.Builder getThingsBuilder(
           int index) {
         return getThingsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public WorldAmazon.AProductOrBuilder getThingsOrBuilder(
+      public AmazonUps.ProductOrBuilder getThingsOrBuilder(
           int index) {
         if (thingsBuilder_ == null) {
           return things_.get(index);  } else {
@@ -1061,9 +1953,9 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public java.util.List<? extends WorldAmazon.AProductOrBuilder> 
+      public java.util.List<? extends AmazonUps.ProductOrBuilder> 
            getThingsOrBuilderList() {
         if (thingsBuilder_ != null) {
           return thingsBuilder_.getMessageOrBuilderList();
@@ -1072,33 +1964,33 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public WorldAmazon.AProduct.Builder addThingsBuilder() {
+      public AmazonUps.Product.Builder addThingsBuilder() {
         return getThingsFieldBuilder().addBuilder(
-            WorldAmazon.AProduct.getDefaultInstance());
+            AmazonUps.Product.getDefaultInstance());
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public WorldAmazon.AProduct.Builder addThingsBuilder(
+      public AmazonUps.Product.Builder addThingsBuilder(
           int index) {
         return getThingsFieldBuilder().addBuilder(
-            index, WorldAmazon.AProduct.getDefaultInstance());
+            index, AmazonUps.Product.getDefaultInstance());
       }
       /**
-       * <code>repeated .AProduct things = 2;</code>
+       * <code>repeated .Product things = 2;</code>
        */
-      public java.util.List<WorldAmazon.AProduct.Builder> 
+      public java.util.List<AmazonUps.Product.Builder> 
            getThingsBuilderList() {
         return getThingsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          WorldAmazon.AProduct, WorldAmazon.AProduct.Builder, WorldAmazon.AProductOrBuilder> 
+          AmazonUps.Product, AmazonUps.Product.Builder, AmazonUps.ProductOrBuilder> 
           getThingsFieldBuilder() {
         if (thingsBuilder_ == null) {
           thingsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              WorldAmazon.AProduct, WorldAmazon.AProduct.Builder, WorldAmazon.AProductOrBuilder>(
+              AmazonUps.Product, AmazonUps.Product.Builder, AmazonUps.ProductOrBuilder>(
                   things_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
@@ -1108,52 +2000,13 @@ public final class AmazonUps {
         return thingsBuilder_;
       }
 
-      private long packageid_ ;
-      /**
-       * <code>required int64 packageid = 3;</code>
-       * @return Whether the packageid field is set.
-       */
-      @java.lang.Override
-      public boolean hasPackageid() {
-        return ((bitField0_ & 0x00000004) != 0);
-      }
-      /**
-       * <code>required int64 packageid = 3;</code>
-       * @return The packageid.
-       */
-      @java.lang.Override
-      public long getPackageid() {
-        return packageid_;
-      }
-      /**
-       * <code>required int64 packageid = 3;</code>
-       * @param value The packageid to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPackageid(long value) {
-        bitField0_ |= 0x00000004;
-        packageid_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 packageid = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPackageid() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        packageid_ = 0L;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object trackingid_ = "";
       /**
        * <code>required string trackingid = 4;</code>
        * @return Whether the trackingid field is set.
        */
       public boolean hasTrackingid() {
-        return ((bitField0_ & 0x00000008) != 0);
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>required string trackingid = 4;</code>
@@ -1200,7 +2053,7 @@ public final class AmazonUps {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
         trackingid_ = value;
         onChanged();
         return this;
@@ -1210,7 +2063,7 @@ public final class AmazonUps {
        * @return This builder for chaining.
        */
       public Builder clearTrackingid() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         trackingid_ = getDefaultInstance().getTrackingid();
         onChanged();
         return this;
@@ -1225,7 +2078,7 @@ public final class AmazonUps {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
         trackingid_ = value;
         onChanged();
         return this;
@@ -1238,7 +2091,7 @@ public final class AmazonUps {
        */
       @java.lang.Override
       public boolean hasUpsaccount() {
-        return ((bitField0_ & 0x00000010) != 0);
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
        * <code>optional int32 upsaccount = 5;</code>
@@ -1254,7 +2107,7 @@ public final class AmazonUps {
        * @return This builder for chaining.
        */
       public Builder setUpsaccount(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000008;
         upsaccount_ = value;
         onChanged();
         return this;
@@ -1264,8 +2117,86 @@ public final class AmazonUps {
        * @return This builder for chaining.
        */
       public Builder clearUpsaccount() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000008);
         upsaccount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int destX_ ;
+      /**
+       * <code>required int32 dest_x = 6;</code>
+       * @return Whether the destX field is set.
+       */
+      @java.lang.Override
+      public boolean hasDestX() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>required int32 dest_x = 6;</code>
+       * @return The destX.
+       */
+      @java.lang.Override
+      public int getDestX() {
+        return destX_;
+      }
+      /**
+       * <code>required int32 dest_x = 6;</code>
+       * @param value The destX to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestX(int value) {
+        bitField0_ |= 0x00000010;
+        destX_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 dest_x = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestX() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        destX_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int destY_ ;
+      /**
+       * <code>required int32 dest_y = 7;</code>
+       * @return Whether the destY field is set.
+       */
+      @java.lang.Override
+      public boolean hasDestY() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>required int32 dest_y = 7;</code>
+       * @return The destY.
+       */
+      @java.lang.Override
+      public int getDestY() {
+        return destY_;
+      }
+      /**
+       * <code>required int32 dest_y = 7;</code>
+       * @param value The destY to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestY(int value) {
+        bitField0_ |= 0x00000020;
+        destY_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 dest_y = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestY() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        destY_ = 0;
         onChanged();
         return this;
       }
@@ -2496,71 +3427,27 @@ public final class AmazonUps {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 wh_x = 1;</code>
-     * @return Whether the whX field is set.
-     */
-    boolean hasWhX();
-    /**
-     * <code>required int32 wh_x = 1;</code>
-     * @return The whX.
-     */
-    int getWhX();
-
-    /**
-     * <code>required int32 wh_y = 2;</code>
-     * @return Whether the whY field is set.
-     */
-    boolean hasWhY();
-    /**
-     * <code>required int32 wh_y = 2;</code>
-     * @return The whY.
-     */
-    int getWhY();
-
-    /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      * @return Whether the pack field is set.
      */
     boolean hasPack();
     /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      * @return The pack.
      */
     AmazonUps.Pack getPack();
     /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      */
     AmazonUps.PackOrBuilder getPackOrBuilder();
 
     /**
-     * <code>required int32 dest_x = 4;</code>
-     * @return Whether the destX field is set.
-     */
-    boolean hasDestX();
-    /**
-     * <code>required int32 dest_x = 4;</code>
-     * @return The destX.
-     */
-    int getDestX();
-
-    /**
-     * <code>required int32 dest_y = 5;</code>
-     * @return Whether the destY field is set.
-     */
-    boolean hasDestY();
-    /**
-     * <code>required int32 dest_y = 5;</code>
-     * @return The destY.
-     */
-    int getDestY();
-
-    /**
-     * <code>required int64 seqnum = 6;</code>
+     * <code>required int64 seqnum = 2;</code>
      * @return Whether the seqnum field is set.
      */
     boolean hasSeqnum();
     /**
-     * <code>required int64 seqnum = 6;</code>
+     * <code>required int64 seqnum = 2;</code>
      * @return The seqnum.
      */
     long getSeqnum();
@@ -2611,19 +3498,9 @@ public final class AmazonUps {
             case 0:
               done = true;
               break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              whX_ = input.readInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              whY_ = input.readInt32();
-              break;
-            }
-            case 26: {
+            case 10: {
               AmazonUps.Pack.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) != 0)) {
+              if (((bitField0_ & 0x00000001) != 0)) {
                 subBuilder = pack_.toBuilder();
               }
               pack_ = input.readMessage(AmazonUps.Pack.PARSER, extensionRegistry);
@@ -2631,21 +3508,11 @@ public final class AmazonUps {
                 subBuilder.mergeFrom(pack_);
                 pack_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000001;
               break;
             }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              destX_ = input.readInt32();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              destY_ = input.readInt32();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
+            case 16: {
+              bitField0_ |= 0x00000002;
               seqnum_ = input.readInt64();
               break;
             }
@@ -2682,56 +3549,18 @@ public final class AmazonUps {
     }
 
     private int bitField0_;
-    public static final int WH_X_FIELD_NUMBER = 1;
-    private int whX_;
-    /**
-     * <code>required int32 wh_x = 1;</code>
-     * @return Whether the whX field is set.
-     */
-    @java.lang.Override
-    public boolean hasWhX() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required int32 wh_x = 1;</code>
-     * @return The whX.
-     */
-    @java.lang.Override
-    public int getWhX() {
-      return whX_;
-    }
-
-    public static final int WH_Y_FIELD_NUMBER = 2;
-    private int whY_;
-    /**
-     * <code>required int32 wh_y = 2;</code>
-     * @return Whether the whY field is set.
-     */
-    @java.lang.Override
-    public boolean hasWhY() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>required int32 wh_y = 2;</code>
-     * @return The whY.
-     */
-    @java.lang.Override
-    public int getWhY() {
-      return whY_;
-    }
-
-    public static final int PACK_FIELD_NUMBER = 3;
+    public static final int PACK_FIELD_NUMBER = 1;
     private AmazonUps.Pack pack_;
     /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      * @return Whether the pack field is set.
      */
     @java.lang.Override
     public boolean hasPack() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      * @return The pack.
      */
     @java.lang.Override
@@ -2739,63 +3568,25 @@ public final class AmazonUps {
       return pack_ == null ? AmazonUps.Pack.getDefaultInstance() : pack_;
     }
     /**
-     * <code>required .Pack pack = 3;</code>
+     * <code>required .Pack pack = 1;</code>
      */
     @java.lang.Override
     public AmazonUps.PackOrBuilder getPackOrBuilder() {
       return pack_ == null ? AmazonUps.Pack.getDefaultInstance() : pack_;
     }
 
-    public static final int DEST_X_FIELD_NUMBER = 4;
-    private int destX_;
-    /**
-     * <code>required int32 dest_x = 4;</code>
-     * @return Whether the destX field is set.
-     */
-    @java.lang.Override
-    public boolean hasDestX() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required int32 dest_x = 4;</code>
-     * @return The destX.
-     */
-    @java.lang.Override
-    public int getDestX() {
-      return destX_;
-    }
-
-    public static final int DEST_Y_FIELD_NUMBER = 5;
-    private int destY_;
-    /**
-     * <code>required int32 dest_y = 5;</code>
-     * @return Whether the destY field is set.
-     */
-    @java.lang.Override
-    public boolean hasDestY() {
-      return ((bitField0_ & 0x00000010) != 0);
-    }
-    /**
-     * <code>required int32 dest_y = 5;</code>
-     * @return The destY.
-     */
-    @java.lang.Override
-    public int getDestY() {
-      return destY_;
-    }
-
-    public static final int SEQNUM_FIELD_NUMBER = 6;
+    public static final int SEQNUM_FIELD_NUMBER = 2;
     private long seqnum_;
     /**
-     * <code>required int64 seqnum = 6;</code>
+     * <code>required int64 seqnum = 2;</code>
      * @return Whether the seqnum field is set.
      */
     @java.lang.Override
     public boolean hasSeqnum() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>required int64 seqnum = 6;</code>
+     * <code>required int64 seqnum = 2;</code>
      * @return The seqnum.
      */
     @java.lang.Override
@@ -2810,23 +3601,7 @@ public final class AmazonUps {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasWhX()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasWhY()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasPack()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasDestX()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasDestY()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2846,22 +3621,10 @@ public final class AmazonUps {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeInt32(1, whX_);
+        output.writeMessage(1, getPack());
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        output.writeInt32(2, whY_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        output.writeMessage(3, getPack());
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        output.writeInt32(4, destX_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        output.writeInt32(5, destY_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeInt64(6, seqnum_);
+        output.writeInt64(2, seqnum_);
       }
       unknownFields.writeTo(output);
     }
@@ -2874,27 +3637,11 @@ public final class AmazonUps {
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, whX_);
+          .computeMessageSize(1, getPack());
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, whY_);
-      }
-      if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getPack());
-      }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, destX_);
-      }
-      if (((bitField0_ & 0x00000010) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, destY_);
-      }
-      if (((bitField0_ & 0x00000020) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, seqnum_);
+          .computeInt64Size(2, seqnum_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2911,30 +3658,10 @@ public final class AmazonUps {
       }
       AmazonUps.AUNeedATruck other = (AmazonUps.AUNeedATruck) obj;
 
-      if (hasWhX() != other.hasWhX()) return false;
-      if (hasWhX()) {
-        if (getWhX()
-            != other.getWhX()) return false;
-      }
-      if (hasWhY() != other.hasWhY()) return false;
-      if (hasWhY()) {
-        if (getWhY()
-            != other.getWhY()) return false;
-      }
       if (hasPack() != other.hasPack()) return false;
       if (hasPack()) {
         if (!getPack()
             .equals(other.getPack())) return false;
-      }
-      if (hasDestX() != other.hasDestX()) return false;
-      if (hasDestX()) {
-        if (getDestX()
-            != other.getDestX()) return false;
-      }
-      if (hasDestY() != other.hasDestY()) return false;
-      if (hasDestY()) {
-        if (getDestY()
-            != other.getDestY()) return false;
       }
       if (hasSeqnum() != other.hasSeqnum()) return false;
       if (hasSeqnum()) {
@@ -2952,25 +3679,9 @@ public final class AmazonUps {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasWhX()) {
-        hash = (37 * hash) + WH_X_FIELD_NUMBER;
-        hash = (53 * hash) + getWhX();
-      }
-      if (hasWhY()) {
-        hash = (37 * hash) + WH_Y_FIELD_NUMBER;
-        hash = (53 * hash) + getWhY();
-      }
       if (hasPack()) {
         hash = (37 * hash) + PACK_FIELD_NUMBER;
         hash = (53 * hash) + getPack().hashCode();
-      }
-      if (hasDestX()) {
-        hash = (37 * hash) + DEST_X_FIELD_NUMBER;
-        hash = (53 * hash) + getDestX();
-      }
-      if (hasDestY()) {
-        hash = (37 * hash) + DEST_Y_FIELD_NUMBER;
-        hash = (53 * hash) + getDestY();
       }
       if (hasSeqnum()) {
         hash = (37 * hash) + SEQNUM_FIELD_NUMBER;
@@ -3111,22 +3822,14 @@ public final class AmazonUps {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        whX_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        whY_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         if (packBuilder_ == null) {
           pack_ = null;
         } else {
           packBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        destX_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        destY_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000001);
         seqnum_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3156,32 +3859,16 @@ public final class AmazonUps {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.whX_ = whX_;
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.whY_ = whY_;
-          to_bitField0_ |= 0x00000002;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
           if (packBuilder_ == null) {
             result.pack_ = pack_;
           } else {
             result.pack_ = packBuilder_.build();
           }
-          to_bitField0_ |= 0x00000004;
+          to_bitField0_ |= 0x00000001;
         }
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.destX_ = destX_;
-          to_bitField0_ |= 0x00000008;
-        }
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          result.destY_ = destY_;
-          to_bitField0_ |= 0x00000010;
-        }
-        if (((from_bitField0_ & 0x00000020) != 0)) {
+        if (((from_bitField0_ & 0x00000002) != 0)) {
           result.seqnum_ = seqnum_;
-          to_bitField0_ |= 0x00000020;
+          to_bitField0_ |= 0x00000002;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -3232,20 +3919,8 @@ public final class AmazonUps {
 
       public Builder mergeFrom(AmazonUps.AUNeedATruck other) {
         if (other == AmazonUps.AUNeedATruck.getDefaultInstance()) return this;
-        if (other.hasWhX()) {
-          setWhX(other.getWhX());
-        }
-        if (other.hasWhY()) {
-          setWhY(other.getWhY());
-        }
         if (other.hasPack()) {
           mergePack(other.getPack());
-        }
-        if (other.hasDestX()) {
-          setDestX(other.getDestX());
-        }
-        if (other.hasDestY()) {
-          setDestY(other.getDestY());
         }
         if (other.hasSeqnum()) {
           setSeqnum(other.getSeqnum());
@@ -3257,19 +3932,7 @@ public final class AmazonUps {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasWhX()) {
-          return false;
-        }
-        if (!hasWhY()) {
-          return false;
-        }
         if (!hasPack()) {
-          return false;
-        }
-        if (!hasDestX()) {
-          return false;
-        }
-        if (!hasDestY()) {
           return false;
         }
         if (!hasSeqnum()) {
@@ -3301,96 +3964,18 @@ public final class AmazonUps {
       }
       private int bitField0_;
 
-      private int whX_ ;
-      /**
-       * <code>required int32 wh_x = 1;</code>
-       * @return Whether the whX field is set.
-       */
-      @java.lang.Override
-      public boolean hasWhX() {
-        return ((bitField0_ & 0x00000001) != 0);
-      }
-      /**
-       * <code>required int32 wh_x = 1;</code>
-       * @return The whX.
-       */
-      @java.lang.Override
-      public int getWhX() {
-        return whX_;
-      }
-      /**
-       * <code>required int32 wh_x = 1;</code>
-       * @param value The whX to set.
-       * @return This builder for chaining.
-       */
-      public Builder setWhX(int value) {
-        bitField0_ |= 0x00000001;
-        whX_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 wh_x = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearWhX() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        whX_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int whY_ ;
-      /**
-       * <code>required int32 wh_y = 2;</code>
-       * @return Whether the whY field is set.
-       */
-      @java.lang.Override
-      public boolean hasWhY() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>required int32 wh_y = 2;</code>
-       * @return The whY.
-       */
-      @java.lang.Override
-      public int getWhY() {
-        return whY_;
-      }
-      /**
-       * <code>required int32 wh_y = 2;</code>
-       * @param value The whY to set.
-       * @return This builder for chaining.
-       */
-      public Builder setWhY(int value) {
-        bitField0_ |= 0x00000002;
-        whY_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 wh_y = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearWhY() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        whY_ = 0;
-        onChanged();
-        return this;
-      }
-
       private AmazonUps.Pack pack_;
       private com.google.protobuf.SingleFieldBuilderV3<
           AmazonUps.Pack, AmazonUps.Pack.Builder, AmazonUps.PackOrBuilder> packBuilder_;
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        * @return Whether the pack field is set.
        */
       public boolean hasPack() {
-        return ((bitField0_ & 0x00000004) != 0);
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        * @return The pack.
        */
       public AmazonUps.Pack getPack() {
@@ -3401,7 +3986,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public Builder setPack(AmazonUps.Pack value) {
         if (packBuilder_ == null) {
@@ -3413,11 +3998,11 @@ public final class AmazonUps {
         } else {
           packBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public Builder setPack(
           AmazonUps.Pack.Builder builderForValue) {
@@ -3427,15 +4012,15 @@ public final class AmazonUps {
         } else {
           packBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public Builder mergePack(AmazonUps.Pack value) {
         if (packBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0) &&
+          if (((bitField0_ & 0x00000001) != 0) &&
               pack_ != null &&
               pack_ != AmazonUps.Pack.getDefaultInstance()) {
             pack_ =
@@ -3447,11 +4032,11 @@ public final class AmazonUps {
         } else {
           packBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public Builder clearPack() {
         if (packBuilder_ == null) {
@@ -3460,19 +4045,19 @@ public final class AmazonUps {
         } else {
           packBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public AmazonUps.Pack.Builder getPackBuilder() {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000001;
         onChanged();
         return getPackFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       public AmazonUps.PackOrBuilder getPackOrBuilder() {
         if (packBuilder_ != null) {
@@ -3483,7 +4068,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>required .Pack pack = 3;</code>
+       * <code>required .Pack pack = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AmazonUps.Pack, AmazonUps.Pack.Builder, AmazonUps.PackOrBuilder> 
@@ -3499,95 +4084,17 @@ public final class AmazonUps {
         return packBuilder_;
       }
 
-      private int destX_ ;
-      /**
-       * <code>required int32 dest_x = 4;</code>
-       * @return Whether the destX field is set.
-       */
-      @java.lang.Override
-      public boolean hasDestX() {
-        return ((bitField0_ & 0x00000008) != 0);
-      }
-      /**
-       * <code>required int32 dest_x = 4;</code>
-       * @return The destX.
-       */
-      @java.lang.Override
-      public int getDestX() {
-        return destX_;
-      }
-      /**
-       * <code>required int32 dest_x = 4;</code>
-       * @param value The destX to set.
-       * @return This builder for chaining.
-       */
-      public Builder setDestX(int value) {
-        bitField0_ |= 0x00000008;
-        destX_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 dest_x = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearDestX() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        destX_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int destY_ ;
-      /**
-       * <code>required int32 dest_y = 5;</code>
-       * @return Whether the destY field is set.
-       */
-      @java.lang.Override
-      public boolean hasDestY() {
-        return ((bitField0_ & 0x00000010) != 0);
-      }
-      /**
-       * <code>required int32 dest_y = 5;</code>
-       * @return The destY.
-       */
-      @java.lang.Override
-      public int getDestY() {
-        return destY_;
-      }
-      /**
-       * <code>required int32 dest_y = 5;</code>
-       * @param value The destY to set.
-       * @return This builder for chaining.
-       */
-      public Builder setDestY(int value) {
-        bitField0_ |= 0x00000010;
-        destY_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 dest_y = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearDestY() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        destY_ = 0;
-        onChanged();
-        return this;
-      }
-
       private long seqnum_ ;
       /**
-       * <code>required int64 seqnum = 6;</code>
+       * <code>required int64 seqnum = 2;</code>
        * @return Whether the seqnum field is set.
        */
       @java.lang.Override
       public boolean hasSeqnum() {
-        return ((bitField0_ & 0x00000020) != 0);
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required int64 seqnum = 6;</code>
+       * <code>required int64 seqnum = 2;</code>
        * @return The seqnum.
        */
       @java.lang.Override
@@ -3595,22 +4102,22 @@ public final class AmazonUps {
         return seqnum_;
       }
       /**
-       * <code>required int64 seqnum = 6;</code>
+       * <code>required int64 seqnum = 2;</code>
        * @param value The seqnum to set.
        * @return This builder for chaining.
        */
       public Builder setSeqnum(long value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000002;
         seqnum_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 seqnum = 6;</code>
+       * <code>required int64 seqnum = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearSeqnum() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000002);
         seqnum_ = 0L;
         onChanged();
         return this;
@@ -4321,26 +4828,32 @@ public final class AmazonUps {
     int getTruckid();
 
     /**
-     * <code>required int32 packageid = 2;</code>
-     * @return Whether the packageid field is set.
+     * <code>required string trackingid = 2;</code>
+     * @return Whether the trackingid field is set.
      */
-    boolean hasPackageid();
+    boolean hasTrackingid();
     /**
-     * <code>required int32 packageid = 2;</code>
-     * @return The packageid.
+     * <code>required string trackingid = 2;</code>
+     * @return The trackingid.
      */
-    int getPackageid();
+    java.lang.String getTrackingid();
+    /**
+     * <code>required string trackingid = 2;</code>
+     * @return The bytes for trackingid.
+     */
+    com.google.protobuf.ByteString
+        getTrackingidBytes();
 
     /**
-     * <code>required int32 whnum = 3;</code>
-     * @return Whether the whnum field is set.
+     * <code>required int32 wh_id = 3;</code>
+     * @return Whether the whId field is set.
      */
-    boolean hasWhnum();
+    boolean hasWhId();
     /**
-     * <code>required int32 whnum = 3;</code>
-     * @return The whnum.
+     * <code>required int32 wh_id = 3;</code>
+     * @return The whId.
      */
-    int getWhnum();
+    int getWhId();
 
     /**
      * <code>required int64 seqnum = 4;</code>
@@ -4366,6 +4879,7 @@ public final class AmazonUps {
       super(builder);
     }
     private UATruckArrived() {
+      trackingid_ = "";
     }
 
     @java.lang.Override
@@ -4404,14 +4918,15 @@ public final class AmazonUps {
               truckid_ = input.readInt32();
               break;
             }
-            case 16: {
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              packageid_ = input.readInt32();
+              trackingid_ = bs;
               break;
             }
             case 24: {
               bitField0_ |= 0x00000004;
-              whnum_ = input.readInt32();
+              whId_ = input.readInt32();
               break;
             }
             case 32: {
@@ -4471,42 +4986,71 @@ public final class AmazonUps {
       return truckid_;
     }
 
-    public static final int PACKAGEID_FIELD_NUMBER = 2;
-    private int packageid_;
+    public static final int TRACKINGID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object trackingid_;
     /**
-     * <code>required int32 packageid = 2;</code>
-     * @return Whether the packageid field is set.
+     * <code>required string trackingid = 2;</code>
+     * @return Whether the trackingid field is set.
      */
     @java.lang.Override
-    public boolean hasPackageid() {
+    public boolean hasTrackingid() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>required int32 packageid = 2;</code>
-     * @return The packageid.
+     * <code>required string trackingid = 2;</code>
+     * @return The trackingid.
      */
     @java.lang.Override
-    public int getPackageid() {
-      return packageid_;
+    public java.lang.String getTrackingid() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          trackingid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string trackingid = 2;</code>
+     * @return The bytes for trackingid.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTrackingidBytes() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        trackingid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    public static final int WHNUM_FIELD_NUMBER = 3;
-    private int whnum_;
+    public static final int WH_ID_FIELD_NUMBER = 3;
+    private int whId_;
     /**
-     * <code>required int32 whnum = 3;</code>
-     * @return Whether the whnum field is set.
+     * <code>required int32 wh_id = 3;</code>
+     * @return Whether the whId field is set.
      */
     @java.lang.Override
-    public boolean hasWhnum() {
+    public boolean hasWhId() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>required int32 whnum = 3;</code>
-     * @return The whnum.
+     * <code>required int32 wh_id = 3;</code>
+     * @return The whId.
      */
     @java.lang.Override
-    public int getWhnum() {
-      return whnum_;
+    public int getWhId() {
+      return whId_;
     }
 
     public static final int SEQNUM_FIELD_NUMBER = 4;
@@ -4539,11 +5083,11 @@ public final class AmazonUps {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasPackageid()) {
+      if (!hasTrackingid()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasWhnum()) {
+      if (!hasWhId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -4562,10 +5106,10 @@ public final class AmazonUps {
         output.writeInt32(1, truckid_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        output.writeInt32(2, packageid_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, trackingid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        output.writeInt32(3, whnum_);
+        output.writeInt32(3, whId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeInt64(4, seqnum_);
@@ -4584,12 +5128,11 @@ public final class AmazonUps {
           .computeInt32Size(1, truckid_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, packageid_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, trackingid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, whnum_);
+          .computeInt32Size(3, whId_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4615,15 +5158,15 @@ public final class AmazonUps {
         if (getTruckid()
             != other.getTruckid()) return false;
       }
-      if (hasPackageid() != other.hasPackageid()) return false;
-      if (hasPackageid()) {
-        if (getPackageid()
-            != other.getPackageid()) return false;
+      if (hasTrackingid() != other.hasTrackingid()) return false;
+      if (hasTrackingid()) {
+        if (!getTrackingid()
+            .equals(other.getTrackingid())) return false;
       }
-      if (hasWhnum() != other.hasWhnum()) return false;
-      if (hasWhnum()) {
-        if (getWhnum()
-            != other.getWhnum()) return false;
+      if (hasWhId() != other.hasWhId()) return false;
+      if (hasWhId()) {
+        if (getWhId()
+            != other.getWhId()) return false;
       }
       if (hasSeqnum() != other.hasSeqnum()) return false;
       if (hasSeqnum()) {
@@ -4645,13 +5188,13 @@ public final class AmazonUps {
         hash = (37 * hash) + TRUCKID_FIELD_NUMBER;
         hash = (53 * hash) + getTruckid();
       }
-      if (hasPackageid()) {
-        hash = (37 * hash) + PACKAGEID_FIELD_NUMBER;
-        hash = (53 * hash) + getPackageid();
+      if (hasTrackingid()) {
+        hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
+        hash = (53 * hash) + getTrackingid().hashCode();
       }
-      if (hasWhnum()) {
-        hash = (37 * hash) + WHNUM_FIELD_NUMBER;
-        hash = (53 * hash) + getWhnum();
+      if (hasWhId()) {
+        hash = (37 * hash) + WH_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getWhId();
       }
       if (hasSeqnum()) {
         hash = (37 * hash) + SEQNUM_FIELD_NUMBER;
@@ -4793,9 +5336,9 @@ public final class AmazonUps {
         super.clear();
         truckid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        packageid_ = 0;
+        trackingid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        whnum_ = 0;
+        whId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
         seqnum_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -4832,11 +5375,11 @@ public final class AmazonUps {
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.packageid_ = packageid_;
           to_bitField0_ |= 0x00000002;
         }
+        result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.whnum_ = whnum_;
+          result.whId_ = whId_;
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
@@ -4895,11 +5438,13 @@ public final class AmazonUps {
         if (other.hasTruckid()) {
           setTruckid(other.getTruckid());
         }
-        if (other.hasPackageid()) {
-          setPackageid(other.getPackageid());
+        if (other.hasTrackingid()) {
+          bitField0_ |= 0x00000002;
+          trackingid_ = other.trackingid_;
+          onChanged();
         }
-        if (other.hasWhnum()) {
-          setWhnum(other.getWhnum());
+        if (other.hasWhId()) {
+          setWhId(other.getWhId());
         }
         if (other.hasSeqnum()) {
           setSeqnum(other.getSeqnum());
@@ -4914,10 +5459,10 @@ public final class AmazonUps {
         if (!hasTruckid()) {
           return false;
         }
-        if (!hasPackageid()) {
+        if (!hasTrackingid()) {
           return false;
         }
-        if (!hasWhnum()) {
+        if (!hasWhId()) {
           return false;
         }
         if (!hasSeqnum()) {
@@ -4985,80 +5530,125 @@ public final class AmazonUps {
         return this;
       }
 
-      private int packageid_ ;
+      private java.lang.Object trackingid_ = "";
       /**
-       * <code>required int32 packageid = 2;</code>
-       * @return Whether the packageid field is set.
+       * <code>required string trackingid = 2;</code>
+       * @return Whether the trackingid field is set.
        */
-      @java.lang.Override
-      public boolean hasPackageid() {
+      public boolean hasTrackingid() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required int32 packageid = 2;</code>
-       * @return The packageid.
+       * <code>required string trackingid = 2;</code>
+       * @return The trackingid.
        */
-      @java.lang.Override
-      public int getPackageid() {
-        return packageid_;
+      public java.lang.String getTrackingid() {
+        java.lang.Object ref = trackingid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            trackingid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>required int32 packageid = 2;</code>
-       * @param value The packageid to set.
+       * <code>required string trackingid = 2;</code>
+       * @return The bytes for trackingid.
+       */
+      public com.google.protobuf.ByteString
+          getTrackingidBytes() {
+        java.lang.Object ref = trackingid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          trackingid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string trackingid = 2;</code>
+       * @param value The trackingid to set.
        * @return This builder for chaining.
        */
-      public Builder setPackageid(int value) {
-        bitField0_ |= 0x00000002;
-        packageid_ = value;
+      public Builder setTrackingid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        trackingid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 packageid = 2;</code>
+       * <code>required string trackingid = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearPackageid() {
+      public Builder clearTrackingid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        packageid_ = 0;
+        trackingid_ = getDefaultInstance().getTrackingid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackingid = 2;</code>
+       * @param value The bytes for trackingid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackingidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        trackingid_ = value;
         onChanged();
         return this;
       }
 
-      private int whnum_ ;
+      private int whId_ ;
       /**
-       * <code>required int32 whnum = 3;</code>
-       * @return Whether the whnum field is set.
+       * <code>required int32 wh_id = 3;</code>
+       * @return Whether the whId field is set.
        */
       @java.lang.Override
-      public boolean hasWhnum() {
+      public boolean hasWhId() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>required int32 whnum = 3;</code>
-       * @return The whnum.
+       * <code>required int32 wh_id = 3;</code>
+       * @return The whId.
        */
       @java.lang.Override
-      public int getWhnum() {
-        return whnum_;
+      public int getWhId() {
+        return whId_;
       }
       /**
-       * <code>required int32 whnum = 3;</code>
-       * @param value The whnum to set.
+       * <code>required int32 wh_id = 3;</code>
+       * @param value The whId to set.
        * @return This builder for chaining.
        */
-      public Builder setWhnum(int value) {
+      public Builder setWhId(int value) {
         bitField0_ |= 0x00000004;
-        whnum_ = value;
+        whId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 whnum = 3;</code>
+       * <code>required int32 wh_id = 3;</code>
        * @return This builder for chaining.
        */
-      public Builder clearWhnum() {
+      public Builder clearWhId() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        whnum_ = 0;
+        whId_ = 0;
         onChanged();
         return this;
       }
@@ -5159,23 +5749,40 @@ public final class AmazonUps {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 packageid = 1;</code>
-     * @return Whether the packageid field is set.
+     * <code>required string trackingid = 1;</code>
+     * @return Whether the trackingid field is set.
      */
-    boolean hasPackageid();
+    boolean hasTrackingid();
     /**
-     * <code>required int32 packageid = 1;</code>
-     * @return The packageid.
+     * <code>required string trackingid = 1;</code>
+     * @return The trackingid.
      */
-    int getPackageid();
+    java.lang.String getTrackingid();
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The bytes for trackingid.
+     */
+    com.google.protobuf.ByteString
+        getTrackingidBytes();
 
     /**
-     * <code>required int64 seqnum = 2;</code>
+     * <code>required int32 truckid = 2;</code>
+     * @return Whether the truckid field is set.
+     */
+    boolean hasTruckid();
+    /**
+     * <code>required int32 truckid = 2;</code>
+     * @return The truckid.
+     */
+    int getTruckid();
+
+    /**
+     * <code>required int64 seqnum = 3;</code>
      * @return Whether the seqnum field is set.
      */
     boolean hasSeqnum();
     /**
-     * <code>required int64 seqnum = 2;</code>
+     * <code>required int64 seqnum = 3;</code>
      * @return The seqnum.
      */
     long getSeqnum();
@@ -5193,6 +5800,7 @@ public final class AmazonUps {
       super(builder);
     }
     private UADelivered() {
+      trackingid_ = "";
     }
 
     @java.lang.Override
@@ -5226,13 +5834,19 @@ public final class AmazonUps {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              packageid_ = input.readInt32();
+              trackingid_ = bs;
               break;
             }
             case 16: {
               bitField0_ |= 0x00000002;
+              truckid_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
               seqnum_ = input.readInt64();
               break;
             }
@@ -5269,37 +5883,85 @@ public final class AmazonUps {
     }
 
     private int bitField0_;
-    public static final int PACKAGEID_FIELD_NUMBER = 1;
-    private int packageid_;
+    public static final int TRACKINGID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object trackingid_;
     /**
-     * <code>required int32 packageid = 1;</code>
-     * @return Whether the packageid field is set.
+     * <code>required string trackingid = 1;</code>
+     * @return Whether the trackingid field is set.
      */
     @java.lang.Override
-    public boolean hasPackageid() {
+    public boolean hasTrackingid() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>required int32 packageid = 1;</code>
-     * @return The packageid.
+     * <code>required string trackingid = 1;</code>
+     * @return The trackingid.
      */
     @java.lang.Override
-    public int getPackageid() {
-      return packageid_;
+    public java.lang.String getTrackingid() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          trackingid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The bytes for trackingid.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTrackingidBytes() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        trackingid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    public static final int SEQNUM_FIELD_NUMBER = 2;
+    public static final int TRUCKID_FIELD_NUMBER = 2;
+    private int truckid_;
+    /**
+     * <code>required int32 truckid = 2;</code>
+     * @return Whether the truckid field is set.
+     */
+    @java.lang.Override
+    public boolean hasTruckid() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required int32 truckid = 2;</code>
+     * @return The truckid.
+     */
+    @java.lang.Override
+    public int getTruckid() {
+      return truckid_;
+    }
+
+    public static final int SEQNUM_FIELD_NUMBER = 3;
     private long seqnum_;
     /**
-     * <code>required int64 seqnum = 2;</code>
+     * <code>required int64 seqnum = 3;</code>
      * @return Whether the seqnum field is set.
      */
     @java.lang.Override
     public boolean hasSeqnum() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>required int64 seqnum = 2;</code>
+     * <code>required int64 seqnum = 3;</code>
      * @return The seqnum.
      */
     @java.lang.Override
@@ -5314,7 +5976,11 @@ public final class AmazonUps {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasPackageid()) {
+      if (!hasTrackingid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTruckid()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -5330,10 +5996,13 @@ public final class AmazonUps {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeInt32(1, packageid_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, trackingid_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        output.writeInt64(2, seqnum_);
+        output.writeInt32(2, truckid_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, seqnum_);
       }
       unknownFields.writeTo(output);
     }
@@ -5345,12 +6014,15 @@ public final class AmazonUps {
 
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, packageid_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, trackingid_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, seqnum_);
+          .computeInt32Size(2, truckid_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, seqnum_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5367,10 +6039,15 @@ public final class AmazonUps {
       }
       AmazonUps.UADelivered other = (AmazonUps.UADelivered) obj;
 
-      if (hasPackageid() != other.hasPackageid()) return false;
-      if (hasPackageid()) {
-        if (getPackageid()
-            != other.getPackageid()) return false;
+      if (hasTrackingid() != other.hasTrackingid()) return false;
+      if (hasTrackingid()) {
+        if (!getTrackingid()
+            .equals(other.getTrackingid())) return false;
+      }
+      if (hasTruckid() != other.hasTruckid()) return false;
+      if (hasTruckid()) {
+        if (getTruckid()
+            != other.getTruckid()) return false;
       }
       if (hasSeqnum() != other.hasSeqnum()) return false;
       if (hasSeqnum()) {
@@ -5388,9 +6065,13 @@ public final class AmazonUps {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasPackageid()) {
-        hash = (37 * hash) + PACKAGEID_FIELD_NUMBER;
-        hash = (53 * hash) + getPackageid();
+      if (hasTrackingid()) {
+        hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
+        hash = (53 * hash) + getTrackingid().hashCode();
+      }
+      if (hasTruckid()) {
+        hash = (37 * hash) + TRUCKID_FIELD_NUMBER;
+        hash = (53 * hash) + getTruckid();
       }
       if (hasSeqnum()) {
         hash = (37 * hash) + SEQNUM_FIELD_NUMBER;
@@ -5530,10 +6211,12 @@ public final class AmazonUps {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        packageid_ = 0;
+        trackingid_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        seqnum_ = 0L;
+        truckid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        seqnum_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -5563,12 +6246,16 @@ public final class AmazonUps {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.packageid_ = packageid_;
           to_bitField0_ |= 0x00000001;
         }
+        result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.seqnum_ = seqnum_;
+          result.truckid_ = truckid_;
           to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.seqnum_ = seqnum_;
+          to_bitField0_ |= 0x00000004;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -5619,8 +6306,13 @@ public final class AmazonUps {
 
       public Builder mergeFrom(AmazonUps.UADelivered other) {
         if (other == AmazonUps.UADelivered.getDefaultInstance()) return this;
-        if (other.hasPackageid()) {
-          setPackageid(other.getPackageid());
+        if (other.hasTrackingid()) {
+          bitField0_ |= 0x00000001;
+          trackingid_ = other.trackingid_;
+          onChanged();
+        }
+        if (other.hasTruckid()) {
+          setTruckid(other.getTruckid());
         }
         if (other.hasSeqnum()) {
           setSeqnum(other.getSeqnum());
@@ -5632,7 +6324,10 @@ public final class AmazonUps {
 
       @java.lang.Override
       public final boolean isInitialized() {
-        if (!hasPackageid()) {
+        if (!hasTrackingid()) {
+          return false;
+        }
+        if (!hasTruckid()) {
           return false;
         }
         if (!hasSeqnum()) {
@@ -5661,56 +6356,140 @@ public final class AmazonUps {
       }
       private int bitField0_;
 
-      private int packageid_ ;
+      private java.lang.Object trackingid_ = "";
       /**
-       * <code>required int32 packageid = 1;</code>
-       * @return Whether the packageid field is set.
+       * <code>required string trackingid = 1;</code>
+       * @return Whether the trackingid field is set.
        */
-      @java.lang.Override
-      public boolean hasPackageid() {
+      public boolean hasTrackingid() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>required int32 packageid = 1;</code>
-       * @return The packageid.
+       * <code>required string trackingid = 1;</code>
+       * @return The trackingid.
        */
-      @java.lang.Override
-      public int getPackageid() {
-        return packageid_;
+      public java.lang.String getTrackingid() {
+        java.lang.Object ref = trackingid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            trackingid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>required int32 packageid = 1;</code>
-       * @param value The packageid to set.
+       * <code>required string trackingid = 1;</code>
+       * @return The bytes for trackingid.
+       */
+      public com.google.protobuf.ByteString
+          getTrackingidBytes() {
+        java.lang.Object ref = trackingid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          trackingid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @param value The trackingid to set.
        * @return This builder for chaining.
        */
-      public Builder setPackageid(int value) {
-        bitField0_ |= 0x00000001;
-        packageid_ = value;
+      public Builder setTrackingid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        trackingid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 packageid = 1;</code>
+       * <code>required string trackingid = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearPackageid() {
+      public Builder clearTrackingid() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        packageid_ = 0;
+        trackingid_ = getDefaultInstance().getTrackingid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @param value The bytes for trackingid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackingidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        trackingid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int truckid_ ;
+      /**
+       * <code>required int32 truckid = 2;</code>
+       * @return Whether the truckid field is set.
+       */
+      @java.lang.Override
+      public boolean hasTruckid() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required int32 truckid = 2;</code>
+       * @return The truckid.
+       */
+      @java.lang.Override
+      public int getTruckid() {
+        return truckid_;
+      }
+      /**
+       * <code>required int32 truckid = 2;</code>
+       * @param value The truckid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTruckid(int value) {
+        bitField0_ |= 0x00000002;
+        truckid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 truckid = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTruckid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        truckid_ = 0;
         onChanged();
         return this;
       }
 
       private long seqnum_ ;
       /**
-       * <code>required int64 seqnum = 2;</code>
+       * <code>required int64 seqnum = 3;</code>
        * @return Whether the seqnum field is set.
        */
       @java.lang.Override
       public boolean hasSeqnum() {
-        return ((bitField0_ & 0x00000002) != 0);
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>required int64 seqnum = 2;</code>
+       * <code>required int64 seqnum = 3;</code>
        * @return The seqnum.
        */
       @java.lang.Override
@@ -5718,22 +6497,22 @@ public final class AmazonUps {
         return seqnum_;
       }
       /**
-       * <code>required int64 seqnum = 2;</code>
+       * <code>required int64 seqnum = 3;</code>
        * @param value The seqnum to set.
        * @return This builder for chaining.
        */
       public Builder setSeqnum(long value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         seqnum_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 seqnum = 2;</code>
+       * <code>required int64 seqnum = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearSeqnum() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         seqnum_ = 0L;
         onChanged();
         return this;
@@ -5786,6 +6565,938 @@ public final class AmazonUps {
 
     @java.lang.Override
     public AmazonUps.UADelivered getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface UAChangeAddrOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UAChangeAddr)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return Whether the trackingid field is set.
+     */
+    boolean hasTrackingid();
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The trackingid.
+     */
+    java.lang.String getTrackingid();
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The bytes for trackingid.
+     */
+    com.google.protobuf.ByteString
+        getTrackingidBytes();
+
+    /**
+     * <code>required int32 dest_x = 2;</code>
+     * @return Whether the destX field is set.
+     */
+    boolean hasDestX();
+    /**
+     * <code>required int32 dest_x = 2;</code>
+     * @return The destX.
+     */
+    int getDestX();
+
+    /**
+     * <code>required int32 dest_y = 3;</code>
+     * @return Whether the destY field is set.
+     */
+    boolean hasDestY();
+    /**
+     * <code>required int32 dest_y = 3;</code>
+     * @return The destY.
+     */
+    int getDestY();
+
+    /**
+     * <code>required int64 seqnum = 4;</code>
+     * @return Whether the seqnum field is set.
+     */
+    boolean hasSeqnum();
+    /**
+     * <code>required int64 seqnum = 4;</code>
+     * @return The seqnum.
+     */
+    long getSeqnum();
+  }
+  /**
+   * Protobuf type {@code UAChangeAddr}
+   */
+  public static final class UAChangeAddr extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:UAChangeAddr)
+      UAChangeAddrOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UAChangeAddr.newBuilder() to construct.
+    private UAChangeAddr(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UAChangeAddr() {
+      trackingid_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UAChangeAddr();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UAChangeAddr(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              trackingid_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              destX_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              destY_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              seqnum_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return AmazonUps.internal_static_UAChangeAddr_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return AmazonUps.internal_static_UAChangeAddr_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              AmazonUps.UAChangeAddr.class, AmazonUps.UAChangeAddr.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int TRACKINGID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object trackingid_;
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return Whether the trackingid field is set.
+     */
+    @java.lang.Override
+    public boolean hasTrackingid() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The trackingid.
+     */
+    @java.lang.Override
+    public java.lang.String getTrackingid() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          trackingid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string trackingid = 1;</code>
+     * @return The bytes for trackingid.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTrackingidBytes() {
+      java.lang.Object ref = trackingid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        trackingid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DEST_X_FIELD_NUMBER = 2;
+    private int destX_;
+    /**
+     * <code>required int32 dest_x = 2;</code>
+     * @return Whether the destX field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestX() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>required int32 dest_x = 2;</code>
+     * @return The destX.
+     */
+    @java.lang.Override
+    public int getDestX() {
+      return destX_;
+    }
+
+    public static final int DEST_Y_FIELD_NUMBER = 3;
+    private int destY_;
+    /**
+     * <code>required int32 dest_y = 3;</code>
+     * @return Whether the destY field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestY() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required int32 dest_y = 3;</code>
+     * @return The destY.
+     */
+    @java.lang.Override
+    public int getDestY() {
+      return destY_;
+    }
+
+    public static final int SEQNUM_FIELD_NUMBER = 4;
+    private long seqnum_;
+    /**
+     * <code>required int64 seqnum = 4;</code>
+     * @return Whether the seqnum field is set.
+     */
+    @java.lang.Override
+    public boolean hasSeqnum() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>required int64 seqnum = 4;</code>
+     * @return The seqnum.
+     */
+    @java.lang.Override
+    public long getSeqnum() {
+      return seqnum_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasTrackingid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDestX()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDestY()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSeqnum()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, trackingid_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt32(2, destX_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt32(3, destY_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt64(4, seqnum_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, trackingid_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, destX_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, destY_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, seqnum_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof AmazonUps.UAChangeAddr)) {
+        return super.equals(obj);
+      }
+      AmazonUps.UAChangeAddr other = (AmazonUps.UAChangeAddr) obj;
+
+      if (hasTrackingid() != other.hasTrackingid()) return false;
+      if (hasTrackingid()) {
+        if (!getTrackingid()
+            .equals(other.getTrackingid())) return false;
+      }
+      if (hasDestX() != other.hasDestX()) return false;
+      if (hasDestX()) {
+        if (getDestX()
+            != other.getDestX()) return false;
+      }
+      if (hasDestY() != other.hasDestY()) return false;
+      if (hasDestY()) {
+        if (getDestY()
+            != other.getDestY()) return false;
+      }
+      if (hasSeqnum() != other.hasSeqnum()) return false;
+      if (hasSeqnum()) {
+        if (getSeqnum()
+            != other.getSeqnum()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasTrackingid()) {
+        hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
+        hash = (53 * hash) + getTrackingid().hashCode();
+      }
+      if (hasDestX()) {
+        hash = (37 * hash) + DEST_X_FIELD_NUMBER;
+        hash = (53 * hash) + getDestX();
+      }
+      if (hasDestY()) {
+        hash = (37 * hash) + DEST_Y_FIELD_NUMBER;
+        hash = (53 * hash) + getDestY();
+      }
+      if (hasSeqnum()) {
+        hash = (37 * hash) + SEQNUM_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getSeqnum());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static AmazonUps.UAChangeAddr parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.UAChangeAddr parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static AmazonUps.UAChangeAddr parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.UAChangeAddr parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(AmazonUps.UAChangeAddr prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code UAChangeAddr}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UAChangeAddr)
+        AmazonUps.UAChangeAddrOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return AmazonUps.internal_static_UAChangeAddr_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return AmazonUps.internal_static_UAChangeAddr_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                AmazonUps.UAChangeAddr.class, AmazonUps.UAChangeAddr.Builder.class);
+      }
+
+      // Construct using AmazonUps.UAChangeAddr.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        trackingid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        destX_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        destY_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        seqnum_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return AmazonUps.internal_static_UAChangeAddr_descriptor;
+      }
+
+      @java.lang.Override
+      public AmazonUps.UAChangeAddr getDefaultInstanceForType() {
+        return AmazonUps.UAChangeAddr.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public AmazonUps.UAChangeAddr build() {
+        AmazonUps.UAChangeAddr result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public AmazonUps.UAChangeAddr buildPartial() {
+        AmazonUps.UAChangeAddr result = new AmazonUps.UAChangeAddr(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.trackingid_ = trackingid_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.destX_ = destX_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.destY_ = destY_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.seqnum_ = seqnum_;
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof AmazonUps.UAChangeAddr) {
+          return mergeFrom((AmazonUps.UAChangeAddr)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(AmazonUps.UAChangeAddr other) {
+        if (other == AmazonUps.UAChangeAddr.getDefaultInstance()) return this;
+        if (other.hasTrackingid()) {
+          bitField0_ |= 0x00000001;
+          trackingid_ = other.trackingid_;
+          onChanged();
+        }
+        if (other.hasDestX()) {
+          setDestX(other.getDestX());
+        }
+        if (other.hasDestY()) {
+          setDestY(other.getDestY());
+        }
+        if (other.hasSeqnum()) {
+          setSeqnum(other.getSeqnum());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasTrackingid()) {
+          return false;
+        }
+        if (!hasDestX()) {
+          return false;
+        }
+        if (!hasDestY()) {
+          return false;
+        }
+        if (!hasSeqnum()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        AmazonUps.UAChangeAddr parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (AmazonUps.UAChangeAddr) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object trackingid_ = "";
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @return Whether the trackingid field is set.
+       */
+      public boolean hasTrackingid() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @return The trackingid.
+       */
+      public java.lang.String getTrackingid() {
+        java.lang.Object ref = trackingid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            trackingid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @return The bytes for trackingid.
+       */
+      public com.google.protobuf.ByteString
+          getTrackingidBytes() {
+        java.lang.Object ref = trackingid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          trackingid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @param value The trackingid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackingid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        trackingid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTrackingid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        trackingid_ = getDefaultInstance().getTrackingid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string trackingid = 1;</code>
+       * @param value The bytes for trackingid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrackingidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        trackingid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int destX_ ;
+      /**
+       * <code>required int32 dest_x = 2;</code>
+       * @return Whether the destX field is set.
+       */
+      @java.lang.Override
+      public boolean hasDestX() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>required int32 dest_x = 2;</code>
+       * @return The destX.
+       */
+      @java.lang.Override
+      public int getDestX() {
+        return destX_;
+      }
+      /**
+       * <code>required int32 dest_x = 2;</code>
+       * @param value The destX to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestX(int value) {
+        bitField0_ |= 0x00000002;
+        destX_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 dest_x = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestX() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        destX_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int destY_ ;
+      /**
+       * <code>required int32 dest_y = 3;</code>
+       * @return Whether the destY field is set.
+       */
+      @java.lang.Override
+      public boolean hasDestY() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>required int32 dest_y = 3;</code>
+       * @return The destY.
+       */
+      @java.lang.Override
+      public int getDestY() {
+        return destY_;
+      }
+      /**
+       * <code>required int32 dest_y = 3;</code>
+       * @param value The destY to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDestY(int value) {
+        bitField0_ |= 0x00000004;
+        destY_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 dest_y = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDestY() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        destY_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long seqnum_ ;
+      /**
+       * <code>required int64 seqnum = 4;</code>
+       * @return Whether the seqnum field is set.
+       */
+      @java.lang.Override
+      public boolean hasSeqnum() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>required int64 seqnum = 4;</code>
+       * @return The seqnum.
+       */
+      @java.lang.Override
+      public long getSeqnum() {
+        return seqnum_;
+      }
+      /**
+       * <code>required int64 seqnum = 4;</code>
+       * @param value The seqnum to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSeqnum(long value) {
+        bitField0_ |= 0x00000008;
+        seqnum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 seqnum = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSeqnum() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        seqnum_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:UAChangeAddr)
+    }
+
+    // @@protoc_insertion_point(class_scope:UAChangeAddr)
+    private static final AmazonUps.UAChangeAddr DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new AmazonUps.UAChangeAddr();
+    }
+
+    public static AmazonUps.UAChangeAddr getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<UAChangeAddr>
+        PARSER = new com.google.protobuf.AbstractParser<UAChangeAddr>() {
+      @java.lang.Override
+      public UAChangeAddr parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UAChangeAddr(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UAChangeAddr> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UAChangeAddr> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public AmazonUps.UAChangeAddr getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -8424,41 +10135,65 @@ public final class AmazonUps {
         int index);
 
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    java.util.List<AmazonUps.UAChangeAddr> 
+        getChangeAddrList();
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    AmazonUps.UAChangeAddr getChangeAddr(int index);
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    int getChangeAddrCount();
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    java.util.List<? extends AmazonUps.UAChangeAddrOrBuilder> 
+        getChangeAddrOrBuilderList();
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    AmazonUps.UAChangeAddrOrBuilder getChangeAddrOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .Err errors = 4;</code>
      */
     java.util.List<AmazonUps.Err> 
         getErrorsList();
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     AmazonUps.Err getErrors(int index);
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     int getErrorsCount();
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     java.util.List<? extends AmazonUps.ErrOrBuilder> 
         getErrorsOrBuilderList();
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     AmazonUps.ErrOrBuilder getErrorsOrBuilder(
         int index);
 
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @return A list containing the acks.
      */
     java.util.List<java.lang.Long> getAcksList();
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @return The count of acks.
      */
     int getAcksCount();
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @param index The index of the element to return.
      * @return The acks at the given index.
      */
@@ -8479,6 +10214,7 @@ public final class AmazonUps {
     private UACommands() {
       arrived_ = java.util.Collections.emptyList();
       delivered_ = java.util.Collections.emptyList();
+      changeAddr_ = java.util.Collections.emptyList();
       errors_ = java.util.Collections.emptyList();
       acks_ = emptyLongList();
     }
@@ -8534,27 +10270,36 @@ public final class AmazonUps {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                errors_ = new java.util.ArrayList<AmazonUps.Err>();
+                changeAddr_ = new java.util.ArrayList<AmazonUps.UAChangeAddr>();
                 mutable_bitField0_ |= 0x00000004;
+              }
+              changeAddr_.add(
+                  input.readMessage(AmazonUps.UAChangeAddr.PARSER, extensionRegistry));
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                errors_ = new java.util.ArrayList<AmazonUps.Err>();
+                mutable_bitField0_ |= 0x00000008;
               }
               errors_.add(
                   input.readMessage(AmazonUps.Err.PARSER, extensionRegistry));
               break;
             }
-            case 32: {
-              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+            case 40: {
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
                 acks_ = newLongList();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000010;
               }
               acks_.addLong(input.readInt64());
               break;
             }
-            case 34: {
+            case 42: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000008) != 0) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00000010) != 0) && input.getBytesUntilLimit() > 0) {
                 acks_ = newLongList();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000010;
               }
               while (input.getBytesUntilLimit() > 0) {
                 acks_.addLong(input.readInt64());
@@ -8584,9 +10329,12 @@ public final class AmazonUps {
           delivered_ = java.util.Collections.unmodifiableList(delivered_);
         }
         if (((mutable_bitField0_ & 0x00000004) != 0)) {
-          errors_ = java.util.Collections.unmodifiableList(errors_);
+          changeAddr_ = java.util.Collections.unmodifiableList(changeAddr_);
         }
         if (((mutable_bitField0_ & 0x00000008) != 0)) {
+          errors_ = java.util.Collections.unmodifiableList(errors_);
+        }
+        if (((mutable_bitField0_ & 0x00000010) != 0)) {
           acks_.makeImmutable(); // C
         }
         this.unknownFields = unknownFields.build();
@@ -8686,17 +10434,57 @@ public final class AmazonUps {
       return delivered_.get(index);
     }
 
-    public static final int ERRORS_FIELD_NUMBER = 3;
+    public static final int CHANGEADDR_FIELD_NUMBER = 3;
+    private java.util.List<AmazonUps.UAChangeAddr> changeAddr_;
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<AmazonUps.UAChangeAddr> getChangeAddrList() {
+      return changeAddr_;
+    }
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends AmazonUps.UAChangeAddrOrBuilder> 
+        getChangeAddrOrBuilderList() {
+      return changeAddr_;
+    }
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    @java.lang.Override
+    public int getChangeAddrCount() {
+      return changeAddr_.size();
+    }
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    @java.lang.Override
+    public AmazonUps.UAChangeAddr getChangeAddr(int index) {
+      return changeAddr_.get(index);
+    }
+    /**
+     * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+     */
+    @java.lang.Override
+    public AmazonUps.UAChangeAddrOrBuilder getChangeAddrOrBuilder(
+        int index) {
+      return changeAddr_.get(index);
+    }
+
+    public static final int ERRORS_FIELD_NUMBER = 4;
     private java.util.List<AmazonUps.Err> errors_;
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     @java.lang.Override
     public java.util.List<AmazonUps.Err> getErrorsList() {
       return errors_;
     }
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     @java.lang.Override
     public java.util.List<? extends AmazonUps.ErrOrBuilder> 
@@ -8704,21 +10492,21 @@ public final class AmazonUps {
       return errors_;
     }
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     @java.lang.Override
     public int getErrorsCount() {
       return errors_.size();
     }
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     @java.lang.Override
     public AmazonUps.Err getErrors(int index) {
       return errors_.get(index);
     }
     /**
-     * <code>repeated .Err errors = 3;</code>
+     * <code>repeated .Err errors = 4;</code>
      */
     @java.lang.Override
     public AmazonUps.ErrOrBuilder getErrorsOrBuilder(
@@ -8726,10 +10514,10 @@ public final class AmazonUps {
       return errors_.get(index);
     }
 
-    public static final int ACKS_FIELD_NUMBER = 4;
+    public static final int ACKS_FIELD_NUMBER = 5;
     private com.google.protobuf.Internal.LongList acks_;
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @return A list containing the acks.
      */
     @java.lang.Override
@@ -8738,14 +10526,14 @@ public final class AmazonUps {
       return acks_;
     }
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @return The count of acks.
      */
     public int getAcksCount() {
       return acks_.size();
     }
     /**
-     * <code>repeated int64 acks = 4;</code>
+     * <code>repeated int64 acks = 5;</code>
      * @param index The index of the element to return.
      * @return The acks at the given index.
      */
@@ -8772,6 +10560,12 @@ public final class AmazonUps {
           return false;
         }
       }
+      for (int i = 0; i < getChangeAddrCount(); i++) {
+        if (!getChangeAddr(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       for (int i = 0; i < getErrorsCount(); i++) {
         if (!getErrors(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -8791,11 +10585,14 @@ public final class AmazonUps {
       for (int i = 0; i < delivered_.size(); i++) {
         output.writeMessage(2, delivered_.get(i));
       }
+      for (int i = 0; i < changeAddr_.size(); i++) {
+        output.writeMessage(3, changeAddr_.get(i));
+      }
       for (int i = 0; i < errors_.size(); i++) {
-        output.writeMessage(3, errors_.get(i));
+        output.writeMessage(4, errors_.get(i));
       }
       for (int i = 0; i < acks_.size(); i++) {
-        output.writeInt64(4, acks_.getLong(i));
+        output.writeInt64(5, acks_.getLong(i));
       }
       unknownFields.writeTo(output);
     }
@@ -8814,9 +10611,13 @@ public final class AmazonUps {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, delivered_.get(i));
       }
+      for (int i = 0; i < changeAddr_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, changeAddr_.get(i));
+      }
       for (int i = 0; i < errors_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, errors_.get(i));
+          .computeMessageSize(4, errors_.get(i));
       }
       {
         int dataSize = 0;
@@ -8846,6 +10647,8 @@ public final class AmazonUps {
           .equals(other.getArrivedList())) return false;
       if (!getDeliveredList()
           .equals(other.getDeliveredList())) return false;
+      if (!getChangeAddrList()
+          .equals(other.getChangeAddrList())) return false;
       if (!getErrorsList()
           .equals(other.getErrorsList())) return false;
       if (!getAcksList()
@@ -8868,6 +10671,10 @@ public final class AmazonUps {
       if (getDeliveredCount() > 0) {
         hash = (37 * hash) + DELIVERED_FIELD_NUMBER;
         hash = (53 * hash) + getDeliveredList().hashCode();
+      }
+      if (getChangeAddrCount() > 0) {
+        hash = (37 * hash) + CHANGEADDR_FIELD_NUMBER;
+        hash = (53 * hash) + getChangeAddrList().hashCode();
       }
       if (getErrorsCount() > 0) {
         hash = (37 * hash) + ERRORS_FIELD_NUMBER;
@@ -9007,6 +10814,7 @@ public final class AmazonUps {
                 .alwaysUseFieldBuilders) {
           getArrivedFieldBuilder();
           getDeliveredFieldBuilder();
+          getChangeAddrFieldBuilder();
           getErrorsFieldBuilder();
         }
       }
@@ -9025,14 +10833,20 @@ public final class AmazonUps {
         } else {
           deliveredBuilder_.clear();
         }
+        if (changeAddrBuilder_ == null) {
+          changeAddr_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          changeAddrBuilder_.clear();
+        }
         if (errorsBuilder_ == null) {
           errors_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           errorsBuilder_.clear();
         }
         acks_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -9078,18 +10892,27 @@ public final class AmazonUps {
         } else {
           result.delivered_ = deliveredBuilder_.build();
         }
-        if (errorsBuilder_ == null) {
+        if (changeAddrBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0)) {
-            errors_ = java.util.Collections.unmodifiableList(errors_);
+            changeAddr_ = java.util.Collections.unmodifiableList(changeAddr_);
             bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.changeAddr_ = changeAddr_;
+        } else {
+          result.changeAddr_ = changeAddrBuilder_.build();
+        }
+        if (errorsBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) != 0)) {
+            errors_ = java.util.Collections.unmodifiableList(errors_);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.errors_ = errors_;
         } else {
           result.errors_ = errorsBuilder_.build();
         }
-        if (((bitField0_ & 0x00000008) != 0)) {
+        if (((bitField0_ & 0x00000010) != 0)) {
           acks_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
         }
         result.acks_ = acks_;
         onBuilt();
@@ -9192,11 +11015,37 @@ public final class AmazonUps {
             }
           }
         }
+        if (changeAddrBuilder_ == null) {
+          if (!other.changeAddr_.isEmpty()) {
+            if (changeAddr_.isEmpty()) {
+              changeAddr_ = other.changeAddr_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureChangeAddrIsMutable();
+              changeAddr_.addAll(other.changeAddr_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.changeAddr_.isEmpty()) {
+            if (changeAddrBuilder_.isEmpty()) {
+              changeAddrBuilder_.dispose();
+              changeAddrBuilder_ = null;
+              changeAddr_ = other.changeAddr_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              changeAddrBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getChangeAddrFieldBuilder() : null;
+            } else {
+              changeAddrBuilder_.addAllMessages(other.changeAddr_);
+            }
+          }
+        }
         if (errorsBuilder_ == null) {
           if (!other.errors_.isEmpty()) {
             if (errors_.isEmpty()) {
               errors_ = other.errors_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureErrorsIsMutable();
               errors_.addAll(other.errors_);
@@ -9209,7 +11058,7 @@ public final class AmazonUps {
               errorsBuilder_.dispose();
               errorsBuilder_ = null;
               errors_ = other.errors_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
               errorsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getErrorsFieldBuilder() : null;
@@ -9221,7 +11070,7 @@ public final class AmazonUps {
         if (!other.acks_.isEmpty()) {
           if (acks_.isEmpty()) {
             acks_ = other.acks_;
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           } else {
             ensureAcksIsMutable();
             acks_.addAll(other.acks_);
@@ -9242,6 +11091,11 @@ public final class AmazonUps {
         }
         for (int i = 0; i < getDeliveredCount(); i++) {
           if (!getDelivered(i).isInitialized()) {
+            return false;
+          }
+        }
+        for (int i = 0; i < getChangeAddrCount(); i++) {
+          if (!getChangeAddr(i).isInitialized()) {
             return false;
           }
         }
@@ -9753,12 +11607,252 @@ public final class AmazonUps {
         return deliveredBuilder_;
       }
 
+      private java.util.List<AmazonUps.UAChangeAddr> changeAddr_ =
+        java.util.Collections.emptyList();
+      private void ensureChangeAddrIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          changeAddr_ = new java.util.ArrayList<AmazonUps.UAChangeAddr>(changeAddr_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AmazonUps.UAChangeAddr, AmazonUps.UAChangeAddr.Builder, AmazonUps.UAChangeAddrOrBuilder> changeAddrBuilder_;
+
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public java.util.List<AmazonUps.UAChangeAddr> getChangeAddrList() {
+        if (changeAddrBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(changeAddr_);
+        } else {
+          return changeAddrBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public int getChangeAddrCount() {
+        if (changeAddrBuilder_ == null) {
+          return changeAddr_.size();
+        } else {
+          return changeAddrBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public AmazonUps.UAChangeAddr getChangeAddr(int index) {
+        if (changeAddrBuilder_ == null) {
+          return changeAddr_.get(index);
+        } else {
+          return changeAddrBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder setChangeAddr(
+          int index, AmazonUps.UAChangeAddr value) {
+        if (changeAddrBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureChangeAddrIsMutable();
+          changeAddr_.set(index, value);
+          onChanged();
+        } else {
+          changeAddrBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder setChangeAddr(
+          int index, AmazonUps.UAChangeAddr.Builder builderForValue) {
+        if (changeAddrBuilder_ == null) {
+          ensureChangeAddrIsMutable();
+          changeAddr_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          changeAddrBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder addChangeAddr(AmazonUps.UAChangeAddr value) {
+        if (changeAddrBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureChangeAddrIsMutable();
+          changeAddr_.add(value);
+          onChanged();
+        } else {
+          changeAddrBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder addChangeAddr(
+          int index, AmazonUps.UAChangeAddr value) {
+        if (changeAddrBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureChangeAddrIsMutable();
+          changeAddr_.add(index, value);
+          onChanged();
+        } else {
+          changeAddrBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder addChangeAddr(
+          AmazonUps.UAChangeAddr.Builder builderForValue) {
+        if (changeAddrBuilder_ == null) {
+          ensureChangeAddrIsMutable();
+          changeAddr_.add(builderForValue.build());
+          onChanged();
+        } else {
+          changeAddrBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder addChangeAddr(
+          int index, AmazonUps.UAChangeAddr.Builder builderForValue) {
+        if (changeAddrBuilder_ == null) {
+          ensureChangeAddrIsMutable();
+          changeAddr_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          changeAddrBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder addAllChangeAddr(
+          java.lang.Iterable<? extends AmazonUps.UAChangeAddr> values) {
+        if (changeAddrBuilder_ == null) {
+          ensureChangeAddrIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, changeAddr_);
+          onChanged();
+        } else {
+          changeAddrBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder clearChangeAddr() {
+        if (changeAddrBuilder_ == null) {
+          changeAddr_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          changeAddrBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public Builder removeChangeAddr(int index) {
+        if (changeAddrBuilder_ == null) {
+          ensureChangeAddrIsMutable();
+          changeAddr_.remove(index);
+          onChanged();
+        } else {
+          changeAddrBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public AmazonUps.UAChangeAddr.Builder getChangeAddrBuilder(
+          int index) {
+        return getChangeAddrFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public AmazonUps.UAChangeAddrOrBuilder getChangeAddrOrBuilder(
+          int index) {
+        if (changeAddrBuilder_ == null) {
+          return changeAddr_.get(index);  } else {
+          return changeAddrBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public java.util.List<? extends AmazonUps.UAChangeAddrOrBuilder> 
+           getChangeAddrOrBuilderList() {
+        if (changeAddrBuilder_ != null) {
+          return changeAddrBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(changeAddr_);
+        }
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public AmazonUps.UAChangeAddr.Builder addChangeAddrBuilder() {
+        return getChangeAddrFieldBuilder().addBuilder(
+            AmazonUps.UAChangeAddr.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public AmazonUps.UAChangeAddr.Builder addChangeAddrBuilder(
+          int index) {
+        return getChangeAddrFieldBuilder().addBuilder(
+            index, AmazonUps.UAChangeAddr.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .UAChangeAddr changeAddr = 3;</code>
+       */
+      public java.util.List<AmazonUps.UAChangeAddr.Builder> 
+           getChangeAddrBuilderList() {
+        return getChangeAddrFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AmazonUps.UAChangeAddr, AmazonUps.UAChangeAddr.Builder, AmazonUps.UAChangeAddrOrBuilder> 
+          getChangeAddrFieldBuilder() {
+        if (changeAddrBuilder_ == null) {
+          changeAddrBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              AmazonUps.UAChangeAddr, AmazonUps.UAChangeAddr.Builder, AmazonUps.UAChangeAddrOrBuilder>(
+                  changeAddr_,
+                  ((bitField0_ & 0x00000004) != 0),
+                  getParentForChildren(),
+                  isClean());
+          changeAddr_ = null;
+        }
+        return changeAddrBuilder_;
+      }
+
       private java.util.List<AmazonUps.Err> errors_ =
         java.util.Collections.emptyList();
       private void ensureErrorsIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
+        if (!((bitField0_ & 0x00000008) != 0)) {
           errors_ = new java.util.ArrayList<AmazonUps.Err>(errors_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -9766,7 +11860,7 @@ public final class AmazonUps {
           AmazonUps.Err, AmazonUps.Err.Builder, AmazonUps.ErrOrBuilder> errorsBuilder_;
 
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public java.util.List<AmazonUps.Err> getErrorsList() {
         if (errorsBuilder_ == null) {
@@ -9776,7 +11870,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public int getErrorsCount() {
         if (errorsBuilder_ == null) {
@@ -9786,7 +11880,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public AmazonUps.Err getErrors(int index) {
         if (errorsBuilder_ == null) {
@@ -9796,7 +11890,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder setErrors(
           int index, AmazonUps.Err value) {
@@ -9813,7 +11907,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder setErrors(
           int index, AmazonUps.Err.Builder builderForValue) {
@@ -9827,7 +11921,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder addErrors(AmazonUps.Err value) {
         if (errorsBuilder_ == null) {
@@ -9843,7 +11937,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder addErrors(
           int index, AmazonUps.Err value) {
@@ -9860,7 +11954,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder addErrors(
           AmazonUps.Err.Builder builderForValue) {
@@ -9874,7 +11968,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder addErrors(
           int index, AmazonUps.Err.Builder builderForValue) {
@@ -9888,7 +11982,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder addAllErrors(
           java.lang.Iterable<? extends AmazonUps.Err> values) {
@@ -9903,12 +11997,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder clearErrors() {
         if (errorsBuilder_ == null) {
           errors_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           errorsBuilder_.clear();
@@ -9916,7 +12010,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public Builder removeErrors(int index) {
         if (errorsBuilder_ == null) {
@@ -9929,14 +12023,14 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public AmazonUps.Err.Builder getErrorsBuilder(
           int index) {
         return getErrorsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public AmazonUps.ErrOrBuilder getErrorsOrBuilder(
           int index) {
@@ -9946,7 +12040,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public java.util.List<? extends AmazonUps.ErrOrBuilder> 
            getErrorsOrBuilderList() {
@@ -9957,14 +12051,14 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public AmazonUps.Err.Builder addErrorsBuilder() {
         return getErrorsFieldBuilder().addBuilder(
             AmazonUps.Err.getDefaultInstance());
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public AmazonUps.Err.Builder addErrorsBuilder(
           int index) {
@@ -9972,7 +12066,7 @@ public final class AmazonUps {
             index, AmazonUps.Err.getDefaultInstance());
       }
       /**
-       * <code>repeated .Err errors = 3;</code>
+       * <code>repeated .Err errors = 4;</code>
        */
       public java.util.List<AmazonUps.Err.Builder> 
            getErrorsBuilderList() {
@@ -9985,7 +12079,7 @@ public final class AmazonUps {
           errorsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AmazonUps.Err, AmazonUps.Err.Builder, AmazonUps.ErrOrBuilder>(
                   errors_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x00000008) != 0),
                   getParentForChildren(),
                   isClean());
           errors_ = null;
@@ -9995,29 +12089,29 @@ public final class AmazonUps {
 
       private com.google.protobuf.Internal.LongList acks_ = emptyLongList();
       private void ensureAcksIsMutable() {
-        if (!((bitField0_ & 0x00000008) != 0)) {
+        if (!((bitField0_ & 0x00000010) != 0)) {
           acks_ = mutableCopy(acks_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
          }
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @return A list containing the acks.
        */
       public java.util.List<java.lang.Long>
           getAcksList() {
-        return ((bitField0_ & 0x00000008) != 0) ?
+        return ((bitField0_ & 0x00000010) != 0) ?
                  java.util.Collections.unmodifiableList(acks_) : acks_;
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @return The count of acks.
        */
       public int getAcksCount() {
         return acks_.size();
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @param index The index of the element to return.
        * @return The acks at the given index.
        */
@@ -10025,7 +12119,7 @@ public final class AmazonUps {
         return acks_.getLong(index);
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @param index The index to set the value at.
        * @param value The acks to set.
        * @return This builder for chaining.
@@ -10038,7 +12132,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @param value The acks to add.
        * @return This builder for chaining.
        */
@@ -10049,7 +12143,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @param values The acks to add.
        * @return This builder for chaining.
        */
@@ -10062,12 +12156,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 4;</code>
+       * <code>repeated int64 acks = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearAcks() {
         acks_ = emptyLongList();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -10125,6 +12219,11 @@ public final class AmazonUps {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Product_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Product_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Pack_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -10160,6 +12259,11 @@ public final class AmazonUps {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_UADelivered_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_UAChangeAddr_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_UAChangeAddr_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Err_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -10183,94 +12287,107 @@ public final class AmazonUps {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020amazon_ups.proto\032\022world_amazon.proto\"k" +
-      "\n\004Pack\022\r\n\005whnum\030\001 \002(\005\022\031\n\006things\030\002 \003(\0132\t." +
-      "AProduct\022\021\n\tpackageid\030\003 \002(\003\022\022\n\ntrackingi" +
-      "d\030\004 \002(\t\022\022\n\nupsaccount\030\005 \001(\005\" \n\rUAInitCon" +
-      "nect\022\017\n\007worldid\030\001 \002(\003\"6\n\020AUConfirmConnec" +
-      "t\022\017\n\007worldid\030\001 \002(\003\022\021\n\tconnected\030\002 \002(\010\"o\n" +
-      "\014AUNeedATruck\022\014\n\004wh_x\030\001 \002(\005\022\014\n\004wh_y\030\002 \002(" +
-      "\005\022\023\n\004pack\030\003 \002(\0132\005.Pack\022\016\n\006dest_x\030\004 \002(\005\022\016" +
-      "\n\006dest_y\030\005 \002(\005\022\016\n\006seqnum\030\006 \002(\003\"/\n\014AUTruc" +
-      "kCanGo\022\017\n\007truckid\030\001 \002(\005\022\016\n\006seqnum\030\002 \002(\003\"" +
-      "S\n\016UATruckArrived\022\017\n\007truckid\030\001 \002(\005\022\021\n\tpa" +
-      "ckageid\030\002 \002(\005\022\r\n\005whnum\030\003 \002(\005\022\016\n\006seqnum\030\004" +
-      " \002(\003\"0\n\013UADelivered\022\021\n\tpackageid\030\001 \002(\005\022\016" +
-      "\n\006seqnum\030\002 \002(\003\"8\n\003Err\022\013\n\003msg\030\001 \002(\t\022\024\n\014or" +
-      "iginseqnum\030\002 \002(\003\022\016\n\006seqnum\030\003 \002(\003\"h\n\nAUCo" +
-      "mmands\022\033\n\004need\030\001 \003(\0132\r.AUNeedATruck\022\031\n\002g" +
-      "o\030\002 \003(\0132\r.AUTruckCanGo\022\024\n\006errors\030\003 \003(\0132\004" +
-      ".Err\022\014\n\004acks\030\004 \003(\003\"s\n\nUACommands\022 \n\007arri" +
-      "ved\030\001 \003(\0132\017.UATruckArrived\022\037\n\tdelivered\030" +
-      "\002 \003(\0132\014.UADelivered\022\024\n\006errors\030\003 \003(\0132\004.Er" +
-      "r\022\014\n\004acks\030\004 \003(\003"
+      "\n\020amazon_ups.proto\"9\n\007Product\022\n\n\002id\030\001 \002(" +
+      "\003\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003 \002(\005\"w\n" +
+      "\004Pack\022\r\n\005wh_id\030\001 \002(\005\022\030\n\006things\030\002 \003(\0132\010.P" +
+      "roduct\022\022\n\ntrackingid\030\004 \002(\t\022\022\n\nupsaccount" +
+      "\030\005 \001(\005\022\016\n\006dest_x\030\006 \002(\005\022\016\n\006dest_y\030\007 \002(\005\" " +
+      "\n\rUAInitConnect\022\017\n\007worldid\030\001 \002(\003\"6\n\020AUCo" +
+      "nfirmConnect\022\017\n\007worldid\030\001 \002(\003\022\021\n\tconnect" +
+      "ed\030\002 \002(\010\"3\n\014AUNeedATruck\022\023\n\004pack\030\001 \002(\0132\005" +
+      ".Pack\022\016\n\006seqnum\030\002 \002(\003\"/\n\014AUTruckCanGo\022\017\n" +
+      "\007truckid\030\001 \002(\005\022\016\n\006seqnum\030\002 \002(\003\"T\n\016UATruc" +
+      "kArrived\022\017\n\007truckid\030\001 \002(\005\022\022\n\ntrackingid\030" +
+      "\002 \002(\t\022\r\n\005wh_id\030\003 \002(\005\022\016\n\006seqnum\030\004 \002(\003\"B\n\013" +
+      "UADelivered\022\022\n\ntrackingid\030\001 \002(\t\022\017\n\007truck" +
+      "id\030\002 \002(\005\022\016\n\006seqnum\030\003 \002(\003\"R\n\014UAChangeAddr" +
+      "\022\022\n\ntrackingid\030\001 \002(\t\022\016\n\006dest_x\030\002 \002(\005\022\016\n\006" +
+      "dest_y\030\003 \002(\005\022\016\n\006seqnum\030\004 \002(\003\"8\n\003Err\022\013\n\003m" +
+      "sg\030\001 \002(\t\022\024\n\014originseqnum\030\002 \002(\003\022\016\n\006seqnum" +
+      "\030\003 \002(\003\"h\n\nAUCommands\022\033\n\004need\030\001 \003(\0132\r.AUN" +
+      "eedATruck\022\031\n\002go\030\002 \003(\0132\r.AUTruckCanGo\022\024\n\006" +
+      "errors\030\003 \003(\0132\004.Err\022\014\n\004acks\030\004 \003(\003\"\226\001\n\nUAC" +
+      "ommands\022 \n\007arrived\030\001 \003(\0132\017.UATruckArrive" +
+      "d\022\037\n\tdelivered\030\002 \003(\0132\014.UADelivered\022!\n\nch" +
+      "angeAddr\030\003 \003(\0132\r.UAChangeAddr\022\024\n\006errors\030" +
+      "\004 \003(\0132\004.Err\022\014\n\004acks\030\005 \003(\003"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          WorldAmazon.getDescriptor(),
         });
-    internal_static_Pack_descriptor =
+    internal_static_Product_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_Product_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Product_descriptor,
+        new java.lang.String[] { "Id", "Description", "Count", });
+    internal_static_Pack_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_Pack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Pack_descriptor,
-        new java.lang.String[] { "Whnum", "Things", "Packageid", "Trackingid", "Upsaccount", });
+        new java.lang.String[] { "WhId", "Things", "Trackingid", "Upsaccount", "DestX", "DestY", });
     internal_static_UAInitConnect_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_UAInitConnect_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UAInitConnect_descriptor,
         new java.lang.String[] { "Worldid", });
     internal_static_AUConfirmConnect_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_AUConfirmConnect_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AUConfirmConnect_descriptor,
         new java.lang.String[] { "Worldid", "Connected", });
     internal_static_AUNeedATruck_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_AUNeedATruck_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AUNeedATruck_descriptor,
-        new java.lang.String[] { "WhX", "WhY", "Pack", "DestX", "DestY", "Seqnum", });
+        new java.lang.String[] { "Pack", "Seqnum", });
     internal_static_AUTruckCanGo_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_AUTruckCanGo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AUTruckCanGo_descriptor,
         new java.lang.String[] { "Truckid", "Seqnum", });
     internal_static_UATruckArrived_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_UATruckArrived_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UATruckArrived_descriptor,
-        new java.lang.String[] { "Truckid", "Packageid", "Whnum", "Seqnum", });
+        new java.lang.String[] { "Truckid", "Trackingid", "WhId", "Seqnum", });
     internal_static_UADelivered_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_UADelivered_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UADelivered_descriptor,
-        new java.lang.String[] { "Packageid", "Seqnum", });
+        new java.lang.String[] { "Trackingid", "Truckid", "Seqnum", });
+    internal_static_UAChangeAddr_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_UAChangeAddr_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_UAChangeAddr_descriptor,
+        new java.lang.String[] { "Trackingid", "DestX", "DestY", "Seqnum", });
     internal_static_Err_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_Err_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Err_descriptor,
         new java.lang.String[] { "Msg", "Originseqnum", "Seqnum", });
     internal_static_AUCommands_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_AUCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AUCommands_descriptor,
         new java.lang.String[] { "Need", "Go", "Errors", "Acks", });
     internal_static_UACommands_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_UACommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UACommands_descriptor,
-        new java.lang.String[] { "Arrived", "Delivered", "Errors", "Acks", });
-    WorldAmazon.getDescriptor();
+        new java.lang.String[] { "Arrived", "Delivered", "ChangeAddr", "Errors", "Acks", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

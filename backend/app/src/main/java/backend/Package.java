@@ -2,18 +2,18 @@ package backend;
 
 import java.util.List;
 
-import backend.protocol.WorldAmazon.AProduct;
+import backend.protocol.AmazonUps.Product;
 
 public class Package {
     private long packageID;
     private String trackingID;
     private int truckID;
     private Location dest;
-    private List<AProduct> products;
+    private List<Product> products;
     private WareHouse wh;
     private String status;
 
-    public Package(long packageID, String trackingID, int truckID, Location dest, List<AProduct> products, WareHouse wh, String status) {
+    public Package(long packageID, String trackingID, int truckID, Location dest, List<Product> products, WareHouse wh, String status) {
         this.packageID = packageID;
         this.trackingID = trackingID;
         this.truckID = truckID;
@@ -39,7 +39,7 @@ public class Package {
         return dest;
     }
 
-    public List<AProduct> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 

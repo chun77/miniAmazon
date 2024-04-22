@@ -13,8 +13,10 @@ import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
 import backend.protocol.AmazonUps.UATruckArrived;
 import backend.protocol.AmazonUps.Pack;
+import backend.protocol.AmazonUps.Product;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.DBCtrler;
+import backend.utils.ProductToAProduct;
 import backend.utils.Sender;
 
 public class Amazon {
@@ -197,7 +199,7 @@ public class Amazon {
     private void processArrived(APurchaseMore arrived) {
         synchronized (unfinishedPackages) {
             for(Package p: unfinishedPackages){
-                if(p.getWh().getId() == arrived.getWhnum() && p.getProducts() == arrived.getThingsList()){
+                if(p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.genAProductList(p.getProducts()) == arrived.getThingsList()){
                     p.setStatus("PACKING");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKING");
                     sendToPack(p);
@@ -290,7 +292,7 @@ public class Amazon {
 
     public void sendToPurchase(Package pkg){
         int whnum = pkg.getWh().getId();
-        List<AProduct> things = pkg.getProducts();
+        List<AProduct> things = ProductToAProduct.genAProductList(pkg.getProducts());
         long seqnum = getSeqnum();
         WorldMsger msger = new WorldMsger();
         msger.purchaseMore(whnum, things, seqnum);
@@ -305,7 +307,7 @@ public class Amazon {
 
     public void sendToPack(Package pkg){
         int whnum = pkg.getWh().getId();
-        List<AProduct> things = pkg.getProducts();
+        List<AProduct> things = ProductToAProduct.genAProductList(pkg.getProducts());
         long shipid = pkg.getPackageID();
         long seqnum = getSeqnum();
         WorldMsger msger = new WorldMsger();
@@ -364,7 +366,7 @@ public class Amazon {
         int truckID = arrived.getTruckid();
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getPackageID() == arrived.getPackageid()){
+                if(p.getTrackingID() == arrived.getTrackingid()){
                     p.setTruckID(truckID);
                     // if this package is packed, tell world to load
                     if(p.getStatus() == "PACKED"){
@@ -380,7 +382,7 @@ public class Amazon {
     private void processDelivered(UADelivered delivered) {
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getPackageID() == delivered.getPackageid()){
+                if(p.getTrackingID() == delivered.getTrackingid()){
                     p.setStatus("DELIVERED");
                     unfinishedPackages.remove(p);
                     break;
@@ -417,19 +419,16 @@ public class Amazon {
     }
 
     public void sendNeedATruck(Package pkg){
-        int wh_x = pkg.getWh().getLocation().getXLocation();
-        int wh_y = pkg.getWh().getLocation().getYLocation();
         int dest_x = pkg.getDest().getXLocation();
         int dest_y = pkg.getDest().getYLocation();
         long seqnum = getSeqnum();
         // generate List<AProduct> products
-        List<AProduct> products = pkg.getProducts();
-        // generate APack
+        List<Product> products = pkg.getProducts();
+        // generate Pack
         int whnum = pkg.getWh().getId();
-        long package_id = pkg.getPackageID();
         String tracking_id = pkg.getTrackingID();
-        Pack pack = Pack.newBuilder().setWhnum(whnum).addAllThings(products).setPackageid(package_id).setTrackingid(tracking_id).build();
-        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setWhX(wh_x).setWhY(wh_y).setDestX(dest_x).setDestY(dest_y).setPack(pack).build();
+        Pack pack = Pack.newBuilder().setWhId(whnum).addAllThings(products).setTrackingid(tracking_id).setDestX(dest_x).setDestY(dest_y).build();
+        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
         sendOneCmdsToUps(cmds.build(), seqnum);
     }

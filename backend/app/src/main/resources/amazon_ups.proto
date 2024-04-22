@@ -1,13 +1,18 @@
 syntax = "proto2";
 
-import "world_amazon.proto";
+message Product{
+  required int64 id = 1;
+  required string description = 2;
+  required int32 count = 3;
+}
 
 message Pack{
-  required int32 whnum = 1;
-  repeated AProduct things = 2;
-  required int64 packageid = 3;
+  required int32 wh_id = 1;
+  repeated Product things = 2;
   required string trackingid = 4;
   optional int32 upsaccount = 5;
+  required int32 dest_x = 6;
+  required int32 dest_y = 7;
 }
 
 message UAInitConnect{
@@ -20,12 +25,8 @@ message AUConfirmConnect{
 }
 
 message AUNeedATruck{
-  required int32 wh_x = 1;
-  required int32 wh_y = 2;
-  required Pack pack = 3;
-  required int32 dest_x = 4;
-  required int32 dest_y = 5;
-  required int64 seqnum = 6;
+  required Pack pack = 1;
+  required int64 seqnum = 2;
 }
 
 message AUTruckCanGo{
@@ -35,14 +36,22 @@ message AUTruckCanGo{
 
 message UATruckArrived{
   required int32 truckid = 1;
-  required int32 packageid = 2;
-  required int32 whnum = 3;
+  required string trackingid = 2;
+  required int32 wh_id = 3;
   required int64 seqnum = 4;
 }
 
 message UADelivered{
-  required int32 packageid = 1;
-  required int64 seqnum = 2;
+  required string trackingid = 1;
+  required int32 truckid = 2;
+  required int64 seqnum = 3;
+}
+
+message UAChangeAddr{
+  required string trackingid = 1;
+  required int32 dest_x = 2;
+  required int32 dest_y = 3;
+  required int64 seqnum = 4;
 }
 
 message Err{
@@ -61,7 +70,8 @@ message AUCommands {
 message UACommands {
   repeated UATruckArrived arrived = 1;
   repeated UADelivered delivered = 2;
-  repeated Err errors = 3;
-  repeated int64 acks = 4;
+  repeated UAChangeAddr changeAddr = 3;
+  repeated Err errors = 4;
+  repeated int64 acks = 5;
 }
 
