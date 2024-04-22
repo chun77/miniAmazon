@@ -187,7 +187,7 @@ public class DBCtrler {
     public void updatePackageStatus(long packageID, String status) {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              Statement stmt = conn.createStatement()) {
-            String sql = "UPDATE packageStatus SET status = '" + status + "' WHERE package_id = " + packageID + ";";
+            String sql = "UPDATE shop_packagestatus SET status = '" + status + "' WHERE package_id = " + packageID + ";";
             stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
