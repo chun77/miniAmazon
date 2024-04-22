@@ -4,78 +4,81 @@ import json, socket
 from hashids import Hashids
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import*
 
 
-# def register(request):
-# 	if request.user.is_authenticated:
-# 		return redirect('catalog')
-# 	else:
-# 		form = CreateUserForm()
-# 		if request.method == 'POST':
-# 			form = CreateUserForm(request.POST)
-# 			if form.is_valid():
-# 				form.save()
-# 				user = form.cleaned_data.get('username')
-# 				messages.success(request, 'Account was created for ' + user)
+def register(request):
+	if request.user.is_authenticated:
+		return redirect('catalog')
+	else:
+		form = CreateUserForm()
+		if request.method == 'POST':
+			form = CreateUserForm(request.POST)
+			if form.is_valid():
+				form.save()
+				user = form.cleaned_data.get('username')
+				messages.success(request, 'Account was created for ' + user)
 
-# 				return redirect('login_view')
+				return redirect('login')
 			
 
-# 		context = {'form':form}
-# 		return render(request, 'shop/register.html', context)
+		context = {'form':form}
+		return render(request, 'shop/register.html', context)
 
 
-# def login_view(request):
-# 	if request.user.is_authenticated:
-# 		return redirect('catalog')
-# 	else:
-# 		if request.method == 'POST':
-# 			username = request.POST.get('username')
-# 			password =request.POST.get('password')
+def login_view(request):
+	if request.user.is_authenticated:
+		return redirect('catalog')
+	else:
+		if request.method == 'POST':
+			username = request.POST.get('username')
+			password =request.POST.get('password')
 
-# 			user = authenticate(request, username=username, password=password)
+			user = authenticate(request, username=username, password=password)
 
-# 			if user is not None:
-# 				login(request, user)
-# 				return redirect('catalog')
-# 			else:
-# 				messages.info(request, 'Username OR password is incorrect')
+			if user is not None:
+				login(request, user)
+				return redirect('catalog')
+			else:
+				messages.info(request, 'Username OR password is incorrect')
 
-# 		context = {}
-# 		return render(request, 'shop/login.html', context)
+		context = {}
+		return render(request, 'shop/login.html', context)
 
-# def logout_view(request):
-# 	logout(request)
-# 	return redirect('login_view')
+def logout_view(request):
+	logout(request)
+	return redirect('login')
 
 
 # Create your views here.
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def main(request):
     context = {}
     return render(request, 'shop/main.html', context)
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def catalog(request):
     products = Product.objects.all()
     context = {'products': products}
     return render(request, 'shop/catalog.html', context)
 
 # catalog.html onclick passes the product_id to this view
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def checkout(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
     context = {'product': product}
     return render(request, 'shop/checkout.html', context)
 
 # checkout.html form submission passes the product_id to this view
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def place_order(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         address_x = request.POST.get('address_x')
         address_y = request.POST.get('address_y')
+        ups_account = request.POST.get('ups_account')
         
         # Check for any missing fields
         if not (quantity and address_x and address_y):
@@ -84,8 +87,10 @@ def place_order(request, product_id):
 
         order = Order(
             # tbd: amazonAccount
+            user = request.user,
             dest_x=int(address_x),
             dest_y=int(address_y),
+            ups_account=ups_account or None  # deal with empty value
         )
         order.save()
 
@@ -106,16 +111,16 @@ def place_order(request, product_id):
         package_id_str = str(order.package_id)
 
         # Send the order data to the Amazon server
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            # connect to the server
-            s.connect(('vcm-37900.vm.duke.edu', 8888))
+        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        #     # connect to the server
+        #     s.connect(('vcm-37900.vm.duke.edu', 8888))
 
-            # send the order data
-            s.sendall(package_id_str.encode('utf-8'))
+        #     # send the order data
+        #     s.sendall(package_id_str.encode('utf-8'))
 
-            # receive the response from the server with new tracking id
-            response = s.recv(1024).decode('utf-8')
-            print(response)
+        #     # receive the response from the server with new tracking id
+        #     response = s.recv(1024).decode('utf-8')
+        #     print(response)
 
         # Redirect to the success page
         return redirect('success', order_id=order.package_id)
@@ -123,7 +128,7 @@ def place_order(request, product_id):
         # Return to the checkout page if not a POST request
         return render(request, 'shop/checkout.html', {'product': product})
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def success(request, order_id):
     order = get_object_or_404(Order, package_id=order_id)
     context = {'order': order}
