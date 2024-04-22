@@ -2,7 +2,9 @@ package backend.utils;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import backend.*;
 import backend.Package;
@@ -158,14 +160,21 @@ public class DBCtrler {
                 }
                 // get products in the package
                 List<AProduct> products = new ArrayList<>();
+                Map<Integer, Integer> productMap = new HashMap<>();
                 sql = "SELECT * FROM shop_packageproduct WHERE package_id = " + packageID + ";";
                 ResultSet rs3 = stmt.executeQuery(sql);
                 while (rs3.next()) {
                     int productID = rs3.getInt("product_id");
                     int amt = rs3.getInt("quantity");
-                    // get product name
+                    productMap.put(productID, amt);
+                }
+                // get product name
+                for (Map.Entry<Integer, Integer> entry : productMap.entrySet()) {
+                    int productID = entry.getKey();
+                    int amt = entry.getValue();
                     sql = "SELECT * FROM shop_product WHERE product_id = " + productID + ";";
                     ResultSet rs4 = stmt.executeQuery(sql);
+                    rs4.next();
                     String description = rs4.getString("description");
                     AProduct product = AProduct.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
                     products.add(product);
