@@ -2,6 +2,13 @@
 {% load static %}
 {% block content %}
 
+
+    <form method="GET" action="{% url 'catalog' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search for products..." value="{{ request.GET.search|default:'' }}">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </div>
+    </form>
     <!-- First Product Item -->
     {% for product in products %}
     <div class="row mb-4">
