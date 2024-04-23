@@ -34,15 +34,14 @@ public class WorldComm {
     public Socket connectToWorld(long worldid, List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connect(worldid, whs);
         // set up the TCP connection to the world
-        Socket socket = new Socket("localhost", 23456);
+        Socket socket = new Socket("vcm-38153.vm.duke.edu", 23456);
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         // connect to the world(send AConnect message)
-        out.write(msgToSend.toByteArray());
+        Sender.sendMsgTo(msgToSend, out);
         // receive the response from the world
-        byte[] buffer = new byte[1024];
-        int len = in.read(buffer);
-        AConnected connected = AConnected.parseFrom(Arrays.copyOf(buffer, len));
+        AConnected.Builder connected = AConnected.newBuilder();
+        Recver.recvMsgFrom(connected, in);
         System.out.println("world id: " + connected.getWorldid());
         System.out.println("result: " + connected.getResult());
         if(connected.getResult().equals("connected!")) {
