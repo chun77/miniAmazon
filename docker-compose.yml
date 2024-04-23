@@ -4,7 +4,7 @@ services:
   db:
       image: postgres:latest
       environment:
-        POSTGRES_PASSWORD: psql
+        POSTGRES_PASSWORD: postgres
         POSTGRES_USER: postgres
         POSTGRES_DB: amazondb
       restart: always
@@ -12,9 +12,11 @@ services:
         - data-volume:/var/lib/postgresql/data
   frontend:
     build: ./frontend
-    command: bash -c "python3 ./amazon/manage.py runserver 0.0.0.0:8080"
+    command: bash -c "./runserver.sh"
     ports:
-      - "8080:8080" # port for web
+      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       - db
 

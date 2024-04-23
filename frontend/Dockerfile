@@ -1,8 +1,10 @@
 FROM python:3
 RUN mkdir /frontend
-WORKDIR /frontend
 COPY . /frontend
+WORKDIR /frontend/amazon
 
 RUN pip install Django
 RUN pip install psycopg
 RUN pip install hashids
+
+RUN chmod +x runserver.sh
