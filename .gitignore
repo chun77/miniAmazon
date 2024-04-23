@@ -1,0 +1,6 @@
+frontend/amazon/amazon/settings.py
+frontend/amazon/debug.log
+
+frontend/amazon/amazon/__pycache__/
+frontend/amazon/shop/__pycache__/
+frontend/amazon/shop/migrations/__pycache__/
