@@ -1,0 +1,26 @@
+{% extends 'shop/main.html' %}
+{% block content %}
+<h1>Order Detail: tracking_id: {{ order.tracking_id }} destination:{{ order.dest_x }},{{ order.dest_y }}</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in package_products %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.description }}</td>
+            <td>{{ item.quantity }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No products found in this package.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

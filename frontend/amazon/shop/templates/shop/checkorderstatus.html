@@ -1,0 +1,26 @@
+{% extends 'shop/main.html' %}
+{% block content %}
+<h2>Order Status</h2>
+{% if packageStatuses %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for status in packageStatuses %}
+        <tr>
+            <td>{{ status.package.package_id }}</td>
+            <td>{{ status.status }}</td>
+            <td><a href="{% url 'vieworderdetail' status.package.package_id %}">View Details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No order statuses found.</p>
+{% endif %}
+{% endblock %}

@@ -59,7 +59,11 @@ def main(request):
 
 @login_required(login_url='login')
 def catalog(request):
-    products = Product.objects.all()
+    search_query = request.GET.get('search', '')
+    if search_query:
+        products = Product.objects.filter(name__icontains=search_query)
+    else:
+        products = Product.objects.all()
     context = {'products': products}
     return render(request, 'shop/catalog.html', context)
 
@@ -107,6 +111,12 @@ def place_order(request, product_id):
         )
         package_product.save()
 
+        package_status = PackageStatus(
+            package = order,
+            status = "OrderPlaced"
+        )
+        package_status.save()
+
         # only send package_id
         package_id_str = str(order.package_id)
 
@@ -133,6 +143,27 @@ def success(request, order_id):
     order = get_object_or_404(Order, package_id=order_id)
     context = {'order': order}
     return render(request, 'shop/successful.html', context)
+
+@login_required(login_url='login')
+def check_order_status(request):
+    orders = Order.objects.filter(user=request.user)
+    
+    order_ids = orders.values_list('package_id', flat=True)
+    
+    package_statuses = PackageStatus.objects.filter(package__package_id__in=order_ids)
+    
+    context = {'packageStatuses': package_statuses}
+    return render(request, 'shop/checkorderstatus.html', context)
+
+def view_order_detail(request, order_id):
+    order = get_object_or_404(Order, package_id=order_id)
+    package_products = PackageProduct.objects.filter(package=order)
+    context = {
+        'order': order,
+        'package_products': package_products
+    }
+    return render(request, 'shop/vieworderdetail.html', context)
+
 
 
 
