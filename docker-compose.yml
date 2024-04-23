@@ -1,11 +1,28 @@
 version: '2'
 
 services:
-  daemon:
+  db:
+      image: postgres:latest
+      environment:
+        POSTGRES_PASSWORD: psql
+        POSTGRES_USER: postgres
+        POSTGRES_DB: amazondb
+      restart: always
+      volumes:
+        - data-volume:/var/lib/postgresql/data
+  frontend:
+    build: ./frontend
+    command: bash -c "python3 ./amazon/manage.py runserver 0.0.0.0:8080"
+    ports:
+      - "8080:8080" # port for web
+    depends_on:
+      - db
+
+  backend:
     build: ./backend
     command: bash -c "./gradlew run"
     ports:
       - "9999:9999" # port for UPS
-      - "8888:8888" # port for web
+      - "8888:8888" # port for frontend
 volumes:
    data-volume: 
