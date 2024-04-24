@@ -17,12 +17,15 @@ import backend.utils.Sender;
 public class UPSComm {
     public long recvWorldID() {
         try (ServerSocket serverSocket = new ServerSocket(9999);) {
+            System.out.println("waiting for worldID");
             Socket clientSocket = serverSocket.accept(); 
             InputStream in = clientSocket.getInputStream();
             UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
+            
             Recver.recvMsgFrom(msgB, in);
             long worldID = msgB.getWorldid();
             sendBackConnected(worldID, clientSocket.getOutputStream());
+            System.out.println("received worldID: " + worldID);
             return worldID;
         } catch (IOException e) {
             return recvWorldID();

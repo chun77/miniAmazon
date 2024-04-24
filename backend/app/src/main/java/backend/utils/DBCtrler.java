@@ -9,7 +9,6 @@ import java.util.Map;
 import backend.*;
 import backend.Package;
 import backend.protocol.AmazonUps.Product;
-import backend.protocol.WorldAmazon.AProduct;
 
 public class DBCtrler {
     //private static String url = "jdbc:postgresql://127.0.0.1:5432/ece568";
