@@ -38,20 +38,20 @@ public class App {
         amazon.startUpsServer();
         amazon.startFrontendServer();
 
-        // send a topack message to the world
-        List<AProduct> products = new ArrayList<>();
-        products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
-        worldMsger = new WorldMsger();
-        worldMsger.purchaseMore(1, products, 1);
-        worldMsger.setSimSpeed(10000); // only for testing
-        ACommands cmds = worldMsger.getCommands();
-        try {
-            amazon.sendOneCmdsToWorld(cmds, 1L, worldSender);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // send a topack message to the world, just for test
+        // List<AProduct> products = new ArrayList<>();
+        // products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
+        // worldMsger = new WorldMsger();
+        // worldMsger.purchaseMore(1, products, 1);
+        // worldMsger.setSimSpeed(10000); // only for testing
+        // ACommands cmds = worldMsger.getCommands();
+        // try {
+        //     amazon.sendOneCmdsToWorld(cmds, 1L, worldSender);
+        // } catch (UnknownHostException e) {
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
         
     }
 }

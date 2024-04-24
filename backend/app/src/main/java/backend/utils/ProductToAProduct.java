@@ -23,4 +23,18 @@ public class ProductToAProduct {
         }
         return aProducts;
     }
+
+    public static boolean hasSameProducts(List<AProduct> aProducts, List<Product> products){
+        if(aProducts.size() != products.size()){
+            return false;
+        }
+        for(int i = 0; i < aProducts.size(); i++){
+            if(aProducts.get(i).getId() != products.get(i).getId() ||
+                    !aProducts.get(i).getDescription().equals(products.get(i).getDescription()) ||
+                    aProducts.get(i).getCount() != products.get(i).getCount()){
+                return false;
+            }
+        }
+        return true;
+    }
 }

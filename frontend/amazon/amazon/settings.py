@@ -80,9 +80,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'amazondb',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        # 'HOST': 'vcm-39394.vm.duke.edu',
-        'HOST': 'db',
+        'PASSWORD': 'psql',
+        # 'PASSWORD': 'postgres',
+        'HOST': 'vcm-39394.vm.duke.edu',
+        # 'HOST': 'db',
         'PORT': '5432',
     }
 }

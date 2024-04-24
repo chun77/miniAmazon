@@ -100,7 +100,9 @@ public class Amazon {
                         // use threadpool to handle the message from frontend
                         threadPool.execute(() -> {
                             long package_id = frontendComm.recvOneOrderFromFrontend(clientSocket);
+                            System.out.println("get package_id from db: " + package_id);
                             Package pkg = dbCtrler.getPackageByID(package_id);
+                            System.out.println("get package from db: " + pkg.toString());
                             synchronized (unfinishedPackages) {
                                 unfinishedPackages.add(pkg);
                             }
@@ -155,14 +157,26 @@ public class Amazon {
 
     // this is for test
     private void initializeWHs() {
-        WareHouse wh1 = new WareHouse(1, new Location(10, 10));
-        WareHouse wh2 = new WareHouse(2, new Location(20, 20));
-        WareHouse wh3 = new WareHouse(3, new Location(30, 30));
-        WareHouse wh4 = new WareHouse(4, new Location(40, 40));
+        WareHouse wh1 = new WareHouse(1, new Location(0, 0));
+        WareHouse wh2 = new WareHouse(2, new Location(0, 10));
+        WareHouse wh3 = new WareHouse(3, new Location(10, 0));
+        WareHouse wh4 = new WareHouse(4, new Location(10, 10));
+        WareHouse wh5 = new WareHouse(5, new Location(20, 10));
+        WareHouse wh6 = new WareHouse(6, new Location(10, 20));
+        WareHouse wh7 = new WareHouse(7, new Location(20, 20));
+        WareHouse wh8 = new WareHouse(8, new Location(30, 20));
+        WareHouse wh9 = new WareHouse(9, new Location(20, 30));
+        WareHouse wh10 = new WareHouse(10, new Location(30, 30));
         whs.add(wh1);
         whs.add(wh2);
         whs.add(wh3);
         whs.add(wh4);
+        whs.add(wh5);
+        whs.add(wh6);
+        whs.add(wh7);
+        whs.add(wh8);
+        whs.add(wh9);
+        whs.add(wh10);
     }
 
     // Below are the methods to process the responses from the world
@@ -198,8 +212,10 @@ public class Amazon {
 
     private void processArrived(APurchaseMore arrived) {
         synchronized (unfinishedPackages) {
+            System.out.println("unfinishedPackages: " + unfinishedPackages.toString());
             for(Package p: unfinishedPackages){
-                if(p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.genAProductList(p.getProducts()) == arrived.getThingsList()){
+                if(p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.hasSameProducts(arrived.getThingsList(), p.getProducts())){
+                    System.out.println("Package " + p.getPackageID() + " has arrived");
                     p.setStatus("PACKING");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKING");
                     sendToPack(p);
@@ -272,6 +288,7 @@ public class Amazon {
                 }
             }
         }, 5000);
+        System.out.println("Sent commands to the world, setup timer for resending...");
         // // receive the response from the world
         // AResponses.Builder responsesB = AResponses.newBuilder();
         // synchronized (in) {
@@ -425,10 +442,11 @@ public class Amazon {
         // generate List<AProduct> products
         List<Product> products = pkg.getProducts();
         // generate Pack
-        int whnum = pkg.getWh().getId();
+        int wh_id = pkg.getWh().getId();
         String tracking_id = pkg.getTrackingID();
-        Pack pack = Pack.newBuilder().setWhId(whnum).addAllThings(products).setTrackingid(tracking_id).setDestX(dest_x).setDestY(dest_y).build();
-        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).build();
+        int amazonAccount = pkg.getAmazonAccount();
+        Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
+        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
         sendOneCmdsToUps(cmds.build(), seqnum);
     }

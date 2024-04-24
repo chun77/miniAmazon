@@ -13,10 +13,10 @@ import backend.protocol.WorldAmazon.AProduct;
 
 public class DBCtrler {
     //private static String url = "jdbc:postgresql://127.0.0.1:5432/ece568";
-    private static String url = "jdbc:postgresql://vcm-39848.vm.duke.edu:5432/amazondb";
+    private static String url = "jdbc:postgresql://vcm-39394.vm.duke.edu:5432/amazondb";
     private static String user = "postgres";
-    private static String password = "postgres";
-    //private static String password = "psql";
+    // private static String password = "postgres";
+    private static String password = "psql";
 
     public DBCtrler() {
     }
@@ -137,6 +137,8 @@ public class DBCtrler {
             String sql = "SELECT * FROM shop_order WHERE package_id = " + packageID + ";";
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
+                // get amazon account
+                int amazonAccount = rs.getInt("user_id");
                 // get x_coordinate and y_coordinate and tracking id
                 int dest_x = rs.getInt("dest_x");
                 int dest_y = rs.getInt("dest_y");
@@ -180,12 +182,8 @@ public class DBCtrler {
                     Product product = Product.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
                     products.add(product);
                 }
-                // store package into database
-                sql = "INSERT INTO shop_packagestatus (status, package_id, wh_id) VALUES ('PURCHASING', " + packageID + ", " + warehouseID + ");";
-                stmt.execute(sql);
                 // generate a new package
-                Package newPackage = new Package(packageID, trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
-                System.out.println(newPackage);
+                Package newPackage = new Package(packageID, amazonAccount, trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
                 return newPackage;
             }
         } catch (SQLException e) {
