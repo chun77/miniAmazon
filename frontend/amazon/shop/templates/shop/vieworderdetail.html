@@ -1,26 +1,36 @@
 {% extends 'shop/main.html' %}
 {% block content %}
-<h1>Order Detail: tracking_id: {{ order.tracking_id }} destination:{{ order.dest_x }},{{ order.dest_y }}</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in package_products %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.product.description }}</td>
-            <td>{{ item.quantity }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="3">No products found in this package.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container mt-4">
+    <h2>Order Detail</h2>
+    <p>Tracking ID: {{ order.tracking_id }}</p>
+    <p>Destination: {{ order.dest_x }}, {{ order.dest_y }}</p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in package_products %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.description }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <img src="{{ item.product.imageURL }}" style="max-width:200px; max-height:150px;" alt="{{ item.product.name }}">
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No products found in this package.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
