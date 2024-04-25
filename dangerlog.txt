@@ -20,7 +20,7 @@ mentioned in 1 accordingly.
 3. How can we avoid multiple executions if a message containing 
 the same seqnum is received from the same client (e.g. UPS)?
 
-We should use a global variable to store the received seqnum, 
+We should use two global variables (one for UPS and one for World) to store the received seqnum, 
 and when processing the message, check whether this variable 
 contains the seqnum of the message. If so, the message processing 
 step will not be executed, and acks will simply be sent back. 
@@ -53,9 +53,15 @@ I used Java's synchronized to coordinate the access and modification
 of the same variable by multiple threads.
 
 7. When a user orders the same product for the second time, 
-if we try to send a purchaseMore request to the world again, 
+if we try to send a toPack request to the world again, 
 the world will return an error: This ID has already been created?
 
+This problem arises because the purchaseMoreArrived information replied 
+by the world contains the warehouse ID and purchased items. Based on this 
+information, it is impossible to accurately locate which package needs to 
+be packaged, so additional judgment needs to be made based on the package status.
+If we accidentally locate the same package and send two toPacks to the world 
+(containing the same packageid) in succession, the world will return an error message.
 
 8. After receiving the message that the truck has arrived, we use the 
 trackingid to match which package should be loaded. However, we found that 
