@@ -1,0 +1,73 @@
+1. What should we do if we don’t receive the 
+corresponding ack information after sending the message?
+
+In this case, we should continue trying to send the 
+same message until a ack confirmation is received. 
+I used a Java timer and set it to send the same 
+message every 5 seconds. The timer was not canceled 
+until an ack was received.
+
+2. After sending a message, what should we do if we try 
+to receive an ack but still cannot receive it? How do we 
+avoid it blocking the program?
+
+We should separate the process for sending messages and 
+receiving acks. We should not try to receive acks immediately 
+after sending the message, but continue to receive possible 
+messages in another thread. If it is acks, cancel the timer 
+mentioned in 1 accordingly.
+
+3. How can we avoid multiple executions if a message containing 
+the same seqnum is received from the same client (e.g. UPS)?
+
+We should use two global variables (one for UPS and one for World) to store the received seqnum, 
+and when processing the message, check whether this variable 
+contains the seqnum of the message. If so, the message processing 
+step will not be executed, and acks will simply be sent back. 
+If not, perform the message processing steps and send back acks.
+
+4. There will always be a situation where a certain socket tries 
+to receive a message but never receives it. How to avoid this 
+situation from executing other statements in the program? 
+(For example, no message from the front end has been received, 
+but the interaction with the world needs to be processed)
+
+For the processes trying to receive messages from the frontend, 
+world and UPS, we should separate them into different threads 
+so that they don't block each other. I used three daemon threads 
+to handle the message reception of the front end, world and UPS respectively, 
+and when a new message is received, I create a new thread to process 
+the message so that we can immediately enter the next message reception process.
+
+5. For users without accounts, they should not be allowed to 
+place orders, otherwise it will cause excessive load on the server.
+
+We have added a user identity authentication mechanism. Users 
+must first register and then enter their username and password 
+to log in before they can make purchases.
+
+6. In a multi-threaded situation, multiple threads may try to 
+modify the same global variable. How to avoid conflicts?
+
+I used Java's synchronized to coordinate the access and modification 
+of the same variable by multiple threads.
+
+7. When a user orders the same product for the second time, 
+if we try to send a toPack request to the world again, 
+the world will return an error: This ID has already been created?
+
+This problem arises because the purchaseMoreArrived information replied 
+by the world contains the warehouse ID and purchased items. Based on this 
+information, it is impossible to accurately locate which package needs to 
+be packaged, so additional judgment needs to be made based on the package status.
+If we accidentally locate the same package and send two toPacks to the world 
+(containing the same packageid) in succession, the world will return an error message.
+
+8. After receiving the message that the truck has arrived, we use the 
+trackingid to match which package should be loaded. However, we found that 
+no package was ever matched, even though the print result actually showed 
+that there was a package with the same tracking id as the received message.
+
+The trackingid is a String. When comparing two Strings, we should not use ==,
+but should use .equals().
+

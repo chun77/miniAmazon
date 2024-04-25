@@ -57,7 +57,6 @@ public class WorldComm {
         // receive the response from the world
         try {
             AResponses.Builder responsesB = AResponses.newBuilder();
-            System.out.println("Try to receive message from worldRecver");
             synchronized (in) {
                 Recver.recvMsgFrom(responsesB, in);
             }

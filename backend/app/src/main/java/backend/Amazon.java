@@ -4,20 +4,26 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 import java.net.*;
+import java.security.GeneralSecurityException;
 
 import backend.protocol.AmazonUps.AUCommands;
+import backend.protocol.AmazonUps.AUConfirmConnect;
 import backend.protocol.AmazonUps.AUNeedATruck;
 import backend.protocol.AmazonUps.AUTruckCanGo;
 import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
+import backend.protocol.AmazonUps.UAInitConnect;
 import backend.protocol.AmazonUps.UATruckArrived;
 import backend.protocol.AmazonUps.Pack;
 import backend.protocol.AmazonUps.Product;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.DBCtrler;
+import backend.utils.EmailSender;
 import backend.utils.ProductToAProduct;
+import backend.utils.Recver;
 import backend.utils.Sender;
+import backend.utils.SlidingWindow;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
@@ -29,14 +35,19 @@ public class Amazon {
     private UPSComm upsComm;
     private FrontendComm frontendComm;
     private DBCtrler dbCtrler;
+    private EmailSender emailSender;
 
     private static long seqnum;
     private final List<WareHouse> whs;
     private List<Package> unfinishedPackages;
     private Map<Long, Timer> unackedMsgsTimer;
+    private SlidingWindow recvedSeqFromWorld;
+    private SlidingWindow recvedSeqFromUps;
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
+    private InputStream upsRecver;
+    private OutputStream upsSender;
 
     public Amazon() {
         threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -44,10 +55,13 @@ public class Amazon {
         upsComm = new UPSComm();
         frontendComm = new FrontendComm();
         dbCtrler = new DBCtrler();
+        emailSender = new EmailSender();
         seqnum = 0;
         whs = new ArrayList<>();
         unfinishedPackages = new ArrayList<>();
         unackedMsgsTimer = new HashMap<>();
+        recvedSeqFromWorld = new SlidingWindow(20);
+        recvedSeqFromUps = new SlidingWindow(20);
     }
 
     public void startWorldRecver() {
@@ -67,22 +81,39 @@ public class Amazon {
         worldRecverThread.start();
     }
 
+    // public void startUpsServer() {
+    //     // start a thread to receive message from ups
+    //     Thread upsServerThread = new Thread(new Runnable() {
+    //         @Override
+    //         public void run() {
+    //             try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
+    //                 while (true) {
+    //                     Socket clientSocket = serverSocket.accept(); 
+    //                     // use threadpool to handle the message from ups
+    //                     threadPool.execute(() -> {
+    //                         UACommands cmds = upsComm.recvOneCmdsFromUps(clientSocket);
+    //                         processUpsMsgs(cmds);
+    //                     });
+    //                 }
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     });
+    //     upsServerThread.start();
+    // }
+
     public void startUpsServer() {
         // start a thread to receive message from ups
         Thread upsServerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
-                    while (true) {
-                        Socket clientSocket = serverSocket.accept(); 
-                        // use threadpool to handle the message from ups
-                        threadPool.execute(() -> {
-                            UACommands cmds = upsComm.recvOneCmdsFromUps(clientSocket);
-                            processUpsMsgs(cmds);
-                        });
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while (true) {
+                    UACommands cmds = upsComm.recvOneCmdsFromUps(upsRecver, upsSender);
+                    // use threadpool to handle the message from ups
+                    threadPool.execute(() -> {
+                        processUpsMsgs(cmds);
+                    });
                 }
             }
         });
@@ -100,9 +131,8 @@ public class Amazon {
                         // use threadpool to handle the message from frontend
                         threadPool.execute(() -> {
                             long package_id = frontendComm.recvOneOrderFromFrontend(clientSocket);
-                            System.out.println("get package_id from db: " + package_id);
                             Package pkg = dbCtrler.getPackageByID(package_id);
-                            System.out.println("get package from db: " + pkg.toString());
+                            pkg.setStatus("WAITPURCHASING");
                             synchronized (unfinishedPackages) {
                                 unfinishedPackages.add(pkg);
                             }
@@ -120,7 +150,7 @@ public class Amazon {
 
     public void initialize() {
         initializeWHs();
-        long worldIDFromUps = upsComm.recvWorldID();
+        long worldIDFromUps = recvWorldID();
         while(true) {
             try{
                 // only for test
@@ -139,6 +169,31 @@ public class Amazon {
                 continue;
             }
         }
+    }
+
+    public long recvWorldID() {
+        try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
+            System.out.println("waiting for worldID");
+            Socket clientSocket = serverSocket.accept(); 
+            upsRecver = clientSocket.getInputStream();
+            upsSender = clientSocket.getOutputStream();
+            UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
+            
+            Recver.recvMsgFrom(msgB, upsRecver);
+            long worldID = msgB.getWorldid();
+            sendBackConnected(worldID, upsSender);
+            System.out.println("received worldID: " + worldID);
+            return worldID;
+        } catch (IOException e) {
+            return recvWorldID();
+        }
+    }
+
+    public void sendBackConnected(long worldID, OutputStream out) {
+        AUConfirmConnect.Builder msg = AUConfirmConnect.newBuilder();
+        msg.setWorldid(worldID);
+        msg.setConnected(true);
+        Sender.sendMsgTo(msg.build(), out);
     }
 
     public static long getSeqnum() {
@@ -211,11 +266,14 @@ public class Amazon {
     }
 
     private void processArrived(APurchaseMore arrived) {
+        if (hasRecved(arrived)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(arrived.getSeqnum());
         synchronized (unfinishedPackages) {
             System.out.println("unfinishedPackages: " + unfinishedPackages.toString());
             for(Package p: unfinishedPackages){
-                if(p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.hasSameProducts(arrived.getThingsList(), p.getProducts())){
-                    System.out.println("Package " + p.getPackageID() + " has arrived");
+                if(p.getStatus().equals("WAITPURCHASING") && p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.hasSameProducts(arrived.getThingsList(), p.getProducts())){
                     p.setStatus("PACKING");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKING");
                     sendToPack(p);
@@ -227,6 +285,10 @@ public class Amazon {
     }
 
     private void processReady(APacked ready) {
+        if (hasRecved(ready)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(ready.getSeqnum());
         // if the truck has arrived, send load to world
         // 1. get the package
         synchronized (unfinishedPackages) {
@@ -235,6 +297,7 @@ public class Amazon {
                     // set status to PACKED
                     p.setStatus("PACKED");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKED");
+                    System.out.println("truckid: " + p.getTruckID());
                     // if the truck has arrived, send load to world
                     if(p.getTruckID() != -1){
                         p.setStatus("LOADING");
@@ -248,6 +311,10 @@ public class Amazon {
     }
 
     private void processLoaded(ALoaded loaded) {
+        if (hasRecved(loaded)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(loaded.getSeqnum());
         // 1. get the package
         synchronized (unfinishedPackages) {
             for(Package p: unfinishedPackages){
@@ -264,10 +331,18 @@ public class Amazon {
     }
 
     private void processErr(AErr err) {
+        if (hasRecved(err)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(err.getSeqnum());
         System.out.println("Error: " + err.toString());
     }
 
     private void processPackageStatus(APackage packageStatus) {
+        if (hasRecved(packageStatus)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(packageStatus.getSeqnum());
         System.out.println("Package status: " + packageStatus.toString());
     }
 
@@ -279,16 +354,16 @@ public class Amazon {
         // send commands to the world
         // use Timer, if no acks received in 5 seconds, resend the commands
         Timer timer = new Timer();
-        unackedMsgsTimer.put(seqnum, timer);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 synchronized (out) {
+                    System.out.println("sending: " + cmds);
                     Sender.sendMsgTo(cmds, out);
                 }
             }
-        }, 5000);
-        System.out.println("Sent commands to the world, setup timer for resending...");
+        }, 0, 15000);
+        unackedMsgsTimer.put(seqnum, timer);
         // // receive the response from the world
         // AResponses.Builder responsesB = AResponses.newBuilder();
         // synchronized (in) {
@@ -371,6 +446,7 @@ public class Amazon {
             processErrors(err);
         }
         for(Long ack : cmds.getAcksList()) {
+            System.out.println("Received ack from UPS: " + ack);
             Timer timer = unackedMsgsTimer.get(ack);
             if (timer != null) {
                 timer.cancel();
@@ -380,14 +456,19 @@ public class Amazon {
     }
 
     private void processArrived(UATruckArrived arrived) {
+        if(hasRecved(arrived)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(arrived.getSeqnum());
         int truckID = arrived.getTruckid();
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getTrackingID() == arrived.getTrackingid()){
+                if(p.getTrackingID().equals(arrived.getTrackingid())){
                     p.setTruckID(truckID);
                     // if this package is packed, tell world to load
                     if(p.getStatus() == "PACKED"){
                         p.setStatus("LOADING");
+                        dbCtrler.updatePackageStatus(p.getPackageID(), "LOADING");
                         sendToLoad(p);
                     }
                     break;
@@ -397,10 +478,26 @@ public class Amazon {
     }
 
     private void processDelivered(UADelivered delivered) {
+        if(hasRecved(delivered)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(delivered.getSeqnum());
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getTrackingID() == delivered.getTrackingid()){
+                if(p.getTrackingID().equals(delivered.getTrackingid())){
                     p.setStatus("DELIVERED");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "DELIVERED");
+                    try {
+                        if (p.getEmail() != null && !p.getEmail().isEmpty()) {
+                            String msg = "Dear user " + p.getAmazonAccount() + 
+                                        ", your package " + p.getTrackingID() + " has been delivered" +
+                                        " to " + p.getDest().getXLocation() + ", " + p.getDest().getYLocation() +
+                                        ". Thank you for using Amazon!";
+                            emailSender.sendNotification(p.getEmail(), msg);
+                        }
+                    } catch (GeneralSecurityException | IOException e) {
+                        e.printStackTrace();
+                    }
                     unfinishedPackages.remove(p);
                     break;
                 }
@@ -409,6 +506,10 @@ public class Amazon {
     }
 
     private void processErrors(Err err) {
+        if(hasRecved(err)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(err.getSeqnum());
         System.out.println("UPS error: " + err.getMsg());
     }
 
@@ -416,23 +517,37 @@ public class Amazon {
 
     // Below are the methods to send commands to UPS
 
-    public void sendOneCmdsToUps(AUCommands cmds, Long seqnums) {
+    // public void sendOneCmdsToUps(AUCommands cmds, Long seqnums) {
+    //     // send commands to UPS
+    //     // use Timer, if no acks received in 5 seconds, resend the commands
+    //     Timer timer = new Timer();
+    //     unackedMsgsTimer.put(seqnums, timer);
+    //     timer.schedule(new TimerTask() {
+    //         @Override
+    //         public void run() {
+    //             try (Socket socket = new Socket(UPS_REMOTE_IP, UPS_REMOTE_PORT)) {
+    //                 OutputStream out = socket.getOutputStream();
+    //                 System.out.println("in sendOneCmdsToUPS");
+    //                 Sender.sendMsgTo(cmds, out);
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     }, 5000);
+        
+    // }
+
+    public void sendOneCmdsToUps(AUCommands cmds, Long seqnum) {
         // send commands to UPS
         // use Timer, if no acks received in 5 seconds, resend the commands
         Timer timer = new Timer();
-        unackedMsgsTimer.put(seqnums, timer);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                try (Socket socket = new Socket("ups_ip", 9998)) {
-                    OutputStream out = socket.getOutputStream();
-                    Sender.sendMsgTo(cmds, out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Sender.sendMsgTo(cmds, upsSender);
             }
-        }, 5000);
-        
+        }, 0, 15000);
+        unackedMsgsTimer.put(seqnum, timer);
     }
 
     public void sendNeedATruck(Package pkg){
@@ -445,8 +560,13 @@ public class Amazon {
         int wh_id = pkg.getWh().getId();
         String tracking_id = pkg.getTrackingID();
         int amazonAccount = pkg.getAmazonAccount();
-        Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
-        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
+        long package_id = pkg.getPackageID();
+        Pack.Builder pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setPackageid(package_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y);
+        // what about ups account?
+        if(pkg.getUpsAccount() != -1){
+            pack.setUpsaccount(pkg.getUpsAccount());
+        }
+        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack.build()).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
         sendOneCmdsToUps(cmds.build(), seqnum);
     }
@@ -462,5 +582,44 @@ public class Amazon {
 
     // Methods sending commands to UPS over
 
+    // Helper methods for UPS sequence number
+    private boolean hasRecved(UATruckArrived arrived) {
+        return recvedSeqFromUps.containsSeqnum(arrived.getSeqnum());
+    }
 
+    private boolean hasRecved(UADelivered delivered) {
+        return recvedSeqFromUps.containsSeqnum(delivered.getSeqnum());
+    }
+
+    // TODO: changeAddr?
+
+    private boolean hasRecved(Err err) {
+        return recvedSeqFromUps.containsSeqnum(err.getSeqnum());
+    }
+
+    // Helper methods for UPS sequence number over
+
+    // Helper methods for World sequence number
+
+    private boolean hasRecved(APurchaseMore arrived) {
+        return recvedSeqFromWorld.containsSeqnum(arrived.getSeqnum());
+    }
+
+    private boolean hasRecved(APacked ready) {
+        return recvedSeqFromWorld.containsSeqnum(ready.getSeqnum());
+    }
+
+    private boolean hasRecved(ALoaded loaded) {
+        return recvedSeqFromWorld.containsSeqnum(loaded.getSeqnum());
+    }
+
+    private boolean hasRecved(AErr err) {
+        return recvedSeqFromWorld.containsSeqnum(err.getSeqnum());
+    }
+
+    private boolean hasRecved(APackage packageStatus) {
+        return recvedSeqFromWorld.containsSeqnum(packageStatus.getSeqnum());
+    }
+
+    // Helper methods for World sequence number over
 }

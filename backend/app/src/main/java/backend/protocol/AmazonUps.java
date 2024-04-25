@@ -897,45 +897,56 @@ public final class AmazonUps {
         getTrackingidBytes();
 
     /**
-     * <code>optional int32 upsaccount = 5;</code>
+     * <code>required int64 packageid = 5;</code>
+     * @return Whether the packageid field is set.
+     */
+    boolean hasPackageid();
+    /**
+     * <code>required int64 packageid = 5;</code>
+     * @return The packageid.
+     */
+    long getPackageid();
+
+    /**
+     * <code>optional int32 upsaccount = 6;</code>
      * @return Whether the upsaccount field is set.
      */
     boolean hasUpsaccount();
     /**
-     * <code>optional int32 upsaccount = 5;</code>
+     * <code>optional int32 upsaccount = 6;</code>
      * @return The upsaccount.
      */
     int getUpsaccount();
 
     /**
-     * <code>required int32 amazonaccount = 6;</code>
+     * <code>required int32 amazonaccount = 7;</code>
      * @return Whether the amazonaccount field is set.
      */
     boolean hasAmazonaccount();
     /**
-     * <code>required int32 amazonaccount = 6;</code>
+     * <code>required int32 amazonaccount = 7;</code>
      * @return The amazonaccount.
      */
     int getAmazonaccount();
 
     /**
-     * <code>required int32 dest_x = 7;</code>
+     * <code>required int32 dest_x = 8;</code>
      * @return Whether the destX field is set.
      */
     boolean hasDestX();
     /**
-     * <code>required int32 dest_x = 7;</code>
+     * <code>required int32 dest_x = 8;</code>
      * @return The destX.
      */
     int getDestX();
 
     /**
-     * <code>required int32 dest_y = 8;</code>
+     * <code>required int32 dest_y = 9;</code>
      * @return Whether the destY field is set.
      */
     boolean hasDestY();
     /**
-     * <code>required int32 dest_y = 8;</code>
+     * <code>required int32 dest_y = 9;</code>
      * @return The destY.
      */
     int getDestY();
@@ -1010,21 +1021,26 @@ public final class AmazonUps {
             }
             case 40: {
               bitField0_ |= 0x00000004;
-              upsaccount_ = input.readInt32();
+              packageid_ = input.readInt64();
               break;
             }
             case 48: {
               bitField0_ |= 0x00000008;
-              amazonaccount_ = input.readInt32();
+              upsaccount_ = input.readInt32();
               break;
             }
             case 56: {
               bitField0_ |= 0x00000010;
-              destX_ = input.readInt32();
+              amazonaccount_ = input.readInt32();
               break;
             }
             case 64: {
               bitField0_ |= 0x00000020;
+              destX_ = input.readInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000040;
               destY_ = input.readInt32();
               break;
             }
@@ -1171,18 +1187,37 @@ public final class AmazonUps {
       }
     }
 
-    public static final int UPSACCOUNT_FIELD_NUMBER = 5;
+    public static final int PACKAGEID_FIELD_NUMBER = 5;
+    private long packageid_;
+    /**
+     * <code>required int64 packageid = 5;</code>
+     * @return Whether the packageid field is set.
+     */
+    @java.lang.Override
+    public boolean hasPackageid() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>required int64 packageid = 5;</code>
+     * @return The packageid.
+     */
+    @java.lang.Override
+    public long getPackageid() {
+      return packageid_;
+    }
+
+    public static final int UPSACCOUNT_FIELD_NUMBER = 6;
     private int upsaccount_;
     /**
-     * <code>optional int32 upsaccount = 5;</code>
+     * <code>optional int32 upsaccount = 6;</code>
      * @return Whether the upsaccount field is set.
      */
     @java.lang.Override
     public boolean hasUpsaccount() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional int32 upsaccount = 5;</code>
+     * <code>optional int32 upsaccount = 6;</code>
      * @return The upsaccount.
      */
     @java.lang.Override
@@ -1190,18 +1225,18 @@ public final class AmazonUps {
       return upsaccount_;
     }
 
-    public static final int AMAZONACCOUNT_FIELD_NUMBER = 6;
+    public static final int AMAZONACCOUNT_FIELD_NUMBER = 7;
     private int amazonaccount_;
     /**
-     * <code>required int32 amazonaccount = 6;</code>
+     * <code>required int32 amazonaccount = 7;</code>
      * @return Whether the amazonaccount field is set.
      */
     @java.lang.Override
     public boolean hasAmazonaccount() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>required int32 amazonaccount = 6;</code>
+     * <code>required int32 amazonaccount = 7;</code>
      * @return The amazonaccount.
      */
     @java.lang.Override
@@ -1209,18 +1244,18 @@ public final class AmazonUps {
       return amazonaccount_;
     }
 
-    public static final int DEST_X_FIELD_NUMBER = 7;
+    public static final int DEST_X_FIELD_NUMBER = 8;
     private int destX_;
     /**
-     * <code>required int32 dest_x = 7;</code>
+     * <code>required int32 dest_x = 8;</code>
      * @return Whether the destX field is set.
      */
     @java.lang.Override
     public boolean hasDestX() {
-      return ((bitField0_ & 0x00000010) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>required int32 dest_x = 7;</code>
+     * <code>required int32 dest_x = 8;</code>
      * @return The destX.
      */
     @java.lang.Override
@@ -1228,18 +1263,18 @@ public final class AmazonUps {
       return destX_;
     }
 
-    public static final int DEST_Y_FIELD_NUMBER = 8;
+    public static final int DEST_Y_FIELD_NUMBER = 9;
     private int destY_;
     /**
-     * <code>required int32 dest_y = 8;</code>
+     * <code>required int32 dest_y = 9;</code>
      * @return Whether the destY field is set.
      */
     @java.lang.Override
     public boolean hasDestY() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>required int32 dest_y = 8;</code>
+     * <code>required int32 dest_y = 9;</code>
      * @return The destY.
      */
     @java.lang.Override
@@ -1259,6 +1294,10 @@ public final class AmazonUps {
         return false;
       }
       if (!hasTrackingid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPackageid()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1297,16 +1336,19 @@ public final class AmazonUps {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, trackingid_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        output.writeInt32(5, upsaccount_);
+        output.writeInt64(5, packageid_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        output.writeInt32(6, amazonaccount_);
+        output.writeInt32(6, upsaccount_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
-        output.writeInt32(7, destX_);
+        output.writeInt32(7, amazonaccount_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
-        output.writeInt32(8, destY_);
+        output.writeInt32(8, destX_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeInt32(9, destY_);
       }
       unknownFields.writeTo(output);
     }
@@ -1330,19 +1372,23 @@ public final class AmazonUps {
       }
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, upsaccount_);
+          .computeInt64Size(5, packageid_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, amazonaccount_);
+          .computeInt32Size(6, upsaccount_);
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, destX_);
+          .computeInt32Size(7, amazonaccount_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, destY_);
+          .computeInt32Size(8, destX_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, destY_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1370,6 +1416,11 @@ public final class AmazonUps {
       if (hasTrackingid()) {
         if (!getTrackingid()
             .equals(other.getTrackingid())) return false;
+      }
+      if (hasPackageid() != other.hasPackageid()) return false;
+      if (hasPackageid()) {
+        if (getPackageid()
+            != other.getPackageid()) return false;
       }
       if (hasUpsaccount() != other.hasUpsaccount()) return false;
       if (hasUpsaccount()) {
@@ -1413,6 +1464,11 @@ public final class AmazonUps {
       if (hasTrackingid()) {
         hash = (37 * hash) + TRACKINGID_FIELD_NUMBER;
         hash = (53 * hash) + getTrackingid().hashCode();
+      }
+      if (hasPackageid()) {
+        hash = (37 * hash) + PACKAGEID_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getPackageid());
       }
       if (hasUpsaccount()) {
         hash = (37 * hash) + UPSACCOUNT_FIELD_NUMBER;
@@ -1574,14 +1630,16 @@ public final class AmazonUps {
         }
         trackingid_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        upsaccount_ = 0;
+        packageid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
-        amazonaccount_ = 0;
+        upsaccount_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        destX_ = 0;
+        amazonaccount_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        destY_ = 0;
+        destX_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        destY_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -1628,20 +1686,24 @@ public final class AmazonUps {
         }
         result.trackingid_ = trackingid_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.upsaccount_ = upsaccount_;
+          result.packageid_ = packageid_;
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
-          result.amazonaccount_ = amazonaccount_;
+          result.upsaccount_ = upsaccount_;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          result.destX_ = destX_;
+          result.amazonaccount_ = amazonaccount_;
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
-          result.destY_ = destY_;
+          result.destX_ = destX_;
           to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.destY_ = destY_;
+          to_bitField0_ |= 0x00000040;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1726,6 +1788,9 @@ public final class AmazonUps {
           trackingid_ = other.trackingid_;
           onChanged();
         }
+        if (other.hasPackageid()) {
+          setPackageid(other.getPackageid());
+        }
         if (other.hasUpsaccount()) {
           setUpsaccount(other.getUpsaccount());
         }
@@ -1749,6 +1814,9 @@ public final class AmazonUps {
           return false;
         }
         if (!hasTrackingid()) {
+          return false;
+        }
+        if (!hasPackageid()) {
           return false;
         }
         if (!hasAmazonaccount()) {
@@ -2151,17 +2219,56 @@ public final class AmazonUps {
         return this;
       }
 
+      private long packageid_ ;
+      /**
+       * <code>required int64 packageid = 5;</code>
+       * @return Whether the packageid field is set.
+       */
+      @java.lang.Override
+      public boolean hasPackageid() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>required int64 packageid = 5;</code>
+       * @return The packageid.
+       */
+      @java.lang.Override
+      public long getPackageid() {
+        return packageid_;
+      }
+      /**
+       * <code>required int64 packageid = 5;</code>
+       * @param value The packageid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPackageid(long value) {
+        bitField0_ |= 0x00000008;
+        packageid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 packageid = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPackageid() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        packageid_ = 0L;
+        onChanged();
+        return this;
+      }
+
       private int upsaccount_ ;
       /**
-       * <code>optional int32 upsaccount = 5;</code>
+       * <code>optional int32 upsaccount = 6;</code>
        * @return Whether the upsaccount field is set.
        */
       @java.lang.Override
       public boolean hasUpsaccount() {
-        return ((bitField0_ & 0x00000008) != 0);
+        return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>optional int32 upsaccount = 5;</code>
+       * <code>optional int32 upsaccount = 6;</code>
        * @return The upsaccount.
        */
       @java.lang.Override
@@ -2169,22 +2276,22 @@ public final class AmazonUps {
         return upsaccount_;
       }
       /**
-       * <code>optional int32 upsaccount = 5;</code>
+       * <code>optional int32 upsaccount = 6;</code>
        * @param value The upsaccount to set.
        * @return This builder for chaining.
        */
       public Builder setUpsaccount(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         upsaccount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 upsaccount = 5;</code>
+       * <code>optional int32 upsaccount = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearUpsaccount() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         upsaccount_ = 0;
         onChanged();
         return this;
@@ -2192,15 +2299,15 @@ public final class AmazonUps {
 
       private int amazonaccount_ ;
       /**
-       * <code>required int32 amazonaccount = 6;</code>
+       * <code>required int32 amazonaccount = 7;</code>
        * @return Whether the amazonaccount field is set.
        */
       @java.lang.Override
       public boolean hasAmazonaccount() {
-        return ((bitField0_ & 0x00000010) != 0);
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>required int32 amazonaccount = 6;</code>
+       * <code>required int32 amazonaccount = 7;</code>
        * @return The amazonaccount.
        */
       @java.lang.Override
@@ -2208,22 +2315,22 @@ public final class AmazonUps {
         return amazonaccount_;
       }
       /**
-       * <code>required int32 amazonaccount = 6;</code>
+       * <code>required int32 amazonaccount = 7;</code>
        * @param value The amazonaccount to set.
        * @return This builder for chaining.
        */
       public Builder setAmazonaccount(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         amazonaccount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 amazonaccount = 6;</code>
+       * <code>required int32 amazonaccount = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearAmazonaccount() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         amazonaccount_ = 0;
         onChanged();
         return this;
@@ -2231,15 +2338,15 @@ public final class AmazonUps {
 
       private int destX_ ;
       /**
-       * <code>required int32 dest_x = 7;</code>
+       * <code>required int32 dest_x = 8;</code>
        * @return Whether the destX field is set.
        */
       @java.lang.Override
       public boolean hasDestX() {
-        return ((bitField0_ & 0x00000020) != 0);
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>required int32 dest_x = 7;</code>
+       * <code>required int32 dest_x = 8;</code>
        * @return The destX.
        */
       @java.lang.Override
@@ -2247,22 +2354,22 @@ public final class AmazonUps {
         return destX_;
       }
       /**
-       * <code>required int32 dest_x = 7;</code>
+       * <code>required int32 dest_x = 8;</code>
        * @param value The destX to set.
        * @return This builder for chaining.
        */
       public Builder setDestX(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         destX_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 dest_x = 7;</code>
+       * <code>required int32 dest_x = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearDestX() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         destX_ = 0;
         onChanged();
         return this;
@@ -2270,15 +2377,15 @@ public final class AmazonUps {
 
       private int destY_ ;
       /**
-       * <code>required int32 dest_y = 8;</code>
+       * <code>required int32 dest_y = 9;</code>
        * @return Whether the destY field is set.
        */
       @java.lang.Override
       public boolean hasDestY() {
-        return ((bitField0_ & 0x00000040) != 0);
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
-       * <code>required int32 dest_y = 8;</code>
+       * <code>required int32 dest_y = 9;</code>
        * @return The destY.
        */
       @java.lang.Override
@@ -2286,22 +2393,22 @@ public final class AmazonUps {
         return destY_;
       }
       /**
-       * <code>required int32 dest_y = 8;</code>
+       * <code>required int32 dest_y = 9;</code>
        * @param value The destY to set.
        * @return This builder for chaining.
        */
       public Builder setDestY(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         destY_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 dest_y = 8;</code>
+       * <code>required int32 dest_y = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearDestY() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         destY_ = 0;
         onChanged();
         return this;
@@ -12394,30 +12501,30 @@ public final class AmazonUps {
   static {
     java.lang.String[] descriptorData = {
       "\n\020amazon_ups.proto\"9\n\007Product\022\n\n\002id\030\001 \002(" +
-      "\003\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003 \002(\005\"\216\001" +
+      "\003\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003 \002(\005\"\241\001" +
       "\n\004Pack\022\r\n\005wh_id\030\001 \002(\005\022\030\n\006things\030\002 \003(\0132\010." +
-      "Product\022\022\n\ntrackingid\030\004 \002(\t\022\022\n\nupsaccoun" +
-      "t\030\005 \001(\005\022\025\n\ramazonaccount\030\006 \002(\005\022\016\n\006dest_x" +
-      "\030\007 \002(\005\022\016\n\006dest_y\030\010 \002(\005\" \n\rUAInitConnect\022" +
-      "\017\n\007worldid\030\001 \002(\003\"6\n\020AUConfirmConnect\022\017\n\007" +
-      "worldid\030\001 \002(\003\022\021\n\tconnected\030\002 \002(\010\"3\n\014AUNe" +
-      "edATruck\022\023\n\004pack\030\001 \002(\0132\005.Pack\022\016\n\006seqnum\030" +
-      "\002 \002(\003\"/\n\014AUTruckCanGo\022\017\n\007truckid\030\001 \002(\005\022\016" +
-      "\n\006seqnum\030\002 \002(\003\"T\n\016UATruckArrived\022\017\n\007truc" +
-      "kid\030\001 \002(\005\022\022\n\ntrackingid\030\002 \002(\t\022\r\n\005wh_id\030\003" +
-      " \002(\005\022\016\n\006seqnum\030\004 \002(\003\"B\n\013UADelivered\022\022\n\nt" +
-      "rackingid\030\001 \002(\t\022\017\n\007truckid\030\002 \002(\005\022\016\n\006seqn" +
-      "um\030\003 \002(\003\"R\n\014UAChangeAddr\022\022\n\ntrackingid\030\001" +
-      " \002(\t\022\016\n\006dest_x\030\002 \002(\005\022\016\n\006dest_y\030\003 \002(\005\022\016\n\006" +
-      "seqnum\030\004 \002(\003\"8\n\003Err\022\013\n\003msg\030\001 \002(\t\022\024\n\014orig" +
-      "inseqnum\030\002 \002(\003\022\016\n\006seqnum\030\003 \002(\003\"h\n\nAUComm" +
-      "ands\022\033\n\004need\030\001 \003(\0132\r.AUNeedATruck\022\031\n\002go\030" +
-      "\002 \003(\0132\r.AUTruckCanGo\022\024\n\006errors\030\003 \003(\0132\004.E" +
-      "rr\022\014\n\004acks\030\004 \003(\003\"\226\001\n\nUACommands\022 \n\007arriv" +
-      "ed\030\001 \003(\0132\017.UATruckArrived\022\037\n\tdelivered\030\002" +
-      " \003(\0132\014.UADelivered\022!\n\nchangeAddr\030\003 \003(\0132\r" +
-      ".UAChangeAddr\022\024\n\006errors\030\004 \003(\0132\004.Err\022\014\n\004a" +
-      "cks\030\005 \003(\003"
+      "Product\022\022\n\ntrackingid\030\004 \002(\t\022\021\n\tpackageid" +
+      "\030\005 \002(\003\022\022\n\nupsaccount\030\006 \001(\005\022\025\n\ramazonacco" +
+      "unt\030\007 \002(\005\022\016\n\006dest_x\030\010 \002(\005\022\016\n\006dest_y\030\t \002(" +
+      "\005\" \n\rUAInitConnect\022\017\n\007worldid\030\001 \002(\003\"6\n\020A" +
+      "UConfirmConnect\022\017\n\007worldid\030\001 \002(\003\022\021\n\tconn" +
+      "ected\030\002 \002(\010\"3\n\014AUNeedATruck\022\023\n\004pack\030\001 \002(" +
+      "\0132\005.Pack\022\016\n\006seqnum\030\002 \002(\003\"/\n\014AUTruckCanGo" +
+      "\022\017\n\007truckid\030\001 \002(\005\022\016\n\006seqnum\030\002 \002(\003\"T\n\016UAT" +
+      "ruckArrived\022\017\n\007truckid\030\001 \002(\005\022\022\n\ntracking" +
+      "id\030\002 \002(\t\022\r\n\005wh_id\030\003 \002(\005\022\016\n\006seqnum\030\004 \002(\003\"" +
+      "B\n\013UADelivered\022\022\n\ntrackingid\030\001 \002(\t\022\017\n\007tr" +
+      "uckid\030\002 \002(\005\022\016\n\006seqnum\030\003 \002(\003\"R\n\014UAChangeA" +
+      "ddr\022\022\n\ntrackingid\030\001 \002(\t\022\016\n\006dest_x\030\002 \002(\005\022" +
+      "\016\n\006dest_y\030\003 \002(\005\022\016\n\006seqnum\030\004 \002(\003\"8\n\003Err\022\013" +
+      "\n\003msg\030\001 \002(\t\022\024\n\014originseqnum\030\002 \002(\003\022\016\n\006seq" +
+      "num\030\003 \002(\003\"h\n\nAUCommands\022\033\n\004need\030\001 \003(\0132\r." +
+      "AUNeedATruck\022\031\n\002go\030\002 \003(\0132\r.AUTruckCanGo\022" +
+      "\024\n\006errors\030\003 \003(\0132\004.Err\022\014\n\004acks\030\004 \003(\003\"\226\001\n\n" +
+      "UACommands\022 \n\007arrived\030\001 \003(\0132\017.UATruckArr" +
+      "ived\022\037\n\tdelivered\030\002 \003(\0132\014.UADelivered\022!\n" +
+      "\nchangeAddr\030\003 \003(\0132\r.UAChangeAddr\022\024\n\006erro" +
+      "rs\030\004 \003(\0132\004.Err\022\014\n\004acks\030\005 \003(\003"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -12434,7 +12541,7 @@ public final class AmazonUps {
     internal_static_Pack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Pack_descriptor,
-        new java.lang.String[] { "WhId", "Things", "Trackingid", "Upsaccount", "Amazonaccount", "DestX", "DestY", });
+        new java.lang.String[] { "WhId", "Things", "Trackingid", "Packageid", "Upsaccount", "Amazonaccount", "DestX", "DestY", });
     internal_static_UAInitConnect_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_UAInitConnect_fieldAccessorTable = new

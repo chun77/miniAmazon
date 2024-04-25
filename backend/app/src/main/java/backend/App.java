@@ -5,20 +5,32 @@ package backend;
 
 import java.io.*;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 import backend.protocol.WorldAmazon.AProduct;
 import backend.protocol.WorldAmazon.ACommands;
 import backend.utils.DBCtrler;
+import backend.utils.EmailSender;
 import backend.utils.Sender;
 
 public class App {
 
     public static void main(String[] args) {
+        // test email sending
+        // EmailSender emailSender = new EmailSender();
+        // try {
+        //     emailSender.sendNotification("steven.h.geng@gmail.com", "hihihi");
+        // } catch (GeneralSecurityException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+
         Amazon amazon = new Amazon();
-        WorldComm worldCtrler = new WorldComm();
         amazon.initialize();
-        InputStream worldRecver = amazon.getWorldRecver();
         OutputStream worldSender = amazon.getWorldSender();
 
         //set database (only for testing)
@@ -38,15 +50,31 @@ public class App {
         amazon.startUpsServer();
         amazon.startFrontendServer();
 
-        // send a topack message to the world, just for test
+        
+        // send two purchaseMore messages to the world, just for test
         // List<AProduct> products = new ArrayList<>();
-        // products.add(AProduct.newBuilder().setId(1).setDescription("Product1").setCount(10).build());
+        // products.add(AProduct.newBuilder().setId(6).setDescription("testProduct").setCount(10).build());
         // worldMsger = new WorldMsger();
         // worldMsger.purchaseMore(1, products, 1);
-        // worldMsger.setSimSpeed(10000); // only for testing
         // ACommands cmds = worldMsger.getCommands();
         // try {
         //     amazon.sendOneCmdsToWorld(cmds, 1L, worldSender);
+        // } catch (UnknownHostException e) {
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+        // worldMsger = new WorldMsger();
+        // worldMsger.purchaseMore(1, products, 2);
+        // cmds = worldMsger.getCommands();
+        // try {
+        //     amazon.sendOneCmdsToWorld(cmds, 2L, worldSender);
         // } catch (UnknownHostException e) {
         //     e.printStackTrace();
         // } catch (IOException e) {
