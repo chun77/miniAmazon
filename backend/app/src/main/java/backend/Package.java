@@ -7,6 +7,7 @@ import backend.protocol.AmazonUps.Product;
 public class Package {
     private long packageID;
     private int amazonAccount;
+    private int upsAccount;
     private String email;
     private String trackingID;
     private int truckID;
@@ -33,6 +34,10 @@ public class Package {
 
     public int getAmazonAccount() {
         return amazonAccount;
+    }
+
+    public int getUpsAccount() {
+        return upsAccount;
     }
 
     public String getEmail() {
@@ -69,5 +74,9 @@ public class Package {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setUpsAccount(int upsAccount) {
+        this.upsAccount = upsAccount;
     }
 }

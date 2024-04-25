@@ -138,6 +138,11 @@ public class DBCtrler {
             if (rs.next()) {
                 // get amazon account
                 int amazonAccount = rs.getInt("user_id");
+                // get ups account
+                int upsAccount = rs.getInt("ups_account");
+                if (rs.wasNull()) {
+                    upsAccount = -1;
+                }
                 // get x_coordinate and y_coordinate and tracking id
                 int dest_x = rs.getInt("dest_x");
                 int dest_y = rs.getInt("dest_y");
@@ -181,8 +186,14 @@ public class DBCtrler {
                     Product product = Product.newBuilder().setId(productID).setDescription(description).setCount(amt).build();
                     products.add(product);
                 }
+                // get email
+                sql = "SELECT * FROM auth_user WHERE auth_user.id = " + amazonAccount + ";";
+                ResultSet rs5 = stmt.executeQuery(sql);
+                rs5.next();
+                String email = rs5.getString("email");
                 // generate a new package
-                Package newPackage = new Package(packageID, amazonAccount, "testemail", trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
+                Package newPackage = new Package(packageID, amazonAccount, email, trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
+                newPackage.setUpsAccount(upsAccount);
                 return newPackage;
             }
         } catch (SQLException e) {

@@ -488,11 +488,13 @@ public class Amazon {
                     p.setStatus("DELIVERED");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "DELIVERED");
                     try {
-                        String msg = "Dear user " + p.getAmazonAccount() + 
-                                    ", your package " + p.getTrackingID() + " has been delivered" +
-                                    " to " + p.getDest().getXLocation() + ", " + p.getDest().getYLocation() +
-                                    ". Thank you for using Amazon!";
-                        emailSender.sendNotification(p.getEmail(), msg);
+                        if (p.getEmail() != null && !p.getEmail().isEmpty()) {
+                            String msg = "Dear user " + p.getAmazonAccount() + 
+                                        ", your package " + p.getTrackingID() + " has been delivered" +
+                                        " to " + p.getDest().getXLocation() + ", " + p.getDest().getYLocation() +
+                                        ". Thank you for using Amazon!";
+                            emailSender.sendNotification(p.getEmail(), msg);
+                        }
                     } catch (GeneralSecurityException | IOException e) {
                         e.printStackTrace();
                     }
@@ -559,9 +561,12 @@ public class Amazon {
         String tracking_id = pkg.getTrackingID();
         int amazonAccount = pkg.getAmazonAccount();
         long package_id = pkg.getPackageID();
-        Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setPackageid(package_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
+        Pack.Builder pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setPackageid(package_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y);
         // what about ups account?
-        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
+        if(pkg.getUpsAccount() != -1){
+            pack.setUpsaccount(pkg.getUpsAccount());
+        }
+        AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack.build()).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
         sendOneCmdsToUps(cmds.build(), seqnum);
     }
