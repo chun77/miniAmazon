@@ -82,8 +82,8 @@ public class UPSComm {
             for (long seq : acks) {
                 commands.addAcks(seq);
             }
-            System.out.println("send ack back(to UPS): " + commands.toString());
             Sender.sendMsgTo(commands.build(), out);
+            System.out.println("send ack back(to UPS): " + commands);
         }
     }
 

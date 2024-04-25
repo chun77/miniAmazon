@@ -284,6 +284,7 @@ public class Amazon {
                     // set status to PACKED
                     p.setStatus("PACKED");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKED");
+                    System.out.println("truckid: " + p.getTruckID());
                     // if the truck has arrived, send load to world
                     if(p.getTruckID() != -1){
                         p.setStatus("LOADING");
@@ -432,11 +433,12 @@ public class Amazon {
         int truckID = arrived.getTruckid();
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getTrackingID() == arrived.getTrackingid()){
+                if(p.getTrackingID().equals(arrived.getTrackingid())){
                     p.setTruckID(truckID);
                     // if this package is packed, tell world to load
                     if(p.getStatus() == "PACKED"){
                         p.setStatus("LOADING");
+                        dbCtrler.updatePackageStatus(p.getPackageID(), "LOADING");
                         sendToLoad(p);
                     }
                     break;
@@ -448,8 +450,9 @@ public class Amazon {
     private void processDelivered(UADelivered delivered) {
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
-                if(p.getTrackingID() == delivered.getTrackingid()){
+                if(p.getTrackingID().equals(delivered.getTrackingid())){
                     p.setStatus("DELIVERED");
+                    dbCtrler.updatePackageStatus(p.getPackageID(), "DELIVERED");
                     unfinishedPackages.remove(p);
                     break;
                 }
@@ -492,7 +495,6 @@ public class Amazon {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("in sendOneCmdsToUPS");
                 Sender.sendMsgTo(cmds, upsSender);
             }
         }, 0, 5000);
@@ -512,7 +514,6 @@ public class Amazon {
         Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
-        System.out.println("in sendNeedATruck");
         sendOneCmdsToUps(cmds.build(), seqnum);
     }
 
