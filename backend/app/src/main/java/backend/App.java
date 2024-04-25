@@ -5,16 +5,30 @@ package backend;
 
 import java.io.*;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 import backend.protocol.WorldAmazon.AProduct;
 import backend.protocol.WorldAmazon.ACommands;
 import backend.utils.DBCtrler;
+import backend.utils.EmailSender;
 import backend.utils.Sender;
 
 public class App {
 
     public static void main(String[] args) {
+        // test email sending
+        // EmailSender emailSender = new EmailSender();
+        // try {
+        //     emailSender.sendNotification("steven.h.geng@gmail.com", "hihihi");
+        // } catch (GeneralSecurityException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+
         Amazon amazon = new Amazon();
         WorldComm worldCtrler = new WorldComm();
         amazon.initialize();
@@ -37,6 +51,8 @@ public class App {
         amazon.startWorldRecver();
         amazon.startUpsServer();
         amazon.startFrontendServer();
+
+        
 
         // send a topack message to the world, just for test
         // List<AProduct> products = new ArrayList<>();

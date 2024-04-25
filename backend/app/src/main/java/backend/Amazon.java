@@ -21,6 +21,7 @@ import backend.utils.DBCtrler;
 import backend.utils.ProductToAProduct;
 import backend.utils.Recver;
 import backend.utils.Sender;
+import backend.utils.SlidingWindow;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
@@ -39,6 +40,8 @@ public class Amazon {
     private final List<WareHouse> whs;
     private List<Package> unfinishedPackages;
     private Map<Long, Timer> unackedMsgsTimer;
+    private SlidingWindow recvedSeqFromWorld;
+    private SlidingWindow recvedSeqFromUps;
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
@@ -55,6 +58,8 @@ public class Amazon {
         whs = new ArrayList<>();
         unfinishedPackages = new ArrayList<>();
         unackedMsgsTimer = new HashMap<>();
+        recvedSeqFromWorld = new SlidingWindow(20);
+        recvedSeqFromUps = new SlidingWindow(20);
     }
 
     public void startWorldRecver() {
@@ -260,6 +265,10 @@ public class Amazon {
     }
 
     private void processArrived(APurchaseMore arrived) {
+        if (hasRecved(arrived)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(arrived.getSeqnum());
         synchronized (unfinishedPackages) {
             System.out.println("unfinishedPackages: " + unfinishedPackages.toString());
             for(Package p: unfinishedPackages){
@@ -276,6 +285,10 @@ public class Amazon {
     }
 
     private void processReady(APacked ready) {
+        if (hasRecved(ready)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(ready.getSeqnum());
         // if the truck has arrived, send load to world
         // 1. get the package
         synchronized (unfinishedPackages) {
@@ -298,6 +311,10 @@ public class Amazon {
     }
 
     private void processLoaded(ALoaded loaded) {
+        if (hasRecved(loaded)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(loaded.getSeqnum());
         // 1. get the package
         synchronized (unfinishedPackages) {
             for(Package p: unfinishedPackages){
@@ -314,10 +331,18 @@ public class Amazon {
     }
 
     private void processErr(AErr err) {
+        if (hasRecved(err)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(err.getSeqnum());
         System.out.println("Error: " + err.toString());
     }
 
     private void processPackageStatus(APackage packageStatus) {
+        if (hasRecved(packageStatus)) {
+            return;
+        }
+        recvedSeqFromWorld.addSeqnum(packageStatus.getSeqnum());
         System.out.println("Package status: " + packageStatus.toString());
     }
 
@@ -430,6 +455,10 @@ public class Amazon {
     }
 
     private void processArrived(UATruckArrived arrived) {
+        if(hasRecved(arrived)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(arrived.getSeqnum());
         int truckID = arrived.getTruckid();
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
@@ -448,6 +477,10 @@ public class Amazon {
     }
 
     private void processDelivered(UADelivered delivered) {
+        if(hasRecved(delivered)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(delivered.getSeqnum());
         synchronized(unfinishedPackages) {
             for(Package p : unfinishedPackages) {
                 if(p.getTrackingID().equals(delivered.getTrackingid())){
@@ -461,6 +494,10 @@ public class Amazon {
     }
 
     private void processErrors(Err err) {
+        if(hasRecved(err)) {
+            return;
+        }
+        recvedSeqFromUps.addSeqnum(err.getSeqnum());
         System.out.println("UPS error: " + err.getMsg());
     }
 
@@ -530,5 +567,44 @@ public class Amazon {
 
     // Methods sending commands to UPS over
 
+    // Helper methods for UPS sequence number
+    private boolean hasRecved(UATruckArrived arrived) {
+        return recvedSeqFromUps.containsSeqnum(arrived.getSeqnum());
+    }
 
+    private boolean hasRecved(UADelivered delivered) {
+        return recvedSeqFromUps.containsSeqnum(delivered.getSeqnum());
+    }
+
+    // TODO: changeAddr?
+
+    private boolean hasRecved(Err err) {
+        return recvedSeqFromUps.containsSeqnum(err.getSeqnum());
+    }
+
+    // Helper methods for UPS sequence number over
+
+    // Helper methods for World sequence number
+
+    private boolean hasRecved(APurchaseMore arrived) {
+        return recvedSeqFromWorld.containsSeqnum(arrived.getSeqnum());
+    }
+
+    private boolean hasRecved(APacked ready) {
+        return recvedSeqFromWorld.containsSeqnum(ready.getSeqnum());
+    }
+
+    private boolean hasRecved(ALoaded loaded) {
+        return recvedSeqFromWorld.containsSeqnum(loaded.getSeqnum());
+    }
+
+    private boolean hasRecved(AErr err) {
+        return recvedSeqFromWorld.containsSeqnum(err.getSeqnum());
+    }
+
+    private boolean hasRecved(APackage packageStatus) {
+        return recvedSeqFromWorld.containsSeqnum(packageStatus.getSeqnum());
+    }
+
+    // Helper methods for World sequence number over
 }
