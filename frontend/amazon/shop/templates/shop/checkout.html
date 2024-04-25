@@ -3,12 +3,8 @@
 
 {% block content %}
 <div class="container mt-5">
-    <form id="main-form" method="POST" action="{% url 'place_order' product.product_id %}">
+    <form id="main-form" method="POST" action="{% url 'place_order' %}">
         {% csrf_token %}
-        <input type="hidden" id="hidden-address-x" name="address_x">
-        <input type="hidden" id="hidden-address-y" name="address_y">
-        <input type="hidden" id="hidden-quantity" name="quantity">
-        
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <div class="card h-100">
@@ -17,35 +13,44 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" id="address_x" placeholder="Address_x...">
+                            <input class="form-control" type="text" name="address_x" placeholder="Address X...">
                         </div>
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" id="address_y" placeholder="Address_y...">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header">
-                        Order Information:
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group mb-3">
-                            <label for="product_name">Product Name:</label>
-                            <input class="form-control" type="text" id="product_name" value="{{ product.name }}" readonly>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="quantity">Quantity:</label>
-                            <input class="form-control" type="number" id="quantity" value="1" min="1">
+                            <input class="form-control" type="text" name="address_y" placeholder="Address Y...">
                         </div>
                         <div class="form-group mb-3">
                             <label for="ups_account">UPS Account (optional):</label>
                             <input class="form-control" type="text" id="ups_account" placeholder="Enter UPS Account if available">
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success btn-block">Place Order</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Order Summary:
+                    </div>
+                    <div class="card-body">
+                        {% for item in items %}
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-sm-2">
+                                <img src="{{ item.product.imageURL }}" alt="{{ item.product.name }}" class="img-fluid">
+                            </div>
+                            <div class="col-sm-5">
+                                <p class="mb-0">{{ item.product.name }}</p>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" value="{{ item.quantity }}" class="form-control" disabled>
+                            </div>
+                        </div>
+                        {% if not forloop.last %} 
+                        <hr> 
+                        {% endif %}
+                        {% endfor %}
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <button type="submit" class="btn btn-success">Place Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,13 +58,4 @@
         </div>
     </form>
 </div>
-
-<script>
-document.getElementById('main-form').addEventListener('submit', function(event) {
-    document.getElementById('hidden-address-x').value = document.getElementById('address_x').value;
-    document.getElementById('hidden-address-y').value = document.getElementById('address_y').value;
-    document.getElementById('hidden-quantity').value = document.getElementById('quantity').value;
-});
-</script>
-
 {% endblock content %}

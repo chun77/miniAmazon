@@ -1,28 +1,49 @@
 {% extends 'shop/main.html' %}
 {% load static %}
 {% block content %}
-
-
-    <form method="GET" action="{% url 'catalog' %}" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search for products..." value="{{ request.GET.search|default:'' }}">
-            <button type="submit" class="btn btn-outline-secondary">Search</button>
+<form method="GET" action="{% url 'catalog' %}" class="mb-4 mt-5">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search for products..." value="{{ request.GET.search|default:'' }}">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </div>
+</form>
+{% for product in products %}
+<div class="row mb-4">
+    <div class="col-lg-12 d-flex align-items-start border p-3">
+        <div class="me-4">
+            <img class="thumbnail" src="{{ product.imageURL }}" style="max-width:200px; max-height:150px;">
         </div>
-    </form>
-    <!-- First Product Item -->
-    {% for product in products %}
-    <div class="row mb-4">
-        <div class="col-lg-12 d-flex align-items-start border p-3">
-            <div class="me-4">
-                <img class="thumbnail" src="{{product.imageURL}}" style="max-width:200px; max-height:150px;">
-            </div>
-            <div>
-                <h6><strong>{{product.name}}</strong></h6>
-                <p>{{product.description}}</p>
-                <!-- <h4><strong>{{product.price}}</strong></h4> -->
-                <button class="btn btn-primary add-btn" onclick="location.href='{% url 'checkout' product.product_id %}'">Buy</button>
-            </div>
+        <div>
+            <h6><strong>{{ product.name }}</strong></h6>
+            <p>{{ product.description }}</p>
+            <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" style="width: 60px;">
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
         </div>
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
+
+<script>
+$(document).ready(function() {
+    $('.add-to-cart-form').submit(function(e) {
+        e.preventDefault();  // Prevent the form from submitting via the browser
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: form.serialize(),  // Automatically include all form fields
+            success: function(response) {
+                alert(response.message);  // Display an alert with the response
+                // Optionally update UI elements like cart count here
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX error: ' + textStatus + ' : ' + errorThrown);
+            }
+        });
+    });
+});
+</script>
 {% endblock content %}
