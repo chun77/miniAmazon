@@ -4,14 +4,19 @@ List of Differentiating Features
    
 	We use the Gmail API on the backend to send emails.
 
-	When a user's package is delivered, he or she will receive an email telling them where the package corresponding to a specific trackingid is delivered.
+	When a user's package is delivered, he or she will receive 
+	an email telling them where the package corresponding to a 
+	specific trackingid is delivered.
 
 
 2. Shopping Cart
 
-	We implemented the front-end shopping cart function so that users can purchase more than one product at once.
+	We implemented the front-end shopping cart function so that 
+	users can purchase more than one product at once.
 
-	The items in the shopping cart can be dynamically increased or decreased. The items in the order are not determined until the user places an order.
+	The items in the shopping cart can be dynamically increased 
+	or decreased. The items in the order are not determined until 
+	the user places an order.
 
 	Users can see the existing items in their shopping cart in real time.
 
@@ -19,18 +24,23 @@ List of Differentiating Features
 
 	The user can view the status and order details of all his or her orders.
 
-	In the order status interface, users can click View Details to see all the products included in this order.
+	In the order status interface, users can click View Details 
+	to see all the products included in this order.
 	
-	The order details page will display product pictures, tracking ID, shipping location, product description and quantity.
+	The order details page will display product pictures, tracking ID, 
+	shipping location, product description and quantity.
 
 4. Closest Warehouse Allocation
 
-	When a user places an order, we will hand it over to the warehouse closest to the user's delivery address for quick delivery.
+	When a user places an order, we will hand it over to the warehouse 
+	closest to the user's delivery address for quick delivery.
 	
 5. Associated with UPS
 
-	If the user provides a UPS account when placing an order, he or she can see all orders associated with this UPS account on the UPS official website.
+	If the user provides a UPS account when placing an order, he or she can 
+	see all orders associated with this UPS account on the UPS official website.
 
 6. Navigation Bar
 
-	We provide a navigation bar to facilitate users to switch between the order placing interface, order status viewing interface, and logout.
+	We provide a navigation bar to facilitate users to switch between the 
+	order placing interface, order status viewing interface, and logout.
