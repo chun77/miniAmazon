@@ -39,12 +39,26 @@ public class UPSComm {
         Sender.sendMsgTo(msg.build(), out);
     }
 
-    public UACommands recvOneCmdsFromUps(Socket clientSocket){
+    // public UACommands recvOneCmdsFromUps(Socket clientSocket){
+    //     try {
+    //         InputStream in = clientSocket.getInputStream();
+    //         OutputStream out = clientSocket.getOutputStream();
+    //         UACommands.Builder cmdsB = UACommands.newBuilder();
+    //         Recver.recvMsgFrom(cmdsB, in);
+    //         UACommands cmds = cmdsB.build();
+    //         sendAcksToUps(cmds, out);
+    //         return cmds;
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
+
+    public UACommands recvOneCmdsFromUps(InputStream in, OutputStream out){
         try {
-            InputStream in = clientSocket.getInputStream();
-            OutputStream out = clientSocket.getOutputStream();
             UACommands.Builder cmdsB = UACommands.newBuilder();
             Recver.recvMsgFrom(cmdsB, in);
+            System.out.println("received cmds from UPS: " + cmdsB.toString());
             UACommands cmds = cmdsB.build();
             sendAcksToUps(cmds, out);
             return cmds;

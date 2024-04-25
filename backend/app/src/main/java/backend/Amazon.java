@@ -6,23 +6,28 @@ import java.io.*;
 import java.net.*;
 
 import backend.protocol.AmazonUps.AUCommands;
+import backend.protocol.AmazonUps.AUConfirmConnect;
 import backend.protocol.AmazonUps.AUNeedATruck;
 import backend.protocol.AmazonUps.AUTruckCanGo;
 import backend.protocol.AmazonUps.Err;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
+import backend.protocol.AmazonUps.UAInitConnect;
 import backend.protocol.AmazonUps.UATruckArrived;
 import backend.protocol.AmazonUps.Pack;
 import backend.protocol.AmazonUps.Product;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.DBCtrler;
 import backend.utils.ProductToAProduct;
+import backend.utils.Recver;
 import backend.utils.Sender;
 
 public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
     private static final int UPS_SERVER_PORT = 9999; 
     private static final int THREAD_POOL_SIZE = 10;
+    private static final String UPS_REMOTE_IP = "vcm-38153.vm.duke.edu";
+    private static final int UPS_REMOTE_PORT = 9999;
 
     private ExecutorService threadPool;
     private WorldComm worldComm;
@@ -37,6 +42,8 @@ public class Amazon {
     // fields for communication with world
     private InputStream worldRecver;
     private OutputStream worldSender;
+    private InputStream upsRecver;
+    private OutputStream upsSender;
 
     public Amazon() {
         threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -67,22 +74,39 @@ public class Amazon {
         worldRecverThread.start();
     }
 
+    // public void startUpsServer() {
+    //     // start a thread to receive message from ups
+    //     Thread upsServerThread = new Thread(new Runnable() {
+    //         @Override
+    //         public void run() {
+    //             try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
+    //                 while (true) {
+    //                     Socket clientSocket = serverSocket.accept(); 
+    //                     // use threadpool to handle the message from ups
+    //                     threadPool.execute(() -> {
+    //                         UACommands cmds = upsComm.recvOneCmdsFromUps(clientSocket);
+    //                         processUpsMsgs(cmds);
+    //                     });
+    //                 }
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     });
+    //     upsServerThread.start();
+    // }
+
     public void startUpsServer() {
         // start a thread to receive message from ups
         Thread upsServerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
-                    while (true) {
-                        Socket clientSocket = serverSocket.accept(); 
-                        // use threadpool to handle the message from ups
-                        threadPool.execute(() -> {
-                            UACommands cmds = upsComm.recvOneCmdsFromUps(clientSocket);
-                            processUpsMsgs(cmds);
-                        });
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while (true) {
+                    UACommands cmds = upsComm.recvOneCmdsFromUps(upsRecver, upsSender);
+                    // use threadpool to handle the message from ups
+                    threadPool.execute(() -> {
+                        processUpsMsgs(cmds);
+                    });
                 }
             }
         });
@@ -120,7 +144,7 @@ public class Amazon {
 
     public void initialize() {
         initializeWHs();
-        long worldIDFromUps = upsComm.recvWorldID();
+        long worldIDFromUps = recvWorldID();
         while(true) {
             try{
                 // only for test
@@ -139,6 +163,31 @@ public class Amazon {
                 continue;
             }
         }
+    }
+
+    public long recvWorldID() {
+        try (ServerSocket serverSocket = new ServerSocket(9999);) {
+            System.out.println("waiting for worldID");
+            Socket clientSocket = serverSocket.accept(); 
+            upsRecver = clientSocket.getInputStream();
+            upsSender = clientSocket.getOutputStream();
+            UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
+            
+            Recver.recvMsgFrom(msgB, upsRecver);
+            long worldID = msgB.getWorldid();
+            sendBackConnected(worldID, upsSender);
+            System.out.println("received worldID: " + worldID);
+            return worldID;
+        } catch (IOException e) {
+            return recvWorldID();
+        }
+    }
+
+    public void sendBackConnected(long worldID, OutputStream out) {
+        AUConfirmConnect.Builder msg = AUConfirmConnect.newBuilder();
+        msg.setWorldid(worldID);
+        msg.setConnected(true);
+        Sender.sendMsgTo(msg.build(), out);
     }
 
     public static long getSeqnum() {
@@ -279,7 +328,6 @@ public class Amazon {
         // send commands to the world
         // use Timer, if no acks received in 5 seconds, resend the commands
         Timer timer = new Timer();
-        unackedMsgsTimer.put(seqnum, timer);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -287,8 +335,8 @@ public class Amazon {
                     Sender.sendMsgTo(cmds, out);
                 }
             }
-        }, 5000);
-        System.out.println("Sent commands to the world, setup timer for resending...");
+        }, 0, 5000);
+        unackedMsgsTimer.put(seqnum, timer);
         // // receive the response from the world
         // AResponses.Builder responsesB = AResponses.newBuilder();
         // synchronized (in) {
@@ -371,6 +419,7 @@ public class Amazon {
             processErrors(err);
         }
         for(Long ack : cmds.getAcksList()) {
+            System.out.println("Received ack from UPS: " + ack);
             Timer timer = unackedMsgsTimer.get(ack);
             if (timer != null) {
                 timer.cancel();
@@ -416,23 +465,38 @@ public class Amazon {
 
     // Below are the methods to send commands to UPS
 
-    public void sendOneCmdsToUps(AUCommands cmds, Long seqnums) {
+    // public void sendOneCmdsToUps(AUCommands cmds, Long seqnums) {
+    //     // send commands to UPS
+    //     // use Timer, if no acks received in 5 seconds, resend the commands
+    //     Timer timer = new Timer();
+    //     unackedMsgsTimer.put(seqnums, timer);
+    //     timer.schedule(new TimerTask() {
+    //         @Override
+    //         public void run() {
+    //             try (Socket socket = new Socket(UPS_REMOTE_IP, UPS_REMOTE_PORT)) {
+    //                 OutputStream out = socket.getOutputStream();
+    //                 System.out.println("in sendOneCmdsToUPS");
+    //                 Sender.sendMsgTo(cmds, out);
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     }, 5000);
+        
+    // }
+
+    public void sendOneCmdsToUps(AUCommands cmds, Long seqnum) {
         // send commands to UPS
         // use Timer, if no acks received in 5 seconds, resend the commands
         Timer timer = new Timer();
-        unackedMsgsTimer.put(seqnums, timer);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                try (Socket socket = new Socket("ups_ip", 9998)) {
-                    OutputStream out = socket.getOutputStream();
-                    Sender.sendMsgTo(cmds, out);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                System.out.println("in sendOneCmdsToUPS");
+                Sender.sendMsgTo(cmds, upsSender);
             }
-        }, 5000);
-        
+        }, 0, 5000);
+        unackedMsgsTimer.put(seqnum, timer);
     }
 
     public void sendNeedATruck(Package pkg){
@@ -448,6 +512,7 @@ public class Amazon {
         Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
+        System.out.println("in sendNeedATruck");
         sendOneCmdsToUps(cmds.build(), seqnum);
     }
 

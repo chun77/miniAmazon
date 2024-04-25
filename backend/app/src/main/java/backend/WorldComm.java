@@ -34,8 +34,8 @@ public class WorldComm {
     public Socket connectToWorld(long worldid, List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connect(worldid, whs);
         // set up the TCP connection to the world
-        //Socket socket = new Socket("vcm-38153.vm.duke.edu", 23456);
-        Socket socket = new Socket("vcm-39849.vm.duke.edu", 23456);
+        Socket socket = new Socket("vcm-38153.vm.duke.edu", 23456);
+        //Socket socket = new Socket("vcm-39849.vm.duke.edu", 23456);
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         // connect to the world(send AConnect message)
@@ -57,7 +57,6 @@ public class WorldComm {
         // receive the response from the world
         try {
             AResponses.Builder responsesB = AResponses.newBuilder();
-            System.out.println("Try to receive message from worldRecver");
             synchronized (in) {
                 Recver.recvMsgFrom(responsesB, in);
             }
