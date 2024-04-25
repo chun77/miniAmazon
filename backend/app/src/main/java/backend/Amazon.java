@@ -511,7 +511,9 @@ public class Amazon {
         int wh_id = pkg.getWh().getId();
         String tracking_id = pkg.getTrackingID();
         int amazonAccount = pkg.getAmazonAccount();
-        Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
+        long package_id = pkg.getPackageID();
+        Pack pack = Pack.newBuilder().setWhId(wh_id).addAllThings(products).setTrackingid(tracking_id).setPackageid(package_id).setAmazonaccount(amazonAccount).setDestX(dest_x).setDestY(dest_y).build();
+        // what about ups account?
         AUNeedATruck needATruck = AUNeedATruck.newBuilder().setPack(pack).setSeqnum(seqnum).build();
         AUCommands.Builder cmds = AUCommands.newBuilder().addNeed(needATruck);
         sendOneCmdsToUps(cmds.build(), seqnum);
