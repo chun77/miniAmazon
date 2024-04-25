@@ -65,7 +65,7 @@ public class EmailSender {
     
     try{
       // Create a MimeMessage object
-      MimeMessage mimeMessage = createEmail("steven.h.geng@gmail.com", to, "Attendance Reminder", msg);
+      MimeMessage mimeMessage = createEmail("steven.h.geng@gmail.com", to, "Arrival Notice", msg);
       // Send the email
       sendMessage(service, "steven.h.geng@gmail.com", mimeMessage);
       return "good";

@@ -182,7 +182,7 @@ public class DBCtrler {
                     products.add(product);
                 }
                 // generate a new package
-                Package newPackage = new Package(packageID, amazonAccount, trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
+                Package newPackage = new Package(packageID, amazonAccount, "testemail", trackingID, -1, new Location(dest_x, dest_y), products, new WareHouse(warehouseID, new Location(WH_x, WH_y)), "PURCHASING");
                 return newPackage;
             }
         } catch (SQLException e) {

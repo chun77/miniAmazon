@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 import java.net.*;
+import java.security.GeneralSecurityException;
 
 import backend.protocol.AmazonUps.AUCommands;
 import backend.protocol.AmazonUps.AUConfirmConnect;
@@ -18,6 +19,7 @@ import backend.protocol.AmazonUps.Pack;
 import backend.protocol.AmazonUps.Product;
 import backend.protocol.WorldAmazon.*;
 import backend.utils.DBCtrler;
+import backend.utils.EmailSender;
 import backend.utils.ProductToAProduct;
 import backend.utils.Recver;
 import backend.utils.Sender;
@@ -27,14 +29,13 @@ public class Amazon {
     private static final int FRONTEND_SERVER_PORT = 8888; 
     private static final int UPS_SERVER_PORT = 9999; 
     private static final int THREAD_POOL_SIZE = 10;
-    private static final String UPS_REMOTE_IP = "vcm-38153.vm.duke.edu";
-    private static final int UPS_REMOTE_PORT = 9999;
 
     private ExecutorService threadPool;
     private WorldComm worldComm;
     private UPSComm upsComm;
     private FrontendComm frontendComm;
     private DBCtrler dbCtrler;
+    private EmailSender emailSender;
 
     private static long seqnum;
     private final List<WareHouse> whs;
@@ -54,6 +55,7 @@ public class Amazon {
         upsComm = new UPSComm();
         frontendComm = new FrontendComm();
         dbCtrler = new DBCtrler();
+        emailSender = new EmailSender();
         seqnum = 0;
         whs = new ArrayList<>();
         unfinishedPackages = new ArrayList<>();
@@ -129,9 +131,8 @@ public class Amazon {
                         // use threadpool to handle the message from frontend
                         threadPool.execute(() -> {
                             long package_id = frontendComm.recvOneOrderFromFrontend(clientSocket);
-                            System.out.println("get package_id from db: " + package_id);
                             Package pkg = dbCtrler.getPackageByID(package_id);
-                            System.out.println("get package from db: " + pkg.toString());
+                            pkg.setStatus("WAITPURCHASING");
                             synchronized (unfinishedPackages) {
                                 unfinishedPackages.add(pkg);
                             }
@@ -149,12 +150,12 @@ public class Amazon {
 
     public void initialize() {
         initializeWHs();
-        long worldIDFromUps = recvWorldID();
+        //long worldIDFromUps = recvWorldID();
         while(true) {
             try{
                 // only for test
-                //Socket worldSocket = worldComm.connectToworldWithoudID(whs);
-                Socket worldSocket = worldComm.connectToWorld(worldIDFromUps, whs);
+                Socket worldSocket = worldComm.connectToworldWithoudID(whs);
+                //Socket worldSocket = worldComm.connectToWorld(worldIDFromUps, whs);
                 System.out.println("connected to world");
                 if(worldSocket != null) {
                     worldRecver = worldSocket.getInputStream();
@@ -171,7 +172,7 @@ public class Amazon {
     }
 
     public long recvWorldID() {
-        try (ServerSocket serverSocket = new ServerSocket(9999);) {
+        try (ServerSocket serverSocket = new ServerSocket(UPS_SERVER_PORT);) {
             System.out.println("waiting for worldID");
             Socket clientSocket = serverSocket.accept(); 
             upsRecver = clientSocket.getInputStream();
@@ -272,12 +273,11 @@ public class Amazon {
         synchronized (unfinishedPackages) {
             System.out.println("unfinishedPackages: " + unfinishedPackages.toString());
             for(Package p: unfinishedPackages){
-                if(p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.hasSameProducts(arrived.getThingsList(), p.getProducts())){
-                    System.out.println("Package " + p.getPackageID() + " has arrived");
+                if(p.getStatus().equals("WAITPURCHASING") && p.getWh().getId() == arrived.getWhnum() && ProductToAProduct.hasSameProducts(arrived.getThingsList(), p.getProducts())){
                     p.setStatus("PACKING");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "PACKING");
                     sendToPack(p);
-                    sendNeedATruck(p);
+                    //sendNeedATruck(p);
                     break;
                 }
             }
@@ -358,10 +358,11 @@ public class Amazon {
             @Override
             public void run() {
                 synchronized (out) {
+                    System.out.println("sending: " + cmds);
                     Sender.sendMsgTo(cmds, out);
                 }
             }
-        }, 0, 5000);
+        }, 0, 15000);
         unackedMsgsTimer.put(seqnum, timer);
         // // receive the response from the world
         // AResponses.Builder responsesB = AResponses.newBuilder();
@@ -486,6 +487,15 @@ public class Amazon {
                 if(p.getTrackingID().equals(delivered.getTrackingid())){
                     p.setStatus("DELIVERED");
                     dbCtrler.updatePackageStatus(p.getPackageID(), "DELIVERED");
+                    try {
+                        String msg = "Dear user " + p.getAmazonAccount() + 
+                                    ", your package " + p.getTrackingID() + " has been delivered" +
+                                    " to " + p.getDest().getXLocation() + ", " + p.getDest().getYLocation() +
+                                    ". Thank you for using Amazon!";
+                        emailSender.sendNotification(p.getEmail(), msg);
+                    } catch (GeneralSecurityException | IOException e) {
+                        e.printStackTrace();
+                    }
                     unfinishedPackages.remove(p);
                     break;
                 }
@@ -534,7 +544,7 @@ public class Amazon {
             public void run() {
                 Sender.sendMsgTo(cmds, upsSender);
             }
-        }, 0, 5000);
+        }, 0, 15000);
         unackedMsgsTimer.put(seqnum, timer);
     }
 

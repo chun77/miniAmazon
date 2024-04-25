@@ -7,6 +7,7 @@ import backend.protocol.AmazonUps.Product;
 public class Package {
     private long packageID;
     private int amazonAccount;
+    private String email;
     private String trackingID;
     private int truckID;
     private Location dest;
@@ -14,9 +15,10 @@ public class Package {
     private WareHouse wh;
     private String status;
 
-    public Package(long packageID, int amazonAccount, String trackingID, int truckID, Location dest, List<Product> products, WareHouse wh, String status) {
+    public Package(long packageID, int amazonAccount, String email, String trackingID, int truckID, Location dest, List<Product> products, WareHouse wh, String status) {
         this.packageID = packageID;
         this.amazonAccount = amazonAccount;
+        this.email = email;
         this.trackingID = trackingID;
         this.truckID = truckID;
         this.dest = dest;
@@ -31,6 +33,10 @@ public class Package {
 
     public int getAmazonAccount() {
         return amazonAccount;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getTrackingID() {
