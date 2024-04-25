@@ -13,9 +13,9 @@ def register(request):
 	if request.user.is_authenticated:
 		return redirect('catalog')
 	else:
-		form = CreateUserForm()
+		form = UserRegisterForm()
 		if request.method == 'POST':
-			form = CreateUserForm(request.POST)
+			form = UserRegisterForm(request.POST)
 			if form.is_valid():
 				form.save()
 				user = form.cleaned_data.get('username')
