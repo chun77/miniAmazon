@@ -47,7 +47,7 @@ public class App {
 
         // start 3 threads, for world receiver, ups server and frontend server respectively
         amazon.startWorldRecver();
-        //amazon.startUpsServer();
+        amazon.startUpsServer();
         amazon.startFrontendServer();
 
         
