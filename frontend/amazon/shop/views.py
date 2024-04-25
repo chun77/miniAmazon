@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import*
+from django.http import JsonResponse
 
 
 def register(request):
@@ -67,17 +68,32 @@ def catalog(request):
     context = {'products': products}
     return render(request, 'shop/catalog.html', context)
 
-# catalog.html onclick passes the product_id to this view
 @login_required(login_url='login')
-def checkout(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    context = {'product': product}
+def checkout(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.info(request, "Your cart is empty.")
+        return redirect('cart')
+
+    items = []
+    total_price = 0
+    for product_id_str, quantity in cart.items():
+        product = get_object_or_404(Product, pk=int(product_id_str))
+        total = product.price * quantity
+        total_price += total
+        items.append({
+            'product': product,
+            'quantity': quantity,
+            'total': total,
+        })
+    
+    context = {'items': items, 'total_price': total_price}
     return render(request, 'shop/checkout.html', context)
 
 # checkout.html form submission passes the product_id to this view
 @login_required(login_url='login')
-def place_order(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
+def place_order(request):
+    cart = request.session.get('cart', {})
     if request.method == 'POST':
         quantity = request.POST.get('quantity')
         address_x = request.POST.get('address_x')
@@ -85,9 +101,8 @@ def place_order(request, product_id):
         ups_account = request.POST.get('ups_account')
         
         # Check for any missing fields
-        if not (quantity and address_x and address_y):
-            context = {'product': product, 'error': 'Please fill all fields correctly.'}
-            return render(request, 'shop/checkout.html', context)
+        # if not (quantity and address_x and address_y):
+        #     return redirect(checkout)
 
         order = Order(
             # tbd: amazonAccount
@@ -104,12 +119,15 @@ def place_order(request, product_id):
         order.tracking_id = tracking_number
         order.save()
 
-        package_product = PackageProduct(
-            product = product,
-            package = order,
-            quantity = quantity
-        )
-        package_product.save()
+        # Create a PackageProduct for each item in the cart
+        for product_id_str, quantity in cart.items():
+            product = Product.objects.get(pk=int(product_id_str))
+            PackageProduct.objects.create(
+                product=product,
+                package=order,
+                quantity=quantity
+            )
+        # package_product.save()
 
         package_status = PackageStatus(
             package = order,
@@ -121,22 +139,22 @@ def place_order(request, product_id):
         package_id_str = str(order.package_id)
 
         # Send the order data to the Amazon server
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            # connect to the server
-            s.connect(('vcm-37900.vm.duke.edu', 8888))
+        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        #     # connect to the server
+        #     s.connect(('vcm-37900.vm.duke.edu', 8888))
 
-            # send the order data
-            s.sendall(package_id_str.encode('utf-8'))
+        #     # send the order data
+        #     s.sendall(package_id_str.encode('utf-8'))
 
-            # receive the response from the server with new tracking id
-            response = s.recv(1024).decode('utf-8')
-            print(response)
+        #     # receive the response from the server with new tracking id
+        #     response = s.recv(1024).decode('utf-8')
+        #     print(response)
 
         # Redirect to the success page
         return redirect('success', order_id=order.package_id)
     else:
         # Return to the checkout page if not a POST request
-        return render(request, 'shop/checkout.html', {'product': product})
+        return render(request, 'shop/checkout.html')
 
 @login_required(login_url='login')
 def success(request, order_id):
@@ -155,6 +173,7 @@ def check_order_status(request):
     context = {'packageStatuses': package_statuses}
     return render(request, 'shop/checkorderstatus.html', context)
 
+@login_required(login_url='login')
 def view_order_detail(request, order_id):
     order = get_object_or_404(Order, package_id=order_id)
     package_products = PackageProduct.objects.filter(package=order)
@@ -164,6 +183,83 @@ def view_order_detail(request, order_id):
     }
     return render(request, 'shop/vieworderdetail.html', context)
 
+@login_required(login_url='login')
+def cart(request):
+    cart = request.session.get('cart', {})
+    items = []
+    for product_id, quantity in cart.items():
+        product = get_object_or_404(Product, pk=int(product_id))
+        items.append({
+            'product_id': product.product_id,
+            'name': product.name,
+            'price': product.price,
+            'quantity': quantity,
+            'imageURL': product.imageURL
+        })
+    context = {'items': items}
+    return render(request, 'shop/cart.html', context)
+    
+@login_required(login_url='login')
+def add_to_cart(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=int(product_id))
+        quantity = int(request.POST.get('quantity', 1))
+        cart = request.session.get('cart', {})
+
+        # Treat product_id as a string since session keys are always strings
+        product_id_str = str(product_id)
+        cart[product_id_str] = cart.get(product_id_str, 0) + quantity
+    
+        request.session['cart'] = cart
+    
+        # if it is an AJAX request 
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'message': f'{quantity} x "{product.name}" added to cart.'})
+        else:
+            return redirect('catalog')
+
+@login_required(login_url='login')
+def update_cart(request):
+    if request.method == 'POST':
+        # Loop over the items in the POST request
+        cart = request.session.get('cart', {})
+        for key in request.POST:
+            if key.startswith('quantity_'):
+                product_id_str = key.split('_')[1]
+                quantity = int(request.POST[key])
+
+                if product_id_str in cart:
+                    if quantity <= 0:
+                        # Remove the product if the quantity is less than or equal to zero
+                        del cart[product_id_str]
+                        messages.success(request, "Product removed from your cart.")
+                    else:
+                        # Update the quantity for the product
+                        cart[product_id_str] = quantity
+                        messages.success(request, "Cart updated successfully.")
+                else:
+                    messages.error(request, "Product not found in cart.")
+        request.session['cart'] = cart
+        return redirect('cart')
+    else:
+        return redirect('catalog')
+
+
+
+@login_required(login_url='login')
+def remove_from_cart(request, product_id):
+    cart = request.session.get('cart', {})
+
+    # Ensure product_id is a string
+    product_id_str = str(product_id)
+
+    if product_id_str in cart:
+        # Remove the product from the cart
+        del cart[product_id_str]
+        request.session['cart'] = cart
+        messages.success(request, "Product removed from your cart.")
+
+    return redirect('cart')
 
 
 

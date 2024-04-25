@@ -1,0 +1,47 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Your Shopping Cart</h2>
+    <form method="post" action="{% url 'update_cart' %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.imageURL }}" alt="{{ item.name }}" style="height:100px;"> <!-- Display the product image -->
+                        {{ item.name }}
+                    </td>
+                    <td>
+                        <input type="number" name="quantity_{{ item.product_id }}" value="{{ item.quantity }}" min="0" class="form-control" style="width: 80px;">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-info btn-sm" name="update" value="{{ item.product_id }}">Update</button>
+                    </td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.product_id %}" class="btn btn-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Your cart is empty.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    <div class="text-right">
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+</div>
+{% endblock content %}
