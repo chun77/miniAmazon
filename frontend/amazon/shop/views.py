@@ -135,33 +135,33 @@ def place_order(request):
         )
         package_status.save()
 
-        # package_id_str = str(order.package_id)
-        # response = None
+        package_id_str = str(order.package_id)
+        response = None
 
-        # retry_count = 3
+        retry_count = 3
 
-        # for attempt in range(retry_count):
-        #     try:
-        #         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        #             s.connect(('vcm-37900.vm.duke.edu', 8888))
-        #             s.settimeout(5.0)
+        for attempt in range(retry_count):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.connect(('vcm-37900.vm.duke.edu', 8888))
+                    s.settimeout(5.0)
 
-        #             s.sendall(package_id_str.encode('utf-8'))
+                    s.sendall(package_id_str.encode('utf-8'))
 
-        #             response = s.recv(1024).decode('utf-8')
+                    response = s.recv(1024).decode('utf-8')
                     
-        #             if response:
-        #                 print("Received response:", response)
-        #                 break  
-        #             else:
-        #                 print("No response, retrying...")
-        #     except socket.timeout:
-        #         print("Socket timed out, retrying...")
-        #     except Exception as e:
-        #         print("An error occurred:", e)
+                    if response:
+                        print("Received response:", response)
+                        break  
+                    else:
+                        print("No response, retrying...")
+            except socket.timeout:
+                print("Socket timed out, retrying...")
+            except Exception as e:
+                print("An error occurred:", e)
 
-        # if response is None:
-        #     print("Failed to receive a response after {} attempts".format(retry_count))
+        if response is None:
+            print("Failed to receive a response after {} attempts".format(retry_count))
         return redirect('success', order_id=order.package_id)
     else:
         return render(request, 'shop/checkout.html')

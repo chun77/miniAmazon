@@ -5,7 +5,8 @@
         "fields": {
             "name": "Type C Charger Fast Charging",
             "description": "USB C phone charger block and charging cable",
-            "price": "0"
+            "price": "0",
+            "image": "charger.jpg"
         }
     },
     {
@@ -13,8 +14,9 @@
         "pk": 2,
         "fields": {
             "name": "Stanley Water Bottle",
-            "description": "Stanley Quencher H2.0 FlowState Stainless Steel Vacuum Insulated Tumbler with Lid and Straw for Water, Iced Tea or Coffee.",
-            "price": "0"
+            "description": "Stanley Quencher H2.0 FlowState Stainless Vacuum.",
+            "price": "0",
+            "image": "bottle.jpeg"
         }
     },
     {
@@ -23,7 +25,8 @@
         "fields": {
             "name": "Shoes",
             "description": "Nike Sports Shoes in Black and White for men.",
-            "price": "0"
+            "price": "0",
+            "image": "nike.jpg"
         }
     },
     {
@@ -32,7 +35,8 @@
         "fields": {
             "name": "Mini Skirt",
             "description": "flowery mini skirt in pink color.",
-            "price": "0"
+            "price": "0",
+            "image": "flowerminiskirt.jpg"
         }
     },
     {
@@ -40,8 +44,9 @@
         "pk": 5,
         "fields": {
             "name": "Webcam",
-            "description": "1080P HD Webcam with Microphone, Streaming Computer Web Camera with 110-Degree Wide View Angle, USB PC Webcam for Video Calling Recording Conferencing.",
-            "price": "0"
+            "description": "1080P HD Webcam with Microphone.",
+            "price": "0",
+            "image": "webcam.jpg"
         }
     },
     {

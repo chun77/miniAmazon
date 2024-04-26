@@ -29,7 +29,7 @@ class Order(models.Model):
     tracking_id = models.CharField(max_length=255, default='')
     dest_x = models.IntegerField()
     dest_y = models.IntegerField()
-    ups_account = models.IntegerField()
+    ups_account = models.IntegerField(null=True)
     
 class WareHouse(models.Model):
     wh_id = models.AutoField(primary_key = True)
