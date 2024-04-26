@@ -11,10 +11,10 @@ import backend.Package;
 import backend.protocol.AmazonUps.Product;
 
 public class DBCtrler {
-    //private static String url = "jdbc:postgresql://127.0.0.1:5432/ece568";
-    private static String url = "jdbc:postgresql://vcm-39394.vm.duke.edu:5432/amazondb";
+    private static String url = "jdbc:postgresql://127.0.0.1:5432/amazondb";
+    //private static String url = "jdbc:postgresql://vcm-39394.vm.duke.edu:5432/amazondb";
     private static String user = "postgres";
-    private static String password = "psql";
+    private static String password = "postgres";
 
     public DBCtrler() {
     }

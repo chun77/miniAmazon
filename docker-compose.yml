@@ -14,15 +14,17 @@ services:
     build: ./frontend
     command: bash -c "./runserver.sh"
     ports:
-      - "8080:8080"
+      - "8000:8000"
     expose:
-      - "8080"
+      - "8000"
     depends_on:
       - db
 
   backend:
     build: ./backend
-    command: bash -c "gradle run"
+    environment:
+      - worldHost="vcm-37900.vm.duke.edu"
+    command: bash -c "./gradlew run"
     ports:
       - "9999:9999" # port for UPS
       - "8888:8888" # port for frontend
