@@ -24,10 +24,10 @@ public class App {
 
         // set simspeed, just for testing
         WorldMsger worldMsger = new WorldMsger();
-        worldMsger.setSimSpeed(400); // only for testing
-        System.out.println("set simspeed to 400");
+        worldMsger.setSimSpeed(500); // only for testing
+        System.out.println("set simspeed to 500");
         Sender.sendMessage(worldMsger.getCommands(), worldSender);
-        System.out.println("set simspeed to 400 success");
+        System.out.println("set simspeed to 500 success");
 
         // start 3 threads, for world receiver, ups server and frontend server respectively
         amazon.startWorldRecver();
