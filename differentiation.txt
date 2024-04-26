@@ -44,3 +44,13 @@ List of Differentiating Features
 
 	We provide a navigation bar to facilitate users to switch between the 
 	order placing interface, order status viewing interface, and logout.
+
+7. Input Error Message
+
+	The UPS account number should be a number. If the user tries to enter 
+	a string or other types, the web page will report an error and prompt to re-enter.
+
+8. Adding Product Reminder
+
+	When a user adds an item to the shopping cart, he or she will receive 
+	a web page prompt indicating that the item was added successfully.
