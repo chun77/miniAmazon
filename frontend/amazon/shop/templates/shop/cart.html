@@ -44,4 +44,15 @@
         <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
     </div>
 </div>
+
+<!-- if checkout when cart is empty, error message -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'warning' %}alert-warning{% else %}alert-success{% endif %}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% endblock content %}

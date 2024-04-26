@@ -5,9 +5,11 @@ from hashids import Hashids
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import*
+from .forms import *
 from django.http import JsonResponse
-
+from django.urls import reverse
+from django.core.validators import validate_integer
+from django.core.exceptions import ValidationError
 
 def register(request):
 	if request.user.is_authenticated:
@@ -72,7 +74,7 @@ def catalog(request):
 def checkout(request):
     cart = request.session.get('cart', {})
     if not cart:
-        messages.info(request, "Your cart is empty.")
+        messages.info(request, "Cannot proceed to checkout when cart is empty.")
         return redirect('cart')
 
     items = []
@@ -95,78 +97,101 @@ def checkout(request):
 def place_order(request):
     cart = request.session.get('cart', {})
     if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        address_x = request.POST.get('address_x')
-        address_y = request.POST.get('address_y')
-        ups_account = request.POST.get('ups_account')
-        
-        # Check for any missing fields
-        # if not (quantity and address_x and address_y):
-        #     return redirect(checkout)
+        form = OrderForm(request.POST)  # Bind form with POST data
+        if form.is_valid():
+            # Form data is valid, proceed with order placement
+            order = Order(
+                user=request.user,
+                dest_x=int(form.cleaned_data['address_x']),
+                dest_y=int(form.cleaned_data['address_y']),
+                ups_account=form.cleaned_data['ups_account']
+            )
+            order.save()
 
-        order = Order(
-            # tbd: amazonAccount
-            user = request.user,
-            dest_x=int(address_x),
-            dest_y=int(address_y),
-            ups_account=ups_account or None  # deal with empty value
-        )
-        order.save()
+            # Generate tracking number
+            hashids = Hashids(salt="zw297hg161", min_length=8)
+            tracking_number = hashids.encode(order.package_id)
+            order.tracking_id = tracking_number
+            order.save()
 
-        # produce tracking_number according to package_id
-        hashids = Hashids(salt = "zw297hg161", min_length = 8);
-        tracking_number = hashids.encode(order.package_id)
-        order.tracking_id = tracking_number
-        order.save()
+            # Create PackageProduct for each item in the cart
+            for product_id_str, quantity in cart.items():
+                product = Product.objects.get(pk=int(product_id_str))
+                PackageProduct.objects.create(
+                    product=product,
+                    package=order,
+                    quantity=quantity
+                )
 
-        # Create a PackageProduct for each item in the cart
+            # Save package status
+            package_status = PackageStatus(
+                package=order,
+                status="OrderPlaced"
+            )
+            package_status.save()
+
+            # Send package ID to external system
+            package_id_str = str(order.package_id)
+            response = None
+            retry_count = 3
+
+            # Retry sending package ID in case of failure
+            for attempt in range(retry_count):
+                try:
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.connect(('vcm-37900.vm.duke.edu', 8888))
+                        s.settimeout(5.0)
+                        s.sendall(package_id_str.encode('utf-8'))
+                        response = s.recv(1024).decode('utf-8')
+                        if response:
+                            print("Received response:", response)
+                            break
+                        else:
+                            print("No response, retrying...")
+                except socket.timeout:
+                    print("Socket timed out, retrying...")
+                except Exception as e:
+                    print("An error occurred:", e)
+
+            if response is None:
+                print("Failed to receive a response after {} attempts".format(retry_count))
+
+            # Clear the cart and redirect to success page
+            request.session['cart'] = {}
+            return redirect('success', order_id=order.package_id)
+        else:
+            # Form data is invalid, render the checkout page with form and errors
+            # messages.error(request, "Failed to place order. Please correct the errors below.")
+            
+            # Retrieve the items from the cart to be passed to the template for rendering order summary
+            items = []
+            for product_id_str, quantity in cart.items():
+                product = Product.objects.get(pk=int(product_id_str))
+                items.append({
+                    'product': product,
+                    'quantity': quantity
+                })
+
+            return render(request, 'shop/checkout.html', {
+                'form': form,  # Pass the form back to the template with errors
+                'items': items,  # Pass the cart items to maintain the order summary
+            })
+    else:
+        form = OrderForm()  # If it's a GET request, create a new form
+        items = []
+
+        # Retrieve the items from the cart to be passed to the template for rendering order summary
         for product_id_str, quantity in cart.items():
             product = Product.objects.get(pk=int(product_id_str))
-            PackageProduct.objects.create(
-                product=product,
-                package=order,
-                quantity=quantity
-            )
-        # package_product.save()
+            items.append({
+                'product': product,
+                'quantity': quantity
+            })
 
-        package_status = PackageStatus(
-            package = order,
-            status = "OrderPlaced"
-        )
-        package_status.save()
-
-        package_id_str = str(order.package_id)
-
-        # clear the cart
-        request.session['cart'] = {}
-        
-        response = None
-        retry_count = 3
-        for attempt in range(retry_count):
-            try:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.connect(('vcm-37900.vm.duke.edu', 8888))
-                    s.settimeout(5.0)
-
-                    s.sendall(package_id_str.encode('utf-8'))
-
-                    response = s.recv(1024).decode('utf-8')
-                    
-                    if response:
-                        print("Received response:", response)
-                        break  
-                    else:
-                        print("No response, retrying...")
-            except socket.timeout:
-                print("Socket timed out, retrying...")
-            except Exception as e:
-                print("An error occurred:", e)
-
-        if response is None:
-            print("Failed to receive a response after {} attempts".format(retry_count))
-        return redirect('success', order_id=order.package_id)
-    else:
-        return render(request, 'shop/checkout.html')
+        return render(request, 'shop/checkout.html', {
+            'form': form,
+            'items': items
+        })
 
 @login_required(login_url='login')
 def success(request, order_id):
@@ -228,6 +253,7 @@ def add_to_cart(request, product_id):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'message': f'{quantity} x "{product.name}" added to cart.'})
         else:
+            messages.success(request, f'{quantity} x "{product.name}" added to cart.')
             return redirect('catalog')
 
 @login_required(login_url='login')

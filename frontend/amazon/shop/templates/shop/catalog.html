@@ -1,6 +1,16 @@
 {% extends 'shop/main.html' %}
 {% load static %}
 {% block content %}
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'warning' %}alert-warning{% else %}alert-success{% endif %}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <form method="GET" action="{% url 'catalog' %}" class="mb-4 mt-5">
     <div class="input-group">
         <input type="text" name="search" class="form-control" placeholder="Search for products..." value="{{ request.GET.search|default:'' }}">
@@ -16,7 +26,7 @@
         <div>
             <h6><strong>{{ product.name }}</strong></h6>
             <p>{{ product.description }}</p>
-            <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
+            <form method="POST" action="{% url 'add_to_cart' product.product_id %}" class="add-to-cart-form">
                 {% csrf_token %}
                 <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" style="width: 60px;">
                 <button type="submit" class="btn btn-primary">Add to Cart</button>
@@ -36,8 +46,9 @@ $(document).ready(function() {
             type: 'POST',
             data: form.serialize(),  // Automatically include all form fields
             success: function(response) {
-                alert(response.message);  // Display an alert with the response
-                // Optionally update UI elements like cart count here
+                if ($('.alert-success').length === 0) {
+                    alert(response.message);  // Display an alert with the response
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX error: ' + textStatus + ' : ' + errorThrown);

@@ -13,14 +13,35 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="address_x" placeholder="Address X...">
+                            <input class="form-control {% if form.address_x.errors %}is-invalid{% endif %}" type="text" name="address_x" placeholder="Address X..." value="{{ form.address_x.value }}">
+                            {% if form.address_x.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.address_x.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="address_y" placeholder="Address Y...">
+                            <input class="form-control {% if form.address_y.errors %}is-invalid{% endif %}" type="text" name="address_y" placeholder="Address Y..." value="{{ form.address_y.value }}">
+                            {% if form.address_y.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.address_y.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
                             <label for="ups_account">UPS Account (optional):</label>
-                            <input class="form-control" type="text" name="ups_account" placeholder="Enter UPS Account if available">
+                            <input class="form-control {% if form.ups_account.errors %}is-invalid{% endif %}" type="text" id="ups_account" name="ups_account" placeholder="Enter UPS Account if available" value="{{ form.ups_account.value }}">
+                            {% if form.ups_account.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.ups_account.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
