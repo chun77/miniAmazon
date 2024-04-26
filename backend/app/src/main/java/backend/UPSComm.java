@@ -22,7 +22,7 @@ public class UPSComm {
             InputStream in = clientSocket.getInputStream();
             UAInitConnect.Builder msgB = UAInitConnect.newBuilder();
             
-            Recver.recvMsgFrom(msgB, in);
+            Recver.recvMessage(msgB, in);
             long worldID = msgB.getWorldid();
             sendBackConnected(worldID, clientSocket.getOutputStream());
             System.out.println("received worldID: " + worldID);
@@ -36,28 +36,13 @@ public class UPSComm {
         AUConfirmConnect.Builder msg = AUConfirmConnect.newBuilder();
         msg.setWorldid(worldID);
         msg.setConnected(true);
-        Sender.sendMsgTo(msg.build(), out);
+        Sender.sendMessage(msg.build(), out);
     }
-
-    // public UACommands recvOneCmdsFromUps(Socket clientSocket){
-    //     try {
-    //         InputStream in = clientSocket.getInputStream();
-    //         OutputStream out = clientSocket.getOutputStream();
-    //         UACommands.Builder cmdsB = UACommands.newBuilder();
-    //         Recver.recvMsgFrom(cmdsB, in);
-    //         UACommands cmds = cmdsB.build();
-    //         sendAcksToUps(cmds, out);
-    //         return cmds;
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-    // }
 
     public UACommands recvOneCmdsFromUps(InputStream in, OutputStream out){
         try {
             UACommands.Builder cmdsB = UACommands.newBuilder();
-            Recver.recvMsgFrom(cmdsB, in);
+            Recver.recvMessage(cmdsB, in);
             System.out.println("received cmds from UPS: " + cmdsB.toString());
             UACommands cmds = cmdsB.build();
             sendAcksToUps(cmds, out);
@@ -82,7 +67,7 @@ public class UPSComm {
             for (long seq : acks) {
                 commands.addAcks(seq);
             }
-            Sender.sendMsgTo(commands.build(), out);
+            Sender.sendMessage(commands.build(), out);
             System.out.println("send ack back(to UPS): " + commands);
         }
     }

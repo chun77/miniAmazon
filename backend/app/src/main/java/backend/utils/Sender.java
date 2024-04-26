@@ -1,13 +1,12 @@
 package backend.utils;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.GeneratedMessageV3;
 
 public class Sender {
-    public static <T extends GeneratedMessageV3> boolean sendMsgTo(T msg, OutputStream out) {
+    public static <T extends GeneratedMessageV3> void sendMessage(T msg, OutputStream out) {
         try {
             byte[] msgBytes = msg.toByteArray();
             //sendBytes(msgBytes, out);
@@ -15,10 +14,8 @@ public class Sender {
             COS.writeUInt32NoTag(msgBytes.length);
             COS.writeRawBytes(msgBytes);
             COS.flush();
-            return true;
         } catch (IOException e) {
             System.err.println(e.toString());
-            return false;
         }
     }
 

@@ -139,16 +139,16 @@ def place_order(request):
         package_id_str = str(order.package_id)
 
         # Send the order data to the Amazon server
-        # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        #     # connect to the server
-        #     s.connect(('vcm-37900.vm.duke.edu', 8888))
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            # connect to the server
+            s.connect(('vcm-37900.vm.duke.edu', 8888))
 
-        #     # send the order data
-        #     s.sendall(package_id_str.encode('utf-8'))
+            # send the order data
+            s.sendall(package_id_str.encode('utf-8'))
 
-        #     # receive the response from the server with new tracking id
-        #     response = s.recv(1024).decode('utf-8')
-        #     print(response)
+            # receive the response from the server with new tracking id
+            response = s.recv(1024).decode('utf-8')
+            print(response)
 
         # Redirect to the success page
         return redirect('success', order_id=order.package_id)

@@ -17,33 +17,17 @@ import backend.utils.Sender;
 public class App {
 
     public static void main(String[] args) {
-        // test email sending
-        // EmailSender emailSender = new EmailSender();
-        // try {
-        //     emailSender.sendNotification("steven.h.geng@gmail.com", "hihihi");
-        // } catch (GeneralSecurityException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
-
+        // initialize amazon
         Amazon amazon = new Amazon();
         amazon.initialize();
         OutputStream worldSender = amazon.getWorldSender();
 
-        //set database (only for testing)
-        //DBCtrler.dropTables();
-        //DBCtrler.createTables();
-        //DBCtrler.initializeTables();
-
-        // set simspeed
-        WorldMsger worldMsger = new WorldMsger();
-        worldMsger.setSimSpeed(500); // only for testing
-        System.out.println("set simspeed to 500");
-        Sender.sendMsgTo(worldMsger.getCommands(), worldSender);
-        System.out.println("set simspeed to 500 success");
+        // set simspeed, just for testing
+        // WorldMsger worldMsger = new WorldMsger();
+        // worldMsger.setSimSpeed(500); // only for testing
+        // System.out.println("set simspeed to 500");
+        // Sender.sendMessage(worldMsger.getCommands(), worldSender);
+        // System.out.println("set simspeed to 500 success");
 
         // start 3 threads, for world receiver, ups server and frontend server respectively
         amazon.startWorldRecver();

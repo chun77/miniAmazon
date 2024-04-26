@@ -79,4 +79,8 @@ public class Package {
     public void setUpsAccount(int upsAccount) {
         this.upsAccount = upsAccount;
     }
+
+    public void setDest(Location dest) {
+        this.dest = dest;
+    }
 }

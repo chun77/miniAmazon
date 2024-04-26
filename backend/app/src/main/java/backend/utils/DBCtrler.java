@@ -14,7 +14,6 @@ public class DBCtrler {
     //private static String url = "jdbc:postgresql://127.0.0.1:5432/ece568";
     private static String url = "jdbc:postgresql://vcm-39394.vm.duke.edu:5432/amazondb";
     private static String user = "postgres";
-    // private static String password = "postgres";
     private static String password = "psql";
 
     public DBCtrler() {
@@ -206,6 +205,16 @@ public class DBCtrler {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              Statement stmt = conn.createStatement()) {
             String sql = "UPDATE shop_packagestatus SET status = '" + status + "' WHERE package_id = " + packageID + ";";
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateDest(long packageID, int dest_x, int dest_y) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
+            String sql = "UPDATE shop_order SET dest_x = " + dest_x + ", dest_y = " + dest_y + " WHERE package_id = " + packageID + ";";
             stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());

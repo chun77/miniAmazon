@@ -10,6 +10,7 @@ import backend.utils.Sender;
 
 public class WorldComm {
 
+    // this method is just for test without UPS
     public Socket connectToworldWithoudID(List<WareHouse> whs) throws UnknownHostException, IOException {
         AConnect msgToSend = new WorldMsger().connectWithoutID(whs);
         // set up the TCP connection to the world
@@ -17,10 +18,10 @@ public class WorldComm {
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         // connect to the world(send AConnect message)
-        Sender.sendMsgTo(msgToSend, out);
+        Sender.sendMessage(msgToSend, out);
         // receive the response from the world
         AConnected.Builder connected = AConnected.newBuilder();
-        Recver.recvMsgFrom(connected, in);
+        Recver.recvMessage(connected, in);
         System.out.println("world id: " + connected.getWorldid());
         System.out.println("result: " + connected.getResult());
         if(connected.getResult().equals("connected!")) {
@@ -39,10 +40,10 @@ public class WorldComm {
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         // connect to the world(send AConnect message)
-        Sender.sendMsgTo(msgToSend, out);
+        Sender.sendMessage(msgToSend, out);
         // receive the response from the world
         AConnected.Builder connected = AConnected.newBuilder();
-        Recver.recvMsgFrom(connected, in);
+        Recver.recvMessage(connected, in);
         System.out.println("world id: " + connected.getWorldid());
         System.out.println("result: " + connected.getResult());
         if(connected.getResult().equals("connected!")) {
@@ -58,7 +59,7 @@ public class WorldComm {
         try {
             AResponses.Builder responsesB = AResponses.newBuilder();
             synchronized (in) {
-                Recver.recvMsgFrom(responsesB, in);
+                Recver.recvMessage(responsesB, in);
             }
             AResponses responses = responsesB.build();
             System.out.println("Received from world: " + responses.toString());
@@ -96,7 +97,7 @@ public class WorldComm {
                 commands.addAcks(seq);
             }
             System.out.println("send ack back(to World): " + commands.toString());
-            Sender.sendMsgTo(commands.build(), out);
+            Sender.sendMessage(commands.build(), out);
         }
     }
 

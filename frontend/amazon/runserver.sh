@@ -1,5 +1,4 @@
 #!/bin/bash
-echo "Running as user: $(whoami)"
 
 python3 manage.py makemigrations || echo "makemigrations failed with exit code $?"
 
@@ -15,4 +14,4 @@ python3 manage.py loaddata initial_data_amazon.json || echo "loaddata failed wit
 
 #echo "Starting server..."
 
-python3 manage.py runserver 0.0.0.0:8080 || echo "Failed to start server $?"
+python3 manage.py runserver 0.0.0.0:8000 || echo "Failed to start server $?"

@@ -22,7 +22,7 @@ services:
 
   backend:
     build: ./backend
-    command: bash -c "./gradlew run"
+    command: bash -c "gradle run"
     ports:
       - "9999:9999" # port for UPS
       - "8888:8888" # port for frontend
