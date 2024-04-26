@@ -22,8 +22,6 @@ services:
 
   backend:
     build: ./backend
-    environment:
-      - worldHost="vcm-37900.vm.duke.edu"
     command: bash -c "./gradlew run"
     ports:
       - "9999:9999" # port for UPS

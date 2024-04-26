@@ -139,7 +139,7 @@ def place_order(request):
             for attempt in range(retry_count):
                 try:
                     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        s.connect(('vcm-37900.vm.duke.edu', 8888))
+                        s.connect(('backend', 8888))
                         s.settimeout(5.0)
                         s.sendall(package_id_str.encode('utf-8'))
                         response = s.recv(1024).decode('utf-8')

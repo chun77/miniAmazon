@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=&k!^8lxxqqqbyx#7*ny2a85cxyezps^qkb_#5jbr%q@a8(0t0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vcm-38363.vm.duke.edu','localhost','frontend','vcm-37900.vm.duke.edu']
+ALLOWED_HOSTS = ['*','vcm-38363.vm.duke.edu','localhost','frontend','vcm-37900.vm.duke.edu','vcm-41059.vm.duke.edu']
 
 
 # Application definition
@@ -80,10 +80,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'amazondb',
         'USER': 'postgres',
-        'PASSWORD': 'psql',
-        # 'PASSWORD': 'postgres',
-        'HOST': 'vcm-39394.vm.duke.edu',
-        # 'HOST': 'db',
+        # 'PASSWORD': 'psql',
+        'PASSWORD': 'postgres',
+        # 'HOST': 'vcm-39394.vm.duke.edu',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
