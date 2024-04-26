@@ -135,25 +135,35 @@ def place_order(request):
         )
         package_status.save()
 
-        # only send package_id
-        package_id_str = str(order.package_id)
+        # package_id_str = str(order.package_id)
+        # response = None
 
-        # Send the order data to the Amazon server
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            # connect to the server
-            s.connect(('vcm-37900.vm.duke.edu', 8888))
+        # retry_count = 3
 
-            # send the order data
-            s.sendall(package_id_str.encode('utf-8'))
+        # for attempt in range(retry_count):
+        #     try:
+        #         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        #             s.connect(('vcm-37900.vm.duke.edu', 8888))
+        #             s.settimeout(5.0)
 
-            # receive the response from the server with new tracking id
-            response = s.recv(1024).decode('utf-8')
-            print(response)
+        #             s.sendall(package_id_str.encode('utf-8'))
 
-        # Redirect to the success page
+        #             response = s.recv(1024).decode('utf-8')
+                    
+        #             if response:
+        #                 print("Received response:", response)
+        #                 break  
+        #             else:
+        #                 print("No response, retrying...")
+        #     except socket.timeout:
+        #         print("Socket timed out, retrying...")
+        #     except Exception as e:
+        #         print("An error occurred:", e)
+
+        # if response is None:
+        #     print("Failed to receive a response after {} attempts".format(retry_count))
         return redirect('success', order_id=order.package_id)
     else:
-        # Return to the checkout page if not a POST request
         return render(request, 'shop/checkout.html')
 
 @login_required(login_url='login')
