@@ -7,6 +7,7 @@ import java.util.List;
 
 import backend.protocol.AmazonUps.AUCommands;
 import backend.protocol.AmazonUps.AUConfirmConnect;
+import backend.protocol.AmazonUps.UAChangeAddr;
 import backend.protocol.AmazonUps.UACommands;
 import backend.protocol.AmazonUps.UADelivered;
 import backend.protocol.AmazonUps.UAInitConnect;
@@ -60,6 +61,9 @@ public class UPSComm {
             acks.add(cmd.getSeqnum());
         }
         for(UADelivered cmd : cmds.getDeliveredList()) {
+            acks.add(cmd.getSeqnum());
+        }
+        for(UAChangeAddr cmd : cmds.getChangeAddrList()) {
             acks.add(cmd.getSeqnum());
         }
         if (acks.size() > 0) {

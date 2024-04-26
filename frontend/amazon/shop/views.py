@@ -136,10 +136,12 @@ def place_order(request):
         package_status.save()
 
         package_id_str = str(order.package_id)
+
+        # clear the cart
+        request.session['cart'] = {}
+        
         response = None
-
         retry_count = 3
-
         for attempt in range(retry_count):
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

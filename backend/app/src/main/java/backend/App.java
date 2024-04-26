@@ -23,11 +23,11 @@ public class App {
         OutputStream worldSender = amazon.getWorldSender();
 
         // set simspeed, just for testing
-        // WorldMsger worldMsger = new WorldMsger();
-        // worldMsger.setSimSpeed(500); // only for testing
-        // System.out.println("set simspeed to 500");
-        // Sender.sendMessage(worldMsger.getCommands(), worldSender);
-        // System.out.println("set simspeed to 500 success");
+        WorldMsger worldMsger = new WorldMsger();
+        worldMsger.setSimSpeed(400); // only for testing
+        System.out.println("set simspeed to 400");
+        Sender.sendMessage(worldMsger.getCommands(), worldSender);
+        System.out.println("set simspeed to 400 success");
 
         // start 3 threads, for world receiver, ups server and frontend server respectively
         amazon.startWorldRecver();

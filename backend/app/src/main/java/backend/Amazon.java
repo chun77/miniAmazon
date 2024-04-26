@@ -334,7 +334,7 @@ public class Amazon {
             @Override
             public void run() {
                 synchronized (out) {
-                    System.out.println("sending to ups: " + cmds);
+                    System.out.println("sending to world: " + cmds);
                     Sender.sendMessage(cmds, out);
                 }
             }
@@ -516,6 +516,7 @@ public class Amazon {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("sending to UPS: " + cmds);
                 Sender.sendMessage(cmds, upsSender);
             }
         }, 0, 10000);
