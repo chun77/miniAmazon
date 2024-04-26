@@ -71,3 +71,12 @@ that there was a package with the same tracking id as the received message.
 The trackingid is a String. When comparing two Strings, we should not use ==,
 but should use .equals().
 
+9. How come error messages are all displayed in login page?
+Some html dosn't have the error message display part. The error messages will be stored in the session and displayed in the login page.
+Solution: Add the error message display part in every html page that may have error messages.
+
+10. How to check the data filled in the checkout page of the front end?
+Create a new OrderForm object and use the validate() method to check the data.
+Error messages will be displayed below the corresponding input box.
+Also, we need to rerender the checkout page with the part of data filled in correctly by the user.
+
